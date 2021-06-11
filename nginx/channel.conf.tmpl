@@ -52,7 +52,8 @@
 server {
     server_name ~^{{ $domain }}$;
   {{ if $UPSTREAM_PWA | strings.HasPrefix "https" }}
-    listen 443 ssl;
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
     ssl_certificate     server.crt;
     ssl_certificate_key server.key;
     ssl_protocols       TLSv1 TLSv1.1 TLSv1.2;
