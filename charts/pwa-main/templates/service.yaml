@@ -13,11 +13,11 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - port: {{ .Values.service.port }}
+    - port: {{ .Values.service.http.port }}
       targetPort: 4200
       protocol: TCP
       name: http
-    - port: 9113
+    - port: {{ .Values.service.prometheus.port }}
       targetPort: 9113
       protocol: TCP
       name: prometheus

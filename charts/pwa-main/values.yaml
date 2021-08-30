@@ -18,7 +18,10 @@ upstream:
 
 service:
   type: ClusterIP
-  port: 4200
+  http:
+    port: 4200
+  prometheus:
+    port: 4100
 
 resources:
   {}
@@ -121,3 +124,8 @@ ingress:
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
+
+grafana:
+  enabled: true
+prometheus:
+  enabled: true
