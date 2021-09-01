@@ -21,7 +21,7 @@ service:
   http:
     port: 4200
   prometheus:
-    port: 4100
+    port: 9113
 
 resources:
   {}
