@@ -224,13 +224,7 @@ export class AzureADIdentityProvider implements IdentityProvider {
 
   triggerLogout(): TriggerReturnType {
     if (this.oauthService.hasValidIdToken()) {
-      this.oauthService.revokeTokenAndLogout(
-        {
-          client_id: this.oauthService.clientId,
-          returnTo: this.oauthService.postLogoutRedirectUri,
-        },
-        true
-      );
+      this.oauthService.logOut(false);
       return this.router.parseUrl('/loading');
     } else {
       return false;
