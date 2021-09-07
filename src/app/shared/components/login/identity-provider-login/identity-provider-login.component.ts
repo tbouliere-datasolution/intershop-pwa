@@ -33,6 +33,7 @@ export class IdentityProviderLoginComponent implements OnInit {
     private identityProviderFactory: IdentityProviderFactory
   ) {}
 
+  // tslint:disable: lifecycle-cyclomatic-complexity
   ngOnInit() {
     // tslint:disable-next-line: no-any
     let componentRef: ComponentRef<any>;
@@ -43,7 +44,6 @@ export class IdentityProviderLoginComponent implements OnInit {
           this.componentFactoryResolver.resolveComponentFactory(Auth0SignInComponent)
         );
         break;
-
       case 'azureAD':
         componentRef = this.anchor.createComponent(
           this.componentFactoryResolver.resolveComponentFactory(AzureADSignInComponent)
