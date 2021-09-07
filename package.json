@@ -198,7 +198,7 @@
     "commitizen": {
       "path": "./node_modules/cz-customizable"
     },
-    "active-themes": "default,blue"
+    "active-themes": "blue"
   },
   "postinstall": {
     "jest-extended/types": "copy node_modules/@types/jest-extended"
