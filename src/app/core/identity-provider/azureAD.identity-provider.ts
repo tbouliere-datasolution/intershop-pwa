@@ -22,7 +22,7 @@ import { whenTruthy } from 'ish-core/utils/operators';
 
 import { IdentityProvider, TriggerReturnType } from './identity-provider.interface';
 
-export interface AzureADConfig {
+interface AzureADConfig {
   type: 'azureAD';
   domain: string;
   clientID: string;
