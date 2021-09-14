@@ -26,7 +26,6 @@ export interface AzureADConfig {
   type: 'azureAD';
   domain: string;
   clientID: string;
-  clientSecret: string;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -58,8 +57,6 @@ export class AzureADIdentityProvider implements IdentityProvider {
 
       // The app's clientId configured in AzureAD
       clientId: config.clientID,
-
-      dummyClientSecret: config.clientSecret,
 
       // The app's redirectUri configured in AzureAD
       redirectUri: effectiveOrigin + '/loading',
