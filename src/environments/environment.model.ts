@@ -43,6 +43,9 @@ export interface Environment {
 
   /* ADDITIONAL FEATURE CONFIGURATIONS */
 
+  requestTimeoutEnabled?: boolean;
+  defaultRequestTimeout?: number;
+
   // track shop interaction via Google Tag Manager (to be used with 'tracking' feature, works with server side rendering only)
   gtmToken?: string;
 

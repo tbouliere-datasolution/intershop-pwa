@@ -6,7 +6,13 @@ import { META_REDUCERS } from '@ngrx/store';
 
 import { configurationMeta } from 'ish-core/configurations/configuration.meta';
 import { DATA_RETENTION_POLICY } from 'ish-core/configurations/injection-keys';
-import { COOKIE_CONSENT_VERSION, DISPLAY_VERSION } from 'ish-core/configurations/state-keys';
+import {
+  COOKIE_CONSENT_VERSION,
+  DEFAULT_REQUEST_TIMEOUT,
+  DISPLAY_VERSION,
+  REQUEST_TIMEOUT_ENABLED,
+} from 'ish-core/configurations/state-keys';
+import { RequestTimeoutInterceptor } from 'ish-core/interceptors/request-timeout.interceptor';
 import { UniversalLogInterceptor } from 'ish-core/interceptors/universal-log.interceptor';
 import { UniversalMockInterceptor } from 'ish-core/interceptors/universal-mock.interceptor';
 
@@ -32,6 +38,7 @@ export class UniversalErrorHandler implements ErrorHandler {
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: UniversalMockInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: UniversalLogInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: RequestTimeoutInterceptor, multi: true },
     { provide: ErrorHandler, useClass: UniversalErrorHandler },
     { provide: META_REDUCERS, useValue: configurationMeta, multi: true },
     // disable data retention for SSR
@@ -41,6 +48,15 @@ export class UniversalErrorHandler implements ErrorHandler {
 })
 export class AppServerModule {
   constructor(transferState: TransferState) {
+    transferState.set(
+      REQUEST_TIMEOUT_ENABLED,
+      process.env.REQUEST_TIMEOUT_ENABLED || environment.requestTimeoutEnabled
+    );
+
+    transferState.set(
+      DEFAULT_REQUEST_TIMEOUT,
+      process.env.DEFAULT_REQUEST_TIMEOUT || environment.defaultRequestTimeout
+    );
     transferState.set(DISPLAY_VERSION, process.env.DISPLAY_VERSION);
     transferState.set(COOKIE_CONSENT_VERSION, process.env.COOKIE_CONSENT_VERSION || environment.cookieConsentVersion);
   }

@@ -16,6 +16,8 @@ services:
       - ICM_BASE_URL
       # - PROXY_ICM=true
       - TRUST_ICM=true
+      - REQUEST_TIMEOUT_ENABLED=true
+      - DEFAULT_REQUEST_TIMEOUT=0
       # - PROMETHEUS=on
       # - MULTI_SITE_LOCALE_MAP={"en_US":"/en","de_DE":"/de","fr_FR":"/fr"}
 
