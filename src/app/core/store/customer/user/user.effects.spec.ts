@@ -87,6 +87,8 @@ describe('User Effects', () => {
   beforeEach(() => {
     userServiceMock = mock(UserService);
     paymentServiceMock = mock(PaymentService);
+    apiTokenServiceMock = mock(ApiTokenService);
+
     when(userServiceMock.signInUser(anything())).thenReturn(of(loginResponseData));
     when(userServiceMock.signInUserByToken(anything())).thenReturn(of(loginResponseData));
     when(userServiceMock.createUser(anything())).thenReturn(of(undefined));
@@ -113,7 +115,7 @@ describe('User Effects', () => {
         { provide: UserService, useFactory: () => instance(userServiceMock) },
         { provide: PaymentService, useFactory: () => instance(paymentServiceMock) },
         { provide: PersonalizationService, useFactory: () => instance(mock(PersonalizationService)) },
-        { proide: ApiTokenService, useFactory: () => instance(apiTokenServiceMock) },
+        { provide: ApiTokenService, useFactory: () => instance(apiTokenServiceMock) },
       ],
     });
 
