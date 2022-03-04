@@ -16,6 +16,8 @@ import { FilterEffects } from './filter/filter.effects';
 import { filterReducer } from './filter/filter.reducer';
 import { ProductListingEffects } from './product-listing/product-listing.effects';
 import { productListingReducer } from './product-listing/product-listing.reducer';
+import { ProductPricesEffects } from './product-prices/product-prices.effects';
+import { productPricesReducer } from './product-prices/product-prices.reducer';
 import { ProductsEffects } from './products/products.effects';
 import { productsReducer } from './products/products.reducer';
 import { PromotionsEffects } from './promotions/promotions.effects';
@@ -35,6 +37,7 @@ const shoppingReducers: ActionReducerMap<ShoppingState> = {
   filter: filterReducer,
   promotions: promotionsReducer,
   productListing: productListingReducer,
+  productPrices: productPricesReducer,
 };
 
 const shoppingEffects = [
@@ -46,6 +49,7 @@ const shoppingEffects = [
   FilterEffects,
   PromotionsEffects,
   ProductListingEffects,
+  ProductPricesEffects,
 ];
 
 @Injectable()
@@ -53,7 +57,10 @@ export class DefaultShoppingStoreConfig implements StoreConfig<ShoppingState> {
   metaReducers = [
     dataRetentionMeta<ShoppingState>(this.dataRetention.compare, this.appBaseHref, 'shopping', '_compare'),
     dataRetentionMeta<ShoppingState>(this.dataRetention.recently, this.appBaseHref, 'shopping', '_recently'),
-    resetSubStatesOnActionsMeta<ShoppingState>(['categories', 'products', 'search', 'filter'], [waitForSPGIDComplete]),
+    resetSubStatesOnActionsMeta<ShoppingState>(
+      ['categories', 'products', 'search', 'filter', 'productPrices'],
+      [waitForSPGIDComplete]
+    ),
   ];
 
   constructor(
