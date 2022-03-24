@@ -214,11 +214,12 @@ export class PunchoutService {
    * transferCxmlPunchoutBasket
    */
   private transferCxmlPunchoutBasket() {
-    const punchoutSID = this.cookiesService.get('punchout_SID');
+    const punchoutSID = window.sessionStorage.getItem('punchout_SID');
     if (!punchoutSID) {
       return throwError(() => new Error('no punchout_SID available in cookies for cXML punchout basket transfer'));
     }
-    const returnURL = this.cookiesService.get('punchout_ReturnURL');
+
+    const returnURL = window.sessionStorage.getItem('punchout_ReturnURL');
     if (!returnURL) {
       return throwError(
         () => new Error('no punchout_ReturnURL available in cookies for cXML punchout basket transfer')

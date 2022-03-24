@@ -84,7 +84,7 @@ export class ApiTokenService {
             cookiesService.put('apiToken', cookieContent, {
               expires: new Date(Date.now() + 3600000),
               secure: true,
-              sameSite: 'Strict',
+              sameSite: 'None',
             });
           } else {
             cookiesService.remove('apiToken');
@@ -137,6 +137,7 @@ export class ApiTokenService {
   }
 
   restore$(types: ApiTokenCookieType[] = ['user', 'basket', 'order']): Observable<boolean> {
+    console.log('restore$');
     if (isPlatformServer(this.platformId)) {
       return of(true);
     }

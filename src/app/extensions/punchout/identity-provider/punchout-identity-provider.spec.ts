@@ -192,9 +192,8 @@ describe('Punchout Identity Provider', () => {
               boolean | UrlTree
             >;
             login$.subscribe(() => {
-              verify(cookiesService.put('punchout_SID', 'sid', anything())).once();
-              verify(cookiesService.put('punchout_ReturnURL', 'home', anything())).once();
-              verify(cookiesService.put('punchout_BasketID', 'basket-id', anything())).once();
+              expect(window.sessionStorage.getItem('punchout_SID')).toEqual('sid');
+              expect(window.sessionStorage.getItem('punchout_ReturnURL')).toEqual('home');
             });
 
             tick(500);

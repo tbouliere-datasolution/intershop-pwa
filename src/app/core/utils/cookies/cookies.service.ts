@@ -57,7 +57,8 @@ export class CookiesService {
     this.deleteAllCookies();
     this.put('cookieConsent', JSON.stringify({ enabledOptions: options, version: cookieConsentVersion }), {
       expires: new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
-      sameSite: 'Strict',
+      sameSite: location.protocol === 'https:' ? 'None' : 'Strict',
+      secure: location.protocol === 'https:' ? true : false,
     });
     window.location.reload();
   }

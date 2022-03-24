@@ -67,7 +67,9 @@ export class PunchoutIdentityProvider implements IdentityProvider {
     }
 
     // initiate the punchout user login with the access-token (cXML) or the given credentials (OCI)
+    console.log(route.queryParamMap);
     if (route.queryParamMap.has('access-token')) {
+      console.log('access-token');
       this.accountFacade.loginUserWithToken(route.queryParamMap.get('access-token'));
     } else {
       this.accountFacade.loginUser({
@@ -139,18 +141,8 @@ export class PunchoutIdentityProvider implements IdentityProvider {
     return this.punchoutService.getCxmlPunchoutSession(route.queryParamMap.get('sid')).pipe(
       // persist cXML session information (sid, returnURL, basketId) in cookies for later basket transfer
       tap(data => {
-        this.cookiesService.put('punchout_SID', route.queryParamMap.get('sid'), {
-          sameSite: 'None',
-          secure: true,
-        });
-        this.cookiesService.put('punchout_ReturnURL', data.returnURL, {
-          sameSite: 'None',
-          secure: true,
-        });
-        this.cookiesService.put('punchout_BasketID', data.basketId, {
-          sameSite: 'None',
-          secure: true,
-        });
+        window.sessionStorage.setItem('punchout_SID', route.queryParamMap.get('sid'));
+        window.sessionStorage.setItem('punchout_ReturnURL', data.returnURL);
       }),
       // use the basketId basket for the current PWA session (instead of default current basket)
       // TODO: if load basket error (currently no error page) -> logout and do not use default 'current' basket
