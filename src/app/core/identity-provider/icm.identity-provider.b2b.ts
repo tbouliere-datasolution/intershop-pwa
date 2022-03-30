@@ -39,7 +39,7 @@ export class ICMIdentityProvider implements IdentityProvider {
         switchMap(() => this.userService.fetchToken('anonymous'))
       )
       .subscribe(tokens =>
-        this.apiTokenService.setApiToken(tokens.access_token, {
+        this.apiTokenService.setApiToken(tokens.access_token, 'anonymous', {
           expires: new Date(Date.now() + tokens.expires_in * 1000),
         })
       );

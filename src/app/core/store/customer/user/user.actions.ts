@@ -9,7 +9,7 @@ import { User } from 'ish-core/models/user/user.model';
 import { MessagesPayloadType } from 'ish-core/store/core/messages';
 import { httpError, payload } from 'ish-core/utils/ngrx-creators';
 
-export const loadAnonymousUserAccessToken = createAction('[User] Get Anonymous User Access Token');
+export const fetchCustomer = createAction('[User] Fetch Customer');
 
 export const loginUser = createAction('[User] Login User', payload<{ credentials: Credentials }>());
 

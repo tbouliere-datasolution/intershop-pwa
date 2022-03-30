@@ -2,17 +2,20 @@ import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpRequest } from '@angular/common/http';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
+import { Store, select } from '@ngrx/store';
 import { CookieOptions } from 'express';
-import { Observable, ReplaySubject, Subject, of, throwError, timer } from 'rxjs';
+import { Observable, ReplaySubject, Subject, combineLatest, of, throwError, timer } from 'rxjs';
 import { catchError, concatMap, distinctUntilChanged, first, map, skip, switchMap } from 'rxjs/operators';
 
 import { ApiService } from 'ish-core/services/api/api.service';
+import { getLoggedInUser } from 'ish-core/store/customer/user';
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 
-type ApiTokenCookieType = 'user' | 'basket' | 'order';
+type ApiTokenCookieType = 'user' | 'basket' | 'order' | 'anonymous';
 
 interface ApiTokenCookie {
   apiToken: string;
+  type: ApiTokenCookieType;
   options?: CookieOptions;
 }
 
@@ -24,22 +27,33 @@ export class ApiTokenService {
   constructor(
     @Inject(PLATFORM_ID) private platformId: string,
     private router: Router,
-    private cookiesService: CookiesService
+    private cookiesService: CookiesService,
+    private store: Store
   ) {
     this.apiToken$.next(isPlatformBrowser(platformId) ? this.parseCookie() : undefined);
 
-    this.apiToken$.pipe(skip(1), distinctUntilChanged()).subscribe(apiToken => {
-      const cookieContent = apiToken?.apiToken ? JSON.stringify(apiToken) : undefined;
-      if (cookieContent) {
-        cookiesService.put('apiToken', cookieContent, {
-          expires: new Date(Date.now() + 3600000),
-          secure: true,
-          sameSite: 'Strict',
-        });
-      } else {
-        cookiesService.remove('apiToken');
-      }
-    });
+    combineLatest([this.store.pipe(select(getLoggedInUser)), this.apiToken$.pipe(skip(1))])
+      .pipe(
+        map(([user, apiToken]): ApiTokenCookie => {
+          if (user) {
+            return { ...apiToken, type: 'user' };
+          }
+          return apiToken;
+        }),
+        distinctUntilChanged()
+      )
+      .subscribe(apiToken => {
+        const cookieContent = apiToken?.apiToken ? JSON.stringify(apiToken) : undefined;
+        if (cookieContent) {
+          cookiesService.put('apiToken', cookieContent, {
+            expires: new Date(Date.now() + 3600000),
+            secure: true,
+            sameSite: 'Strict',
+          });
+        } else {
+          cookiesService.remove('apiToken');
+        }
+      });
   }
 
   private parseCookie() {
@@ -58,7 +72,7 @@ export class ApiTokenService {
     return false;
   }
 
-  restore$(types: ApiTokenCookieType[] = ['user', 'basket', 'order']): Observable<boolean> {
+  restore$(types: ApiTokenCookieType[] = ['user', 'anonymous']): Observable<boolean> {
     return this.waitUntilRouterEventFired$();
   }
 
@@ -72,11 +86,11 @@ export class ApiTokenService {
     );
   }
 
-  setApiToken(apiToken: string, options?: CookieOptions) {
+  setApiToken(apiToken: string, type: ApiTokenCookieType, options?: CookieOptions) {
     if (!apiToken) {
       console.warn('do not use setApiToken to unset token, use remove or invalidate instead');
     }
-    this.apiToken$.next({ apiToken, options });
+    this.apiToken$.next({ apiToken, type, options });
   }
 
   removeApiToken() {

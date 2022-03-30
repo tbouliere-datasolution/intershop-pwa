@@ -47,22 +47,6 @@ export class UserService {
   constructor(private apiService: ApiService, private appFacade: AppFacade, private store: Store) {}
 
   /**
-   * Sign in an existing user with the given login credentials (login, password).
-   *
-   * @param loginCredentials  The users login credentials {login: 'foo', password. 'bar'}.
-   * @returns                 The logged in customer data.
-   *                          For private customers user data are also returned.
-   *                          For business customers user data are returned by a separate call (getCompanyUserData).
-   */
-  signInUser(loginCredentials: Credentials): Observable<CustomerUserType> {
-    const headers = new HttpHeaders().set(
-      ApiService.AUTHORIZATION_HEADER_KEY,
-      `BASIC ${window.btoa(`${loginCredentials.login}:${loginCredentials.password}`)}`
-    );
-
-    return this.fetchCustomer({ headers });
-  }
-  /**
    * Sign in an existing user with the given token or if no token is given, using token stored in cookie.
    *
    * @param token             The token that is used to login user.
@@ -93,7 +77,22 @@ export class UserService {
   }
 
   fetchToken(grantType: string, options?: any): Observable<any> {
-    return of(true);
+    const body = new URLSearchParams();
+    body.set('grant_type', grantType);
+    if (grantType === 'password') {
+      if (!options?.username || !options?.password) {
+        return throwError(() => new Error('fetchToken() called for grantType password without username or password'));
+      }
+      body.set('username', options.username);
+      body.set('password', options.password);
+    }
+
+    return this.apiService.post<any>('-/token', body, {
+      headers: new HttpHeaders({ 'content-type': 'application/x-www-form-urlencoded' }),
+      sendCurrency: false,
+      sendLocale: false,
+      sendApplication: false,
+    });
   }
 
   /**

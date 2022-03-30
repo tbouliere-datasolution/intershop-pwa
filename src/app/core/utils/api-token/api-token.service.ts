@@ -29,7 +29,7 @@ import { getLoggedInUser, getUserAuthorized, loadUserByAPIToken } from 'ish-core
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 import { mapToProperty, whenTruthy } from 'ish-core/utils/operators';
 
-type ApiTokenCookieType = 'user' | 'basket' | 'order';
+type ApiTokenCookieType = 'user' | 'basket' | 'order' | 'anonymous';
 
 interface ApiTokenCookie {
   apiToken: string;
@@ -205,7 +205,7 @@ export class ApiTokenService {
     return;
   }
 
-  setApiToken(apiToken: string, options?: CookieOptions) {
+  setApiToken(apiToken: string, type: ApiTokenCookieType, options?: CookieOptions) {
     if (!apiToken) {
       console.warn('do not use setApiToken to unset token, use remove or invalidate instead');
     }
