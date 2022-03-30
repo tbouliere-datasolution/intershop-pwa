@@ -92,6 +92,25 @@ export class UserService {
     );
   }
 
+  fetchToken(grantType: string, options?: any): Observable<any> {
+    const body = new URLSearchParams();
+    body.set('grant_type', grantType);
+    if (grantType === 'password') {
+      if (!options?.username || !options?.password) {
+        return throwError(() => new Error('fetchToken() called for grantType password without username or password'));
+      }
+      body.set('username', options.username);
+      body.set('password', options.password);
+    }
+
+    return this.apiService.post<any>('-/token', body, {
+      headers: new HttpHeaders({ 'content-type': 'application/x-www-form-urlencoded' }),
+      sendCurrency: false,
+      sendLocale: false,
+      sendApplication: false,
+    });
+  }
+
   /**
    * Create a new user for the given data.
    *

@@ -3,6 +3,7 @@ import { HttpErrorResponse, HttpEvent, HttpHandler, HttpRequest, HttpResponse } 
 import { ApplicationRef, Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
+import { CookieOptions } from 'express';
 import { isEqual } from 'lodash-es';
 import { Observable, ReplaySubject, Subject, combineLatest, interval, of, race, throwError, timer } from 'rxjs';
 import {
@@ -42,6 +43,7 @@ export class ApiTokenService {
   cookieVanishes$ = new Subject<ApiTokenCookieType>();
 
   private initialCookie$: Observable<ApiTokenCookie>;
+  private cookieOptions: CookieOptions;
 
   constructor(
     private cookiesService: CookiesService,
@@ -181,6 +183,16 @@ export class ApiTokenService {
     );
   }
 
+  waitUntilRouterEventFired$(): Observable<boolean> {
+    if (isPlatformServer(this.platformId)) {
+      return of(true);
+    }
+    return this.router.events.pipe(
+      first(),
+      switchMap(() => of(true))
+    );
+  }
+
   private parseCookie() {
     const cookieContent = this.cookiesService.get('apiToken');
     if (cookieContent) {
@@ -193,7 +205,7 @@ export class ApiTokenService {
     return;
   }
 
-  private setApiToken(apiToken: string) {
+  setApiToken(apiToken: string, options?: CookieOptions) {
     if (!apiToken) {
       console.warn('do not use setApiToken to unset token, use remove or invalidate instead');
     }
@@ -202,6 +214,10 @@ export class ApiTokenService {
 
   removeApiToken() {
     this.apiToken$.next(undefined);
+  }
+
+  hasApiToken(): boolean {
+    return false;
   }
 
   private invalidateApiToken() {

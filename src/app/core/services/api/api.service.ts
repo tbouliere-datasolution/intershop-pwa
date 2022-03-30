@@ -23,6 +23,7 @@ import {
   getCurrentLocale,
   getICMServerURL,
   getRestEndpoint,
+  getRestEndpointWithoutApplication,
 } from 'ish-core/store/core/configuration';
 import { communicationTimeoutError, serverError } from 'ish-core/store/core/error';
 import { getLoggedInCustomer, getLoggedInUser, getPGID } from 'ish-core/store/customer/user';
@@ -59,6 +60,7 @@ export interface AvailableOptions {
    * to get and cache personalized content of the product and category API (1.x).
    */
   sendSPGID?: boolean;
+  sendApplication?: boolean;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -131,7 +133,9 @@ export class ApiService {
     }
     return combineLatest([
       // base url
-      this.store.pipe(select(getRestEndpoint)),
+      options?.sendApplication === undefined || options.sendApplication
+        ? this.store.pipe(select(getRestEndpoint))
+        : this.store.pipe(select(getRestEndpointWithoutApplication)),
       // locale
       options?.sendLocale === undefined || options.sendLocale
         ? this.store.pipe(
