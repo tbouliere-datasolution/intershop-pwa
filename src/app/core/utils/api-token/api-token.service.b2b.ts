@@ -4,12 +4,17 @@ import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { CookieOptions } from 'express';
-import { Observable, ReplaySubject, Subject, combineLatest, of, throwError, timer } from 'rxjs';
+import { isEqual } from 'lodash-es';
+import { Observable, ReplaySubject, Subject, combineLatest, of, race, take, throwError, timer } from 'rxjs';
 import { catchError, concatMap, distinctUntilChanged, first, map, skip, switchMap } from 'rxjs/operators';
 
 import { ApiService } from 'ish-core/services/api/api.service';
-import { getLoggedInUser } from 'ish-core/store/customer/user';
+import { getCurrentBasket, getCurrentBasketId, loadBasketByAPIToken } from 'ish-core/store/customer/basket';
+import { getOrder, getSelectedOrderId, loadOrderByAPIToken } from 'ish-core/store/customer/orders';
+import { getLoggedInUser, getUserAuthorized, loadUserByAPIToken } from 'ish-core/store/customer/user';
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
+import { log } from 'ish-core/utils/dev/operators';
+import { whenTruthy } from 'ish-core/utils/operators';
 
 type ApiTokenCookieType = 'user' | 'basket' | 'order' | 'anonymous';
 
@@ -17,6 +22,7 @@ interface ApiTokenCookie {
   apiToken: string;
   type: ApiTokenCookieType;
   options?: CookieOptions;
+  orderId?: string;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -24,23 +30,42 @@ export class ApiTokenService {
   apiToken$ = new ReplaySubject<ApiTokenCookie>(1);
   cookieVanishes$ = new Subject<ApiTokenCookieType>();
 
+  private initialCookie$: Observable<ApiTokenCookie>;
+
   constructor(
     @Inject(PLATFORM_ID) private platformId: string,
     private router: Router,
     private cookiesService: CookiesService,
     private store: Store
   ) {
-    this.apiToken$.next(isPlatformBrowser(platformId) ? this.parseCookie() : undefined);
+    this.initialCookie$ = of(isPlatformBrowser(platformId) ? this.parseCookie() : undefined);
+    this.initialCookie$.subscribe(token => {
+      this.apiToken$.next(token);
+    });
 
-    combineLatest([this.store.pipe(select(getLoggedInUser)), this.apiToken$.pipe(skip(1))])
+    combineLatest([
+      store.pipe(select(getLoggedInUser)),
+      store.pipe(select(getCurrentBasket)),
+      store.pipe(select(getSelectedOrderId)),
+      this.apiToken$.pipe(skip(1)),
+    ])
       .pipe(
-        map(([user, apiToken]): ApiTokenCookie => {
+        map(([user, basket, orderId, apiToken]): ApiTokenCookie => {
           if (user) {
             return { ...apiToken, type: 'user' };
           }
-          return apiToken;
+          if (basket) {
+            return { ...apiToken, type: 'basket' };
+          }
+          if (orderId) {
+            return { ...apiToken, type: 'user', orderId };
+          }
+          if (apiToken) {
+            return apiToken;
+          }
         }),
-        distinctUntilChanged()
+        distinctUntilChanged<ApiTokenCookie>(isEqual),
+        log('apiToken changed')
       )
       .subscribe(apiToken => {
         const cookieContent = apiToken?.apiToken ? JSON.stringify(apiToken) : undefined;
@@ -72,8 +97,47 @@ export class ApiTokenService {
     return false;
   }
 
-  restore$(types: ApiTokenCookieType[] = ['user', 'anonymous']): Observable<boolean> {
-    return this.waitUntilRouterEventFired$();
+  restore$(types: ApiTokenCookieType[] = ['user', 'basket', 'order', 'anonymous']): Observable<boolean> {
+    return this.waitUntilRouterEventFired$().pipe(
+      switchMap(() => this.initialCookie$),
+      switchMap(cookie => {
+        if (types.includes(cookie?.type)) {
+          switch (cookie?.type) {
+            case 'user': {
+              this.store.dispatch(loadUserByAPIToken());
+              return race(
+                this.store.pipe(select(getUserAuthorized), whenTruthy(), take(1)),
+                timer(5000).pipe(map(() => false))
+              );
+            }
+            case 'basket':
+              this.store.dispatch(loadBasketByAPIToken({ apiToken: cookie.apiToken }));
+              return race(
+                this.store.pipe(
+                  select(getCurrentBasketId),
+                  whenTruthy(),
+                  take(1),
+                  map(() => true)
+                ),
+                timer(5000).pipe(map(() => false))
+              );
+            case 'order': {
+              this.store.dispatch(loadOrderByAPIToken({ orderId: cookie.orderId, apiToken: cookie.apiToken }));
+              return race(
+                this.store.pipe(
+                  select(getOrder(cookie.orderId)),
+                  whenTruthy(),
+                  take(1),
+                  map(() => true)
+                ),
+                timer(5000).pipe(map(() => false))
+              );
+            }
+          }
+        }
+        return of(true);
+      })
+    );
   }
 
   waitUntilRouterEventFired$(): Observable<boolean> {

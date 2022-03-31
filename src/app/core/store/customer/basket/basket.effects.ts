@@ -233,6 +233,7 @@ export class BasketEffects {
   private anonymousBasket$ = createEffect(
     () =>
       combineLatest([this.store.pipe(select(getCurrentBasketId)), this.apiTokenService.apiToken$]).pipe(
+        map(([basketId, apiToken]) => [basketId, apiToken?.apiToken]),
         sample(this.actions$.pipe(ofType(loginUser, createUser, loadUserByAPIToken))),
         startWith([undefined, undefined])
       ),

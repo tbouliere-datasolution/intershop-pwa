@@ -39,7 +39,7 @@ interface ApiTokenCookie {
 
 @Injectable({ providedIn: 'root' })
 export class ApiTokenService {
-  apiToken$ = new ReplaySubject<string>(1);
+  apiToken$ = new ReplaySubject<ApiTokenCookie>(1);
   cookieVanishes$ = new Subject<ApiTokenCookieType>();
 
   private initialCookie$: Observable<ApiTokenCookie>;

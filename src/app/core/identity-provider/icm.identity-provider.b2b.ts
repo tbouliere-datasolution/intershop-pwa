@@ -2,7 +2,7 @@ import { HttpEvent, HttpHandler, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
-import { Observable, noop } from 'rxjs';
+import { Observable, noop, take } from 'rxjs';
 import { filter, map, switchMap } from 'rxjs/operators';
 
 import { ApiService } from 'ish-core/services/api/api.service';
@@ -36,7 +36,8 @@ export class ICMIdentityProvider implements IdentityProvider {
       .waitUntilRouterEventFired$()
       .pipe(
         filter(() => !this.apiTokenService.hasApiToken()),
-        switchMap(() => this.userService.fetchToken('anonymous'))
+        switchMap(() => this.userService.fetchToken('anonymous')),
+        take(1)
       )
       .subscribe(tokens =>
         this.apiTokenService.setApiToken(tokens.access_token, 'anonymous', {
@@ -61,7 +62,18 @@ export class ICMIdentityProvider implements IdentityProvider {
   }
 
   triggerLogout(): TriggerReturnType {
-    this.apiTokenService.removeApiToken();
+    this.apiTokenService
+      .waitUntilRouterEventFired$()
+      .pipe(
+        switchMap(() => this.userService.fetchToken('anonymous')),
+        take(1)
+      )
+      .subscribe(tokens =>
+        this.apiTokenService.setApiToken(tokens.access_token, 'anonymous', {
+          expires: new Date(Date.now() + tokens.expires_in * 1000),
+        })
+      );
+
     this.store.dispatch(logoutUser());
     return this.store.pipe(
       select(selectQueryParam('returnUrl')),
