@@ -6,7 +6,7 @@ import { Store, select } from '@ngrx/store';
 import { CookieOptions } from 'express';
 import { isEqual } from 'lodash-es';
 import { Observable, ReplaySubject, Subject, combineLatest, of, race, take, throwError, timer } from 'rxjs';
-import { catchError, concatMap, distinctUntilChanged, first, map, skip, switchMap } from 'rxjs/operators';
+import { catchError, concatMap, distinctUntilChanged, first, map, switchMap } from 'rxjs/operators';
 
 import { ApiService } from 'ish-core/services/api/api.service';
 import { getCurrentBasket, getCurrentBasketId, loadBasketByAPIToken } from 'ish-core/store/customer/basket';
@@ -47,7 +47,7 @@ export class ApiTokenService {
       store.pipe(select(getLoggedInUser)),
       store.pipe(select(getCurrentBasket)),
       store.pipe(select(getSelectedOrderId)),
-      this.apiToken$.pipe(skip(1)),
+      this.apiToken$,
     ])
       .pipe(
         map(([user, basket, orderId, apiToken]): ApiTokenCookie => {
@@ -58,7 +58,7 @@ export class ApiTokenService {
             return { ...apiToken, type: 'basket' };
           }
           if (orderId) {
-            return { ...apiToken, type: 'user', orderId };
+            return { ...apiToken, type: 'order', orderId };
           }
           if (apiToken) {
             return apiToken;
@@ -70,11 +70,13 @@ export class ApiTokenService {
       .subscribe(apiToken => {
         const cookieContent = apiToken?.apiToken ? JSON.stringify(apiToken) : undefined;
         if (cookieContent) {
-          cookiesService.put('apiToken', cookieContent, {
-            expires: new Date(Date.now() + 3600000),
-            secure: true,
-            sameSite: 'Strict',
-          });
+          if (cookieContent !== cookiesService.get('apiToken')) {
+            cookiesService.put('apiToken', cookieContent, {
+              expires: new Date(Date.now() + 3600000),
+              secure: true,
+              sameSite: 'Strict',
+            });
+          }
         } else {
           cookiesService.remove('apiToken');
         }
