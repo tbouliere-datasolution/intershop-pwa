@@ -1,19 +1,29 @@
 import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpRequest } from '@angular/common/http';
-import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { ApplicationRef, Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { CookieOptions } from 'express';
 import { isEqual } from 'lodash-es';
-import { Observable, ReplaySubject, Subject, combineLatest, of, race, take, throwError, timer } from 'rxjs';
-import { catchError, concatMap, distinctUntilChanged, first, map, switchMap } from 'rxjs/operators';
+import { Observable, ReplaySubject, Subject, combineLatest, interval, of, race, take, throwError, timer } from 'rxjs';
+import {
+  catchError,
+  concatMap,
+  distinctUntilChanged,
+  filter,
+  first,
+  map,
+  mergeMap,
+  pairwise,
+  switchMap,
+  withLatestFrom,
+} from 'rxjs/operators';
 
 import { ApiService } from 'ish-core/services/api/api.service';
-import { getCurrentBasket, getCurrentBasketId, loadBasketByAPIToken } from 'ish-core/store/customer/basket';
+import { getCurrentBasket, getCurrentBasketId, loadBasket, loadBasketByAPIToken } from 'ish-core/store/customer/basket';
 import { getOrder, getSelectedOrderId, loadOrderByAPIToken } from 'ish-core/store/customer/orders';
 import { getLoggedInUser, getUserAuthorized, loadUserByAPIToken } from 'ish-core/store/customer/user';
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
-import { log } from 'ish-core/utils/dev/operators';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 type ApiTokenCookieType = 'user' | 'basket' | 'order' | 'anonymous';
@@ -36,7 +46,8 @@ export class ApiTokenService {
     @Inject(PLATFORM_ID) private platformId: string,
     private router: Router,
     private cookiesService: CookiesService,
-    private store: Store
+    private store: Store,
+    appRef: ApplicationRef
   ) {
     this.initialCookie$ = of(isPlatformBrowser(platformId) ? this.parseCookie() : undefined);
     this.initialCookie$.subscribe(token => {
@@ -64,8 +75,7 @@ export class ApiTokenService {
             return apiToken;
           }
         }),
-        distinctUntilChanged<ApiTokenCookie>(isEqual),
-        log('apiToken changed')
+        distinctUntilChanged<ApiTokenCookie>(isEqual)
       )
       .subscribe(apiToken => {
         const cookieContent = apiToken?.apiToken ? JSON.stringify(apiToken) : undefined;
@@ -80,6 +90,44 @@ export class ApiTokenService {
         } else {
           cookiesService.remove('apiToken');
         }
+      });
+
+    // token vanishes routine
+    appRef.isStable
+      .pipe(
+        whenTruthy(),
+        first(),
+        mergeMap(() =>
+          interval(1000).pipe(
+            map(() => this.parseCookie()),
+            pairwise(),
+            // trigger only if application token exists but external token vanished
+            withLatestFrom(this.apiToken$),
+            filter(([[previous, current], apiToken]) => !!previous && !current && !!apiToken),
+            map(([[previous]]) => previous.type)
+          )
+        )
+      )
+      .subscribe(type => {
+        this.apiToken$.next(undefined);
+        this.cookieVanishes$.next(type);
+      });
+
+    // session keep alive
+    appRef.isStable
+      .pipe(
+        whenTruthy(),
+        first(),
+        mergeMap(() =>
+          store.pipe(
+            select(getCurrentBasket),
+            switchMap(basket => interval(10 * 60 * 1000).pipe(map(() => !!basket)))
+          )
+        ),
+        whenTruthy()
+      )
+      .subscribe(() => {
+        store.dispatch(loadBasket());
       });
   }
 

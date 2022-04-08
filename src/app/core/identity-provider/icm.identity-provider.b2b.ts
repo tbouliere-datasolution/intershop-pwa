@@ -32,22 +32,11 @@ export class ICMIdentityProvider implements IdentityProvider {
   }
 
   init() {
-    this.apiTokenService
-      .waitUntilRouterEventFired$()
-      .pipe(
-        filter(() => !this.apiTokenService.hasApiToken()),
-        switchMap(() => this.userService.fetchToken('anonymous')),
-        take(1)
-      )
-      .subscribe(tokens =>
-        this.apiTokenService.setApiToken(tokens.access_token, 'anonymous', {
-          expires: new Date(Date.now() + tokens.expires_in * 1000),
-        })
-      );
-
+    this.fetchAnonymousUserToken();
     this.apiTokenService.restore$().subscribe(noop);
 
     this.apiTokenService.cookieVanishes$.subscribe(type => {
+      this.fetchAnonymousUserToken();
       this.store.dispatch(logoutUser());
       if (type === 'user') {
         this.router.navigate(['/login'], {
@@ -62,18 +51,7 @@ export class ICMIdentityProvider implements IdentityProvider {
   }
 
   triggerLogout(): TriggerReturnType {
-    this.apiTokenService
-      .waitUntilRouterEventFired$()
-      .pipe(
-        switchMap(() => this.userService.fetchToken('anonymous')),
-        take(1)
-      )
-      .subscribe(tokens =>
-        this.apiTokenService.setApiToken(tokens.access_token, 'anonymous', {
-          expires: new Date(Date.now() + tokens.expires_in * 1000),
-        })
-      );
-
+    this.fetchAnonymousUserToken();
     this.store.dispatch(logoutUser());
     return this.store.pipe(
       select(selectQueryParam('returnUrl')),
@@ -94,5 +72,20 @@ export class ICMIdentityProvider implements IdentityProvider {
 
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return this.apiTokenService.intercept(req, next);
+  }
+
+  private fetchAnonymousUserToken() {
+    this.apiTokenService
+      .waitUntilRouterEventFired$()
+      .pipe(
+        filter(() => !this.apiTokenService.hasApiToken()),
+        switchMap(() => this.userService.fetchToken('anonymous')),
+        take(1)
+      )
+      .subscribe(tokens =>
+        this.apiTokenService.setApiToken(tokens.access_token, 'anonymous', {
+          expires: new Date(Date.now() + tokens.expires_in * 1000),
+        })
+      );
   }
 }
