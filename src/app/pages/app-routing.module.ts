@@ -31,6 +31,16 @@ const routes: Routes = [
     },
   },
   {
+    path: 'maintenance',
+    loadChildren: () => import('./maintenance/maintenance-page.module').then(m => m.MaintenancePageModule),
+    data: {
+      meta: {
+        title: 'seo.title.maintenance',
+        robots: 'noindex, nofollow',
+      },
+    },
+  },
+  {
     path: 'account',
     loadChildren: () => import('./account/account-page.module').then(m => m.AccountPageModule),
     canActivate: [AuthGuard],
@@ -118,6 +128,10 @@ const routes: Routes = [
     },
   },
   { path: 'cookies', loadChildren: () => import('./cookies/cookies-page.module').then(m => m.CookiesPageModule) },
+  {
+    path: 'maintenance',
+    loadChildren: () => import('./maintenance/maintenance-page.module').then(m => m.MaintenancePageModule),
+  },
 ];
 
 @NgModule({
