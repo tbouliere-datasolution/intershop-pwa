@@ -5,7 +5,6 @@ import { filter } from 'rxjs/operators';
 import { Category } from 'ish-core/models/category/category.model';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { ProductHelper } from 'ish-core/models/product/product.model';
-import { generateLocalizedCategorySlug } from 'ish-core/routing/category/category.route';
 import { CoreState } from 'ish-core/store/core/core-store';
 import { selectRouteParam } from 'ish-core/store/core/router';
 import { reservedCharactersRegEx } from 'ish-core/utils/routing';
@@ -34,6 +33,31 @@ const productRouteFormat = new RegExp('/(?!cat)((?!.*-cat.*-sku).*-)?sku(.*?)(-c
 
 export function matchProductRoute(segments: UrlSegment[]): UrlMatchResult {
   // compatibility to old routes
+  const oldMatch = matchOldProductRoute(segments);
+
+  if (oldMatch) return oldMatch;
+
+  const catIdx = segments.findIndex(s => s.path === 'c');
+  const prodIdx = segments.findIndex(s => s.path === 'p');
+
+  if (catIdx !== -1 && prodIdx !== -1 && catIdx < prodIdx) {
+    const categoryUniqueId = segments
+      .filter((s, idx) => !!s && catIdx < idx && idx < prodIdx)
+      .map(s => s.path)
+      .join('.');
+    const sku = segments[prodIdx + 1].path;
+    return {
+      consumed: [],
+      posParams: {
+        categoryUniqueId: new UrlSegment(categoryUniqueId, {}),
+        sku: new UrlSegment(sku, {}),
+      },
+    };
+  }
+  return;
+}
+
+function matchOldProductRoute(segments: UrlSegment[]): UrlMatchResult {
   const isSimpleProduct = segments && segments.length > 0 && segments[0].path === 'product';
   const isContextProduct = segments?.length > 2 && segments[0].path === 'category' && segments[2].path === 'product';
   if (isSimpleProduct || isContextProduct) {
@@ -55,7 +79,6 @@ export function matchProductRoute(segments: UrlSegment[]): UrlMatchResult {
       posParams,
     };
   }
-  return;
 }
 
 export function generateProductUrl(product: ProductView, category?: Category): string {
@@ -63,25 +86,9 @@ export function generateProductUrl(product: ProductView, category?: Category): s
     return '/';
   }
 
-  let route = '/';
-
   const contextCategory = category || product?.defaultCategory;
-  if (contextCategory) {
-    route += generateLocalizedCategorySlug(contextCategory);
-    route += '/';
-  }
 
-  if (product?.name) {
-    route += `${generateProductSlug(product)}-`;
-  }
-
-  route += `sku${product.sku}`;
-
-  if (contextCategory) {
-    route += `-cat${contextCategory.uniqueId}`;
-  }
-
-  return route;
+  return `/c/${contextCategory.uniqueId.replace(/\./g, '/')}/p/${product.sku}`;
 }
 
 export function ofProductUrl(): MonoTypeOperatorFunction<{}> {

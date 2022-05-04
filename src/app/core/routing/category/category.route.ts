@@ -37,6 +37,21 @@ export function matchCategoryRoute(segments: UrlSegment[]): UrlMatchResult {
       posParams,
     };
   }
+  const catIdx = segments.findIndex(s => s.path === 'c');
+  const prodIdx = segments.findIndex(s => s.path === 'p');
+
+  if (catIdx !== -1) {
+    const categoryUniqueId = segments
+      .filter((s, idx) => (prodIdx !== -1 ? !!s && catIdx < idx && idx < prodIdx : idx > catIdx))
+      .map(s => s.path)
+      .join('.');
+    return {
+      consumed: [],
+      posParams: {
+        categoryUniqueId: new UrlSegment(categoryUniqueId, {}),
+      },
+    };
+  }
   return;
 }
 
@@ -44,17 +59,8 @@ export function generateCategoryUrl(category: Category): string {
   if (!category) {
     return '/';
   }
-  let route = '/';
 
-  route += generateLocalizedCategorySlug(category);
-
-  if (route !== '/') {
-    route += '-';
-  }
-
-  route += `cat${category.uniqueId}`;
-
-  return route;
+  return `/c/${category.uniqueId.replace(/\./g, '/')}`;
 }
 
 export function ofCategoryUrl(): MonoTypeOperatorFunction<{}> {
