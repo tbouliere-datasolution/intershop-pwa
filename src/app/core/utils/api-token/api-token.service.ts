@@ -1,8 +1,9 @@
 import { isPlatformBrowser, isPlatformServer } from '@angular/common';
-import { HttpErrorResponse, HttpEvent, HttpHandler, HttpRequest, HttpResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpEvent, HttpHandler, HttpRequest } from '@angular/common/http';
 import { ApplicationRef, Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
+import { CookieOptions } from 'express';
 import { isEqual } from 'lodash-es';
 import { Observable, ReplaySubject, Subject, combineLatest, interval, of, race, throwError, timer } from 'rxjs';
 import {
@@ -17,30 +18,35 @@ import {
   skip,
   switchMap,
   take,
-  tap,
   withLatestFrom,
 } from 'rxjs/operators';
 
 import { ApiService } from 'ish-core/services/api/api.service';
 import { getCurrentBasket, getCurrentBasketId, loadBasket, loadBasketByAPIToken } from 'ish-core/store/customer/basket';
 import { getOrder, getSelectedOrderId, loadOrderByAPIToken } from 'ish-core/store/customer/orders';
-import { getLoggedInUser, getUserAuthorized, loadUserByAPIToken } from 'ish-core/store/customer/user';
+import {
+  fetchAnonymousUserToken,
+  getLoggedInUser,
+  getUserAuthorized,
+  loadUserByAPIToken,
+} from 'ish-core/store/customer/user';
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
-import { mapToProperty, whenTruthy } from 'ish-core/utils/operators';
+import { whenTruthy } from 'ish-core/utils/operators';
 
-export type ApiTokenCookieType = 'user' | 'order';
+type ApiTokenCookieType = 'user' | 'order' | 'anonymous';
 
 interface ApiTokenCookie {
   apiToken: string;
   type: ApiTokenCookieType;
   isAnonymous?: boolean;
+  options?: CookieOptions;
   orderId?: string;
   creator?: string;
 }
 
 @Injectable({ providedIn: 'root' })
 export class ApiTokenService {
-  apiToken$ = new ReplaySubject<string>(1);
+  apiToken$ = new ReplaySubject<ApiTokenCookie>(1);
   cookieVanishes$ = new Subject<ApiTokenCookieType>();
 
   private initialCookie$: Observable<ApiTokenCookie>;
@@ -52,9 +58,8 @@ export class ApiTokenService {
     private store: Store,
     appRef: ApplicationRef
   ) {
-    const initialCookie = this.parseCookie();
-    this.initialCookie$ = of(isPlatformBrowser(platformId) ? initialCookie : undefined);
-    this.initialCookie$.pipe(mapToProperty('apiToken')).subscribe(token => {
+    this.initialCookie$ = of(isPlatformBrowser(platformId) ? this.parseCookie() : undefined);
+    this.initialCookie$.subscribe(token => {
       this.apiToken$.next(token);
     });
 
@@ -69,19 +74,13 @@ export class ApiTokenService {
         .pipe(
           map(([user, basket, orderId, apiToken]): ApiTokenCookie => {
             if (user) {
-              return { apiToken, type: 'user', isAnonymous: false, creator: 'pwa' };
+              return { ...apiToken, type: 'user', isAnonymous: false, creator: 'pwa' };
             } else if (basket) {
-              return { apiToken, type: 'user', isAnonymous: true, creator: 'pwa' };
+              return { ...apiToken, type: 'user', isAnonymous: true, creator: 'pwa' };
             } else if (orderId) {
-              return { apiToken, type: 'order', orderId, creator: 'pwa' };
-            } else {
-              const apiTokenCookieString = this.cookiesService.get('apiToken');
-              const apiTokenCookie: ApiTokenCookie = apiTokenCookieString
-                ? JSON.parse(apiTokenCookieString)
-                : undefined;
-              if (apiToken && apiTokenCookie) {
-                return { ...apiTokenCookie, apiToken };
-              }
+              return { ...apiToken, type: 'order', orderId, creator: 'pwa' };
+            } else if (apiToken) {
+              return { ...apiToken, creator: 'pwa' };
             }
           }),
           distinctUntilChanged<ApiTokenCookie>(isEqual)
@@ -90,12 +89,12 @@ export class ApiTokenService {
           const cookieContent = apiToken?.apiToken ? JSON.stringify(apiToken) : undefined;
           if (cookieContent) {
             cookiesService.put('apiToken', cookieContent, {
-              expires: new Date(Date.now() + 3600000),
-              secure: true,
+              expires: apiToken.options.expires ?? new Date(Date.now() + 3600000),
+              secure: apiToken.options.secure ?? true,
               sameSite: 'Strict',
             });
           } else {
-            cookiesService.remove('apiToken');
+            this.removeApiToken();
           }
         });
 
@@ -152,6 +151,9 @@ export class ApiTokenService {
       first(),
       switchMap(() => this.initialCookie$),
       switchMap(cookie => {
+        if (!cookie) {
+          this.store.dispatch(fetchAnonymousUserToken());
+        }
         if (types.includes(cookie?.type)) {
           switch (cookie?.type) {
             case 'user': {
@@ -205,14 +207,24 @@ export class ApiTokenService {
     return;
   }
 
-  private setApiToken(apiToken: string) {
+  setApiToken(apiToken: string, type: ApiTokenCookieType, opt: CookieOptions = {}) {
+    const options = {
+      ...opt,
+      expires: opt.expires ?? new Date(Date.now() + 3600000),
+      secure: opt.secure ?? true,
+      sameSite: opt.sameSite ?? 'strict',
+    };
     if (!apiToken) {
       console.warn('do not use setApiToken to unset token, use remove or invalidate instead');
     }
-    this.apiToken$.next(apiToken);
+    this.apiToken$.next({ apiToken, type, options });
   }
 
+  /**
+   * Should remove the actual apiToken cookie and fetch a new anonymous user token
+   */
   removeApiToken() {
+    this.cookiesService.remove('apiToken');
     this.apiToken$.next(undefined);
   }
 
@@ -232,24 +244,11 @@ export class ApiTokenService {
     );
   }
 
-  private setTokenFromResponse(event: HttpEvent<unknown>) {
-    if (event instanceof HttpResponse) {
-      const apiToken = event.headers.get(ApiService.TOKEN_HEADER_KEY);
-      if (apiToken) {
-        if (apiToken.startsWith('AuthenticationTokenOutdated') || apiToken.startsWith('AuthenticationTokenInvalid')) {
-          this.invalidateApiToken();
-        } else if (!event.url.endsWith('/configurations') && !event.url.endsWith('/contact')) {
-          this.setApiToken(apiToken);
-        }
-      }
-    }
-  }
-
   private appendAuthentication(req: HttpRequest<unknown>): Observable<HttpRequest<unknown>> {
     return this.apiToken$.pipe(
       map(apiToken =>
-        apiToken && !req.headers?.has(ApiService.AUTHORIZATION_HEADER_KEY)
-          ? req.clone({ headers: req.headers.set(ApiService.TOKEN_HEADER_KEY, apiToken) })
+        apiToken && !req.headers?.has(ApiService.TOKEN_HEADER_KEY)
+          ? req.clone({ headers: req.headers.set(ApiService.TOKEN_HEADER_KEY, apiToken?.apiToken) })
           : req
       ),
       first()
@@ -270,8 +269,7 @@ export class ApiTokenService {
               return timer(500).pipe(switchMap(() => next.handle(retryRequest)));
             }
             return throwError(() => err);
-          }),
-          tap(event => this.setTokenFromResponse(event))
+          })
         )
       )
     );

@@ -11,6 +11,7 @@ import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 import { Credentials } from 'ish-core/models/credentials/credentials.model';
 import { Customer, CustomerRegistrationType, CustomerUserType } from 'ish-core/models/customer/customer.model';
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
+import { Token } from 'ish-core/models/token/token.model';
 import { User } from 'ish-core/models/user/user.model';
 import { PaymentService } from 'ish-core/services/payment/payment.service';
 import { UserService } from 'ish-core/services/user/user.service';
@@ -79,12 +80,22 @@ describe('User Effects', () => {
     isBusinessCustomer: true,
   } as Customer;
 
+  const token = {
+    accessToken: 'DEMO@access-token',
+    type: 'user',
+    expiresIn: 3600,
+    refreshToken: 'DEMO@refresh-token',
+    refreshExpiresIn: 3500,
+    idToken: 'DEMO@id-token',
+  } as Token;
+
   beforeEach(() => {
     userServiceMock = mock(UserService);
     paymentServiceMock = mock(PaymentService);
     apiTokenServiceMock = mock(ApiTokenService);
 
-    when(userServiceMock.signInUser(anything())).thenReturn(of(loginResponseData));
+    when(userServiceMock.fetchCustomer()).thenReturn(of(loginResponseData));
+    when(userServiceMock.fetchToken(anyString(), anything())).thenReturn(of(token));
     when(userServiceMock.signInUserByToken(anything())).thenReturn(of(loginResponseData));
     when(userServiceMock.createUser(anything())).thenReturn(of(undefined));
     when(userServiceMock.updateUser(anything(), anything())).thenReturn(of({ firstName: 'Patricia' } as User));
@@ -125,7 +136,7 @@ describe('User Effects', () => {
       actions$ = of(action);
 
       effects.loginUser$.subscribe(() => {
-        verify(userServiceMock.signInUser(anything())).once();
+        verify(userServiceMock.fetchToken(anyString(), anything())).once();
         done();
       });
     });
@@ -141,7 +152,7 @@ describe('User Effects', () => {
       });
     });
 
-    it('should dispatch a loadPGID action on successful login', () => {
+    it('should dispatch a fetchCustomer action on successful login', () => {
       const action = loginUser({ credentials: { login: 'dummy', password: 'dummy' } });
       const completion = loginUserSuccess(loginResponseData);
 
@@ -154,7 +165,7 @@ describe('User Effects', () => {
     it('should dispatch a LoginUserFail action on failed login', () => {
       const error = makeHttpError({ status: 401, code: 'error' });
 
-      when(userServiceMock.signInUser(anything())).thenReturn(throwError(() => error));
+      when(userServiceMock.fetchCustomer()).thenReturn(throwError(() => error));
 
       const action = loginUser({ credentials: { login: 'dummy', password: 'dummy' } });
       const completion = loginUserFail({ error });

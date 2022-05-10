@@ -5,7 +5,18 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
 import { from } from 'rxjs';
-import { concatMap, delay, exhaustMap, filter, map, mergeMap, sample, takeWhile, withLatestFrom } from 'rxjs/operators';
+import {
+  concatMap,
+  delay,
+  exhaustMap,
+  filter,
+  map,
+  mergeMap,
+  sample,
+  switchMap,
+  takeWhile,
+  withLatestFrom,
+} from 'rxjs/operators';
 
 import { CustomerRegistrationType } from 'ish-core/models/customer/customer.model';
 import { PaymentService } from 'ish-core/services/payment/payment.service';
@@ -52,6 +63,7 @@ import {
   updateUserPasswordSuccess,
   updateUserSuccess,
   userErrorReset,
+  fetchAnonymousUserToken,
 } from './user.actions';
 import { getLoggedInCustomer, getLoggedInUser, getUserError } from './user.selectors';
 
@@ -72,9 +84,23 @@ export class UserEffects {
       ofType(loginUser),
       mapToPayloadProperty('credentials'),
       exhaustMap(credentials =>
-        this.userService.signInUser(credentials).pipe(map(loginUserSuccess), mapErrorToAction(loginUserFail))
+        this.userService.fetchToken('password', { username: credentials.login, password: credentials.password }).pipe(
+          switchMap(() =>
+            this.userService.fetchCustomer().pipe(map(loginUserSuccess), mapErrorToAction(loginUserFail))
+          ),
+          mapErrorToAction(loginUserFail)
+        )
       )
     )
+  );
+
+  fetchToken$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(fetchAnonymousUserToken),
+        switchMap(() => this.userService.fetchToken('anonymous'))
+      ),
+    { dispatch: false }
   );
 
   loginUserWithToken$ = createEffect(() =>

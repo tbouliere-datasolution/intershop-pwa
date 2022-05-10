@@ -59,6 +59,7 @@ export interface AvailableOptions {
    * to get and cache personalized content of the product and category API (1.x).
    */
   sendSPGID?: boolean;
+  sendApplication?: boolean;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -131,23 +132,11 @@ export class ApiService {
     }
     return combineLatest([
       // base url
-      this.store.pipe(select(getRestEndpoint)),
+      this.getBaseUrl$(options),
       // locale
-      options?.sendLocale === undefined || options.sendLocale
-        ? this.store.pipe(
-            select(getCurrentLocale),
-            whenTruthy(),
-            map(l => `;loc=${l}`)
-          )
-        : of(''),
+      this.getLocale$(options),
       // currency
-      options?.sendCurrency === undefined || options.sendCurrency
-        ? this.store.pipe(
-            select(getCurrentCurrency),
-            whenTruthy(),
-            map(l => `;cur=${l}`)
-          )
-        : of(''),
+      this.getCurrency$(options),
       // first path segment
       of('/'),
       of(path.includes('/') ? path.split('/')[0] : path),
@@ -162,6 +151,36 @@ export class ApiService {
       first(),
       map(arr => arr.join(''))
     );
+  }
+
+  private getBaseUrl$(options: AvailableOptions): Observable<string> {
+    return options?.sendApplication === undefined || options.sendApplication
+      ? this.store.pipe(select(getRestEndpoint))
+      : this.store.pipe(
+          select(getRestEndpoint),
+          whenTruthy(),
+          map(endpoint => /(.*)\//.exec(endpoint)[1]) // application identifier is last element in rest endpoint
+        );
+  }
+
+  private getLocale$(options: AvailableOptions): Observable<string> {
+    return options?.sendLocale === undefined || options.sendLocale
+      ? this.store.pipe(
+          select(getCurrentLocale),
+          whenTruthy(),
+          map(l => `;loc=${l}`)
+        )
+      : of('');
+  }
+
+  private getCurrency$(options: AvailableOptions): Observable<string> {
+    return options?.sendCurrency === undefined || options.sendCurrency
+      ? this.store.pipe(
+          select(getCurrentCurrency),
+          whenTruthy(),
+          map(l => `;cur=${l}`)
+        )
+      : of('');
   }
 
   private constructHttpClientParams(

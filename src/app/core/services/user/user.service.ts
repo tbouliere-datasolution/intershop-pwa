@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { pick } from 'lodash-es';
 import { Observable, combineLatest, forkJoin, of, throwError } from 'rxjs';
-import { concatMap, first, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
+import { concatMap, first, map, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { Address } from 'ish-core/models/address/address.model';
@@ -19,12 +19,16 @@ import {
 } from 'ish-core/models/customer/customer.model';
 import { PasswordReminderUpdate } from 'ish-core/models/password-reminder-update/password-reminder-update.model';
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
+import { FetchTokenOptions, GrantType, TokenData } from 'ish-core/models/token/token.interface';
+import { TokenMapper } from 'ish-core/models/token/token.mapper';
+import { Token } from 'ish-core/models/token/token.model';
 import { UserCostCenter } from 'ish-core/models/user-cost-center/user-cost-center.model';
 import { UserMapper } from 'ish-core/models/user/user.mapper';
 import { User } from 'ish-core/models/user/user.model';
 import { ApiService, AvailableOptions, unpackEnvelope } from 'ish-core/services/api/api.service';
 import { getUserPermissions } from 'ish-core/store/customer/authorization';
 import { getLoggedInCustomer, getLoggedInUser } from 'ish-core/store/customer/user';
+import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { whenTruthy } from 'ish-core/utils/operators';
 
 /**
@@ -49,24 +53,13 @@ interface CreateBusinessCustomerType extends Customer {
  */
 @Injectable({ providedIn: 'root' })
 export class UserService {
-  constructor(private apiService: ApiService, private appFacade: AppFacade, private store: Store) {}
+  constructor(
+    private apiService: ApiService,
+    private apiTokenService: ApiTokenService,
+    private appFacade: AppFacade,
+    private store: Store
+  ) {}
 
-  /**
-   * Sign in an existing user with the given login credentials (login, password).
-   *
-   * @param loginCredentials  The users login credentials {login: 'foo', password. 'bar'}.
-   * @returns                 The logged in customer data.
-   *                          For private customers user data are also returned.
-   *                          For business customers user data are returned by a separate call (getCompanyUserData).
-   */
-  signInUser(loginCredentials: Credentials): Observable<CustomerLoginType> {
-    const headers = new HttpHeaders().set(
-      ApiService.AUTHORIZATION_HEADER_KEY,
-      `BASIC ${window.btoa(`${loginCredentials.login}:${loginCredentials.password}`)}`
-    );
-
-    return this.fetchCustomer({ headers });
-  }
   /**
    * Sign in an existing user with the given token or if no token is given, using token stored in cookie.
    *
@@ -85,19 +78,54 @@ export class UserService {
     }
   }
 
-  private fetchCustomer(options?: AvailableOptions): Observable<CustomerLoginType> {
+  fetchCustomer(options: AvailableOptions = {}): Observable<CustomerUserType> {
     return this.apiService.get<CustomerData>('customers/-', options).pipe(
       withLatestFrom(this.appFacade.isAppTypeREST$),
       concatMap(([data, isAppTypeRest]) =>
         forkJoin([
           isAppTypeRest && data.customerType === 'PRIVATE'
-            ? this.apiService.get<CustomerData>('privatecustomers/-')
+            ? this.apiService.get<CustomerData>('privatecustomers/-', options)
             : of(data),
-          this.apiService.get<{ pgid: string }>('personalization').pipe(map(data => data.pgid)),
+          this.apiService.get<{ pgid: string }>('personalization', options).pipe(map(data => data.pgid)),
         ])
       ),
       map(([data, pgid]) => ({ ...CustomerMapper.mapLoginData(data), pgid }))
     );
+  }
+
+  fetchToken<T extends 'anonymous'>(grantType: T): Observable<Token>;
+  fetchToken<T extends GrantType, R extends FetchTokenOptions<T>>(grantType: T, options: R): Observable<Token>;
+  fetchToken<T extends GrantType, R extends FetchTokenOptions<T>>(grantType: T, options?: R): Observable<Token> {
+    const body = new URLSearchParams();
+    body.set('grant_type', grantType);
+
+    (Object.entries(options ?? {}) as [string, R[keyof R]][]).map(([key, value]) => {
+      body.set(key, `${value}`);
+    });
+
+    return this.apiService
+      .post<TokenData>('-/token', body, {
+        headers: new HttpHeaders({ 'content-type': 'application/x-www-form-urlencoded' }),
+        sendCurrency: false,
+        sendLocale: false,
+        sendApplication: false,
+      })
+      .pipe(
+        map(TokenMapper.fromData),
+        tap(token =>
+          this.apiTokenService.setApiToken(
+            token.accessToken,
+            grantType === 'anonymous'
+              ? 'anonymous'
+              : grantType === 'client_credentials' || grantType === 'password'
+              ? 'user'
+              : undefined,
+            {
+              expires: new Date(Date.now() + token.expiresIn * 1000),
+            }
+          )
+        )
+      );
   }
 
   /**
@@ -163,7 +191,14 @@ export class UserService {
           .post<void>(AppFacade.getCustomerRestResource(body.customer.isBusinessCustomer, isAppTypeRest), newCustomer, {
             captcha: pick(body, ['captcha', 'captchaAction']),
           })
-          .pipe(concatMap(() => this.fetchCustomer()))
+          .pipe(
+            concatMap(() =>
+              this.fetchToken('password', {
+                username: body.credentials.login,
+                password: body.credentials.password,
+              }).pipe(switchMap(() => this.fetchCustomer()))
+            )
+          )
       )
     );
   }

@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { EMPTY, of } from 'rxjs';
-import { anyNumber, anything, instance, mock, when } from 'ts-mockito';
+import { anyNumber, anyString, anything, instance, mock, when } from 'ts-mockito';
 
 import { Basket } from 'ish-core/models/basket/basket.model';
 import { Credentials } from 'ish-core/models/credentials/credentials.model';
@@ -10,6 +10,7 @@ import { Customer } from 'ish-core/models/customer/customer.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { Product, ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { Promotion } from 'ish-core/models/promotion/promotion.model';
+import { Token } from 'ish-core/models/token/token.model';
 import { User } from 'ish-core/models/user/user.model';
 import { AddressService } from 'ish-core/services/address/address.service';
 import { AuthorizationService } from 'ish-core/services/authorization/authorization.service';
@@ -89,8 +90,6 @@ describe('Customer Store', () => {
     birthday: 'test',
   } as User;
 
-  const pgid = 'spgid';
-
   const promotion = {
     id: 'PROMO_UUID',
     name: 'MyPromotion',
@@ -104,6 +103,15 @@ describe('Customer Store', () => {
     title: 'MyPromotionTitle',
     useExternalUrl: false,
   } as Promotion;
+
+  const token = {
+    accessToken: 'DEMO@access-token',
+    type: 'user',
+    expiresIn: 3600,
+    refreshToken: 'DEMO@refresh-token',
+    refreshExpiresIn: 3500,
+    idToken: 'DEMO@id-token',
+  } as Token;
 
   beforeEach(() => {
     const categoriesServiceMock = mock(CategoriesService);
@@ -138,7 +146,8 @@ describe('Customer Store', () => {
     when(promotionsServiceMock.getPromotion(anything())).thenReturn(of(promotion));
 
     const userServiceMock = mock(UserService);
-    when(userServiceMock.signInUser(anything())).thenReturn(of({ customer, user, pgid }));
+    when(userServiceMock.fetchToken(anyString(), anything())).thenReturn(of(token));
+    when(userServiceMock.fetchCustomer()).thenReturn(of({ customer, user }));
 
     const filterServiceMock = mock(FilterService);
     const orderServiceMock = mock(OrderService);
@@ -216,7 +225,6 @@ describe('Customer Store', () => {
           [User API] Login User Success:
             customer: {"isBusinessCustomer":false,"customerNo":"test"}
             user: {"title":"","firstName":"test","lastName":"test","phoneHome"...
-            pgid: "spgid"
           [Basket API] Merge two baskets in progress
           [Basket API] Merge two baskets Success:
             basket: {"id":"test","lineItems":[1]}
