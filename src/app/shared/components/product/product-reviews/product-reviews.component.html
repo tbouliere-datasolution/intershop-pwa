@@ -1,4 +1,11 @@
-<h3>{{ 'product.reviews.section.heading' | translate | uppercase }}</h3>
+<h3>{{ 'product.reviews.rating_request' | translate | uppercase }}</h3>
+{{ 'product.reviews.your_opinion.text' | translate }}
+
+<a [routerLink]="" (click)="openModal(modal)">
+  <span>{{ 'product.reviews.rating_request' | translate }}</span>
+</a>
+
+<h3>{{ 'product.reviews.recent_reviews.text' | translate | uppercase }}</h3>
 
 <div *ngIf="(productReviews$ | async)?.length > 0; else noReviews">
   <div *ngFor="let review of productReviews$ | async">
@@ -22,3 +29,8 @@
 <ng-template #noReviews>
   {{ 'product.reviews.no_reviews_yet.text' | translate }}
 </ng-template>
+
+<ish-create-review-modal #modal></ish-create-review-modal>
+
+<!-- TODO: Implement reviews pagination -->
+<!-- <a>{{ 'product.reviews.show_all_reviews.text' | translate }}</a> -->

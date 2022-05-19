@@ -894,6 +894,7 @@
   "product.reviews.heading": "Reviews",
   "product.reviews.no_reviews_yet.text": "No reviews have been submitted yet.",
   "product.reviews.section.heading": "Recent Product Reviews",
+  "product.reviews.recent_reviews.text": "Recent Product Reviews",
   "product.short_description.label": "Short Description",
   "product.specific_attributes.label": "Specific Attributes",
   "product.variations.text": "Variations",
@@ -1082,5 +1083,8 @@
   "tacton.submit.error.message": "A technical error occurred while processing your request. Please try again later.",
   "tacton.submit.success.message": "Your request has been successfully submitted. We will e-mail <strong>{{0}}</strong> to keep you updated on the status of your request.",
   "tacton.undo.tooltip": "Undo",
-  "textarea.max_limit": "Your message: {{0}} characters remaining."
+  "textarea.max_limit": "Your message: {{0}} characters remaining.",
+  "product.reviews.rating_request": "Rate this product",
+  "product.reviews.your_opinion.text": "We'd like your opinion.",
+  "product.reviews.show_all_reviews.text": "Show all reviews"
 }

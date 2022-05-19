@@ -894,6 +894,7 @@
   "product.reviews.heading": "Notations",
   "product.reviews.no_reviews_yet.text": "Aucune critique n'a encore été soumise.",
   "product.reviews.section.heading": "Derniers avis sur les produits",
+  "product.reviews.recent_reviews.text": "Critiques récentes de produits",
   "product.short_description.label": "Description courte",
   "product.specific_attributes.label": "Attributs spécifiques",
   "product.variations.text": "Variations",
@@ -1082,5 +1083,8 @@
   "tacton.submit.error.message": "Une erreur technique s’est produite lors du traitement de votre demande. Veuillez réessayer plus tard.",
   "tacton.submit.success.message": "Votre demande de devis a été soumise avec succès. Nous vous enverrons un courriel à <strong>{{0}}</strong> pour vous tenir au courant du statut de votre demande.",
   "tacton.undo.tooltip": "Annuler",
-  "textarea.max_limit": "Votre message : {{0}} caractères restants."
+  "textarea.max_limit": "Votre message : {{0}} caractères restants.",
+  "product.reviews.rating_request": "Évaluez ce produit",
+  "product.reviews.your_opinion.text": "Nous aimerions connaître votre opinion.",
+  "product.reviews.show_all_reviews.text": "Afficher tous les commentaires,"
 }
