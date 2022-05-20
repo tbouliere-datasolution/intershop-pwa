@@ -17,6 +17,7 @@ export class CategoryImageComponent implements OnChanges {
   @Input() category: Category;
 
   categoryImageUrl = '/assets/img/not_available.png';
+  categoryImageName = '';
 
   /**
    * deferred loading flag
@@ -25,6 +26,7 @@ export class CategoryImageComponent implements OnChanges {
 
   ngOnChanges() {
     this.setCategoryImageUrl();
+    this.setCategoryImageName();
   }
 
   /**
@@ -35,5 +37,9 @@ export class CategoryImageComponent implements OnChanges {
     if (this.category.images?.[0]?.effectiveUrl?.length > 0) {
       this.categoryImageUrl = `${this.category.images[0].effectiveUrl}`;
     }
+  }
+
+  setCategoryImageName() {
+    this.categoryImageName = `${this.category.images[0]?.name}`;
   }
 }
