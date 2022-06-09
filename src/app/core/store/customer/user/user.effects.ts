@@ -64,6 +64,7 @@ import {
   updateUserSuccess,
   userErrorReset,
   fetchAnonymousUserToken,
+  refreshUserToken,
 } from './user.actions';
 import { getLoggedInCustomer, getLoggedInUser, getUserError } from './user.selectors';
 
@@ -94,11 +95,21 @@ export class UserEffects {
     )
   );
 
-  fetchToken$ = createEffect(
+  fetchAnonymousUserToken$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(fetchAnonymousUserToken),
         switchMap(() => this.userService.fetchToken('anonymous'))
+      ),
+    { dispatch: false }
+  );
+
+  refreshUserToken$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(refreshUserToken),
+        mapToPayloadProperty('refreshToken'),
+        switchMap(refreshToken => this.userService.fetchToken('refresh_token', { refresh_token: refreshToken }))
       ),
     { dispatch: false }
   );

@@ -29,6 +29,7 @@ import {
   getLoggedInUser,
   getUserAuthorized,
   loadUserByAPIToken,
+  refreshUserToken,
 } from 'ish-core/store/customer/user';
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 import { whenTruthy } from 'ish-core/utils/operators';
@@ -44,9 +45,17 @@ interface ApiTokenCookie {
   creator?: string;
 }
 
+interface RefreshTokenCookie {
+  refreshToken: string;
+  options?: CookieOptions;
+}
+
 @Injectable({ providedIn: 'root' })
 export class ApiTokenService {
+  private static readonly REFRESH_OFFSET = 60000;
+
   apiToken$ = new ReplaySubject<ApiTokenCookie>(1);
+  refreshToken$ = new ReplaySubject<RefreshTokenCookie>(1);
   cookieVanishes$ = new Subject<ApiTokenCookieType>();
 
   private initialCookie$: Observable<ApiTokenCookie>;
@@ -58,10 +67,14 @@ export class ApiTokenService {
     private store: Store,
     appRef: ApplicationRef
   ) {
-    this.initialCookie$ = of(isPlatformBrowser(platformId) ? this.parseCookie() : undefined);
+    this.initialCookie$ = of(isPlatformBrowser(platformId) ? this.parseApiTokenCookie() : undefined);
     this.initialCookie$.subscribe(token => {
       this.apiToken$.next(token);
     });
+
+    of(isPlatformBrowser(platformId) ? this.parseRefreshTokenCookie() : undefined).subscribe(token =>
+      this.refreshToken$.next(token)
+    );
 
     if (isPlatformBrowser(platformId)) {
       // save token routine
@@ -98,14 +111,25 @@ export class ApiTokenService {
           }
         });
 
-      // token vanishes routine
+      this.refreshToken$.pipe(skip(1), distinctUntilChanged<RefreshTokenCookie>(isEqual)).subscribe(token => {
+        const cookieContent = token ? JSON.stringify(token) : undefined;
+        if (cookieContent) {
+          cookiesService.put('refreshToken', cookieContent, {
+            expires: token.options.expires ?? new Date(Date.now() + 3600000),
+            secure: token.options.secure ?? true,
+            sameSite: 'Strict',
+          });
+        }
+      });
+
+      // access token vanishes routine
       appRef.isStable
         .pipe(
           whenTruthy(),
           first(),
           mergeMap(() =>
             interval(1000).pipe(
-              map(() => this.parseCookie()),
+              map(() => this.parseApiTokenCookie()),
               pairwise(),
               // trigger only if application token exists but external token vanished
               withLatestFrom(this.apiToken$),
@@ -117,6 +141,25 @@ export class ApiTokenService {
         .subscribe(type => {
           this.apiToken$.next(undefined);
           this.cookieVanishes$.next(type);
+        });
+
+      // refresh token vanishes routine
+      appRef.isStable
+        .pipe(
+          whenTruthy(),
+          first(),
+          mergeMap(() =>
+            interval(1000).pipe(
+              map(() => this.parseRefreshTokenCookie()),
+              pairwise(),
+              // trigger only if application token exists but external token vanished
+              withLatestFrom(this.refreshToken$),
+              filter(([[previous, current], refreshToken]) => !!previous && !current && !!refreshToken)
+            )
+          )
+        )
+        .subscribe(() => {
+          this.refreshToken$.next(undefined);
         });
 
       // session keep alive
@@ -135,11 +178,22 @@ export class ApiTokenService {
         .subscribe(() => {
           store.dispatch(loadBasket());
         });
+
+      combineLatest([this.refreshToken$.pipe(whenTruthy()), appRef.isStable.pipe(whenTruthy(), first())])
+        .pipe(
+          switchMap(([cookie]) =>
+            interval(cookie.options?.expires.getTime() - Date.now() - ApiTokenService.REFRESH_OFFSET).pipe(
+              map(() => cookie),
+              first()
+            )
+          )
+        )
+        .subscribe(cookie => this.store.dispatch(refreshUserToken({ refreshToken: cookie.refreshToken })));
     }
   }
 
   hasUserApiTokenCookie() {
-    const apiTokenCookie = this.parseCookie();
+    const apiTokenCookie = this.parseApiTokenCookie();
     return apiTokenCookie?.type === 'user' && !apiTokenCookie?.isAnonymous;
   }
 
@@ -195,11 +249,33 @@ export class ApiTokenService {
     );
   }
 
-  private parseCookie() {
+  private parseApiTokenCookie(): ApiTokenCookie {
     const cookieContent = this.cookiesService.get('apiToken');
     if (cookieContent) {
       try {
-        return JSON.parse(cookieContent);
+        let parsedCookieContent: ApiTokenCookie = JSON.parse(cookieContent);
+        const options = parsedCookieContent.options;
+        if (typeof options?.expires === 'string') {
+          parsedCookieContent.options.expires = new Date(options.expires);
+        }
+        return parsedCookieContent;
+      } catch (err) {
+        // ignore
+      }
+    }
+    return;
+  }
+
+  private parseRefreshTokenCookie(): RefreshTokenCookie {
+    const cookieContent = this.cookiesService.get('refreshToken');
+    if (cookieContent) {
+      try {
+        let parsedCookieContent: RefreshTokenCookie = JSON.parse(cookieContent);
+        const options = parsedCookieContent.options;
+        if (typeof options?.expires === 'string') {
+          parsedCookieContent.options.expires = new Date(options.expires);
+        }
+        return parsedCookieContent;
       } catch (err) {
         // ignore
       }
@@ -220,6 +296,19 @@ export class ApiTokenService {
     this.apiToken$.next({ apiToken, type, options });
   }
 
+  setRefreshToken(refreshToken: string, opt: CookieOptions = {}) {
+    const options = {
+      ...opt,
+      expires: opt.expires ?? new Date(Date.now() + 3600000),
+      secure: opt.secure ?? true,
+      sameSite: opt.sameSite ?? 'strict',
+    };
+    if (!refreshToken) {
+      console.warn('do not use setRefreshToken to unset token, use remove or invalidate instead');
+    }
+    this.refreshToken$.next({ refreshToken, options });
+  }
+
   /**
    * Should remove the actual apiToken cookie and fetch a new anonymous user token
    */
@@ -229,7 +318,7 @@ export class ApiTokenService {
   }
 
   private invalidateApiToken() {
-    const cookie = this.parseCookie();
+    const cookie = this.parseApiTokenCookie();
 
     this.removeApiToken();
 

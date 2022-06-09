@@ -112,7 +112,7 @@ export class UserService {
       })
       .pipe(
         map(TokenMapper.fromData),
-        tap(token =>
+        tap(token => {
           this.apiTokenService.setApiToken(
             token.accessToken,
             grantType === 'anonymous'
@@ -123,8 +123,11 @@ export class UserService {
             {
               expires: new Date(Date.now() + token.expiresIn * 1000),
             }
-          )
-        )
+          );
+          this.apiTokenService.setRefreshToken(token.refreshToken, {
+            expires: new Date(Date.now() + token.refreshExpiresIn * 1000),
+          });
+        })
       );
   }
 
