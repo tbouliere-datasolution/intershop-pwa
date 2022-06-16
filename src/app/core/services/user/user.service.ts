@@ -1,9 +1,11 @@
+import { isPlatformBrowser } from '@angular/common';
 import { HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Store, select } from '@ngrx/store';
+import { OAuthService, TokenResponse } from 'angular-oauth2-oidc';
 import { pick } from 'lodash-es';
-import { Observable, combineLatest, forkJoin, of, throwError } from 'rxjs';
-import { concatMap, first, map, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
+import { Observable, combineLatest, forkJoin, from, interval, of, throwError } from 'rxjs';
+import { concatMap, filter, first, map, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { Address } from 'ish-core/models/address/address.model';
@@ -19,17 +21,14 @@ import {
 } from 'ish-core/models/customer/customer.model';
 import { PasswordReminderUpdate } from 'ish-core/models/password-reminder-update/password-reminder-update.model';
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
-import { FetchTokenOptions, GrantType, TokenData } from 'ish-core/models/token/token.interface';
-import { TokenMapper } from 'ish-core/models/token/token.mapper';
-import { Token } from 'ish-core/models/token/token.model';
+import { FetchTokenOptions, GrantType } from 'ish-core/models/token/token.interface';
 import { UserCostCenter } from 'ish-core/models/user-cost-center/user-cost-center.model';
 import { UserMapper } from 'ish-core/models/user/user.mapper';
 import { User } from 'ish-core/models/user/user.model';
 import { ApiService, AvailableOptions, unpackEnvelope } from 'ish-core/services/api/api.service';
 import { getUserPermissions } from 'ish-core/store/customer/authorization';
 import { getLoggedInCustomer, getLoggedInUser } from 'ish-core/store/customer/user';
-import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
-import { whenTruthy } from 'ish-core/utils/operators';
+import { delayUntil, whenTruthy } from 'ish-core/utils/operators';
 
 /**
  * The User Service handles the registration related interaction with the 'customers' REST API.
@@ -55,9 +54,10 @@ interface CreateBusinessCustomerType extends Customer {
 export class UserService {
   constructor(
     private apiService: ApiService,
-    private apiTokenService: ApiTokenService,
     private appFacade: AppFacade,
-    private store: Store
+    private store: Store,
+    private oauthService: OAuthService,
+    @Inject(PLATFORM_ID) private platformId: string
   ) {}
 
   /**
@@ -93,41 +93,45 @@ export class UserService {
     );
   }
 
-  fetchToken<T extends 'anonymous'>(grantType: T): Observable<Token>;
-  fetchToken<T extends GrantType, R extends FetchTokenOptions<T>>(grantType: T, options: R): Observable<Token>;
-  fetchToken<T extends GrantType, R extends FetchTokenOptions<T>>(grantType: T, options?: R): Observable<Token> {
-    const body = new URLSearchParams();
-    body.set('grant_type', grantType);
-
-    (Object.entries(options ?? {}) as [string, R[keyof R]][]).map(([key, value]) => {
-      body.set(key, `${value}`);
-    });
+  fetchToken<T extends 'anonymous'>(grantType: T): Observable<TokenResponse>;
+  fetchToken<T extends GrantType, R extends FetchTokenOptions<T>>(grantType: T, options: R): Observable<TokenResponse>;
+  fetchToken<T extends GrantType, R extends FetchTokenOptions<T>>(
+    grantType: T,
+    options?: R
+  ): Observable<TokenResponse> {
+    if (isPlatformBrowser(this.platformId)) {
+      sessionStorage.setItem('grantType', grantType);
+    }
 
     return this.apiService
-      .post<TokenData>('-/token', body, {
-        headers: new HttpHeaders({ 'content-type': 'application/x-www-form-urlencoded' }),
+      .constructUrlForPath('-/token', {
         sendCurrency: false,
         sendLocale: false,
         sendApplication: false,
       })
       .pipe(
-        map(TokenMapper.fromData),
-        tap(token => {
-          this.apiTokenService.setApiToken(
-            token.accessToken,
-            grantType === 'anonymous'
-              ? 'anonymous'
-              : grantType === 'client_credentials' || grantType === 'password'
-              ? 'user'
-              : undefined,
-            {
-              expires: new Date(Date.now() + token.expiresIn * 1000),
-            }
-          );
-          this.apiTokenService.setRefreshToken(token.refreshToken, {
-            expires: new Date(Date.now() + token.refreshExpiresIn * 1000),
-          });
-        })
+        whenTruthy(),
+        take(1),
+        tap(url => {
+          this.oauthService.tokenEndpoint = url;
+          this.oauthService.scope = 'openid profile email voucher offline_access';
+          this.oauthService.requireHttps = url.startsWith('https');
+        }),
+        switchMap(() =>
+          from(
+            this.oauthService.fetchTokenUsingGrant(
+              grantType,
+              options ?? {},
+              new HttpHeaders({ 'content-type': 'application/x-www-form-urlencoded' })
+            )
+          )
+        ),
+        delayUntil(
+          interval(50).pipe(
+            switchMap(() => this.oauthService.events),
+            filter(event => event.type === 'token_received')
+          )
+        )
       );
   }
 

@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
-import { from } from 'rxjs';
+import { from, interval } from 'rxjs';
 import {
   concatMap,
   delay,
@@ -24,7 +24,7 @@ import { UserService } from 'ish-core/services/user/user.service';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { selectQueryParam, selectUrl } from 'ish-core/store/core/router';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
-import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
+import { delayUntil, mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import { getPGID, personalizationStatusDetermined } from '.';
 import {
@@ -86,6 +86,12 @@ export class UserEffects {
       mapToPayloadProperty('credentials'),
       exhaustMap(credentials =>
         this.userService.fetchToken('password', { username: credentials.login, password: credentials.password }).pipe(
+          delayUntil(
+            interval(50).pipe(
+              map(() => this.apiTokenService.hasUserApiTokenCookie()),
+              whenTruthy()
+            )
+          ),
           switchMap(() =>
             this.userService.fetchCustomer().pipe(map(loginUserSuccess), mapErrorToAction(loginUserFail))
           ),

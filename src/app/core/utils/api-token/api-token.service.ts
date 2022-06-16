@@ -1,5 +1,5 @@
 import { isPlatformBrowser, isPlatformServer } from '@angular/common';
-import { HttpErrorResponse, HttpEvent, HttpHandler, HttpRequest } from '@angular/common/http';
+import { HttpErrorResponse, HttpEvent, HttpHandler, HttpParams, HttpRequest, HttpResponse } from '@angular/common/http';
 import { ApplicationRef, Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
@@ -249,7 +249,7 @@ export class ApiTokenService {
     );
   }
 
-  private parseApiTokenCookie(): ApiTokenCookie {
+  parseApiTokenCookie(): ApiTokenCookie {
     const cookieContent = this.cookiesService.get('apiToken');
     if (cookieContent) {
       try {
@@ -348,6 +348,16 @@ export class ApiTokenService {
     return this.appendAuthentication(req).pipe(
       concatMap(request =>
         next.handle(request).pipe(
+          map(event => {
+            if (event instanceof HttpResponse && event.url.endsWith('-/token') && request.body instanceof HttpParams) {
+              // eslint-disable-next-line @typescript-eslint/naming-convention
+              const { id_token, ...body } = event.body;
+              return event.clone({
+                body,
+              });
+            }
+            return event;
+          }),
           catchError(err => {
             if (this.isAuthTokenError(err)) {
               this.invalidateApiToken();

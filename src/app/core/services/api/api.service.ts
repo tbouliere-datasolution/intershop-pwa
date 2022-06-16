@@ -126,7 +126,7 @@ export class ApiService {
     return httpCall$.pipe(this.handleErrors(!options?.skipApiErrorHandling));
   }
 
-  private constructUrlForPath(path: string, options?: AvailableOptions): Observable<string> {
+  constructUrlForPath(path: string, options?: AvailableOptions): Observable<string> {
     if (path.startsWith('http://') || path.startsWith('https://')) {
       return of(path);
     }
