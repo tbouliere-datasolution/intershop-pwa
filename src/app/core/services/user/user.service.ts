@@ -4,8 +4,8 @@ import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { OAuthService, TokenResponse } from 'angular-oauth2-oidc';
 import { pick } from 'lodash-es';
-import { Observable, combineLatest, forkJoin, from, interval, of, throwError } from 'rxjs';
-import { concatMap, filter, first, map, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
+import { Observable, combineLatest, forkJoin, from, of, throwError } from 'rxjs';
+import { concatMap, first, map, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { Address } from 'ish-core/models/address/address.model';
@@ -28,7 +28,9 @@ import { User } from 'ish-core/models/user/user.model';
 import { ApiService, AvailableOptions, unpackEnvelope } from 'ish-core/services/api/api.service';
 import { getUserPermissions } from 'ish-core/store/customer/authorization';
 import { getLoggedInCustomer, getLoggedInUser } from 'ish-core/store/customer/user';
-import { delayUntil, whenTruthy } from 'ish-core/utils/operators';
+import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
+import { OAuthConfigurationService } from 'ish-core/utils/oauth-configuration/oauth-configuration.service';
+import { whenTruthy } from 'ish-core/utils/operators';
 
 /**
  * The User Service handles the registration related interaction with the 'customers' REST API.
@@ -56,9 +58,13 @@ export class UserService {
     private apiService: ApiService,
     private appFacade: AppFacade,
     private store: Store,
+    private apiTokenService: ApiTokenService,
     private oauthService: OAuthService,
+    oauthConfigurationService: OAuthConfigurationService,
     @Inject(PLATFORM_ID) private platformId: string
-  ) {}
+  ) {
+    oauthConfigurationService.config$.subscribe(config => this.oauthService.configure(config));
+  }
 
   /**
    * Sign in an existing user with the given token or if no token is given, using token stored in cookie.
@@ -103,36 +109,13 @@ export class UserService {
       sessionStorage.setItem('grantType', grantType);
     }
 
-    return this.apiService
-      .constructUrlForPath('-/token', {
-        sendCurrency: false,
-        sendLocale: false,
-        sendApplication: false,
-      })
-      .pipe(
-        whenTruthy(),
-        take(1),
-        tap(url => {
-          this.oauthService.tokenEndpoint = url;
-          this.oauthService.scope = 'openid profile email voucher offline_access';
-          this.oauthService.requireHttps = url.startsWith('https');
-        }),
-        switchMap(() =>
-          from(
-            this.oauthService.fetchTokenUsingGrant(
-              grantType,
-              options ?? {},
-              new HttpHeaders({ 'content-type': 'application/x-www-form-urlencoded' })
-            )
-          )
-        ),
-        delayUntil(
-          interval(50).pipe(
-            switchMap(() => this.oauthService.events),
-            filter(event => event.type === 'token_received')
-          )
-        )
-      );
+    return from(
+      this.oauthService.fetchTokenUsingGrant(
+        grantType,
+        options ?? {},
+        new HttpHeaders({ 'content-type': 'application/x-www-form-urlencoded' })
+      )
+    ).pipe(tap(tokenResponse => this.apiTokenService.setApiToken(tokenResponse.access_token)));
   }
 
   /**

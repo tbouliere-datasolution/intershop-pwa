@@ -10,8 +10,6 @@ import { Auth0IdentityProvider } from './identity-provider/auth0.identity-provid
 import { ICMIdentityProvider } from './identity-provider/icm.identity-provider';
 import { IDENTITY_PROVIDER_IMPLEMENTOR, IdentityProviderFactory } from './identity-provider/identity-provider.factory';
 import { IdentityProviderCapabilities } from './identity-provider/identity-provider.interface';
-import { ApiTokenService } from './utils/api-token/api-token.service';
-import { MemoryStorage } from './utils/api-token/api-token.storage';
 
 /**
  * provider factory for storage
@@ -27,7 +25,7 @@ export function storageFactory(platformId: string): OAuthStorage {
   imports: [OAuthModule.forRoot({ resourceServer: { sendAccessToken: false } }), PunchoutIdentityProviderModule],
   /* eslint-disable @angular-eslint/sort-ngmodule-metadata-arrays */
   providers: [
-    { provide: OAuthStorage, useClass: MemoryStorage, deps: [PLATFORM_ID, ApiTokenService] },
+    { provide: OAuthStorage, useFactory: storageFactory, deps: [PLATFORM_ID] },
     {
       provide: IDENTITY_PROVIDER_IMPLEMENTOR,
       multi: true,

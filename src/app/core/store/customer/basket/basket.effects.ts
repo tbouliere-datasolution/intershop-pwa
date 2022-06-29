@@ -248,10 +248,7 @@ export class BasketEffects {
         select(getCurrentBasket),
         mapToProperty('id'),
         // append corresponding apiToken and customer
-        withLatestFrom(
-          this.apiTokenService.apiToken$.pipe(map(apiTokenCookie => apiTokenCookie?.apiToken)),
-          this.store.pipe(select(getLoggedInCustomer))
-        ),
+        withLatestFrom(this.apiTokenService.apiToken$, this.store.pipe(select(getLoggedInCustomer))),
         // don't emit when there is a customer
         filter(([, , customer]) => !customer),
         startWith([]),

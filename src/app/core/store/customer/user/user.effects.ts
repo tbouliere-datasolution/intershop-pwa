@@ -4,7 +4,8 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { Store, select } from '@ngrx/store';
-import { from, interval } from 'rxjs';
+import { OAuthInfoEvent, OAuthService } from 'angular-oauth2-oidc';
+import { from } from 'rxjs';
 import {
   concatMap,
   delay,
@@ -24,7 +25,8 @@ import { UserService } from 'ish-core/services/user/user.service';
 import { displaySuccessMessage } from 'ish-core/store/core/messages';
 import { selectQueryParam, selectUrl } from 'ish-core/store/core/router';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
-import { delayUntil, mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
+import { OAuthConfigurationService } from 'ish-core/utils/oauth-configuration/oauth-configuration.service';
+import { mapErrorToAction, mapToPayload, mapToPayloadProperty, whenTruthy } from 'ish-core/utils/operators';
 
 import { getPGID, personalizationStatusDetermined } from '.';
 import {
@@ -64,7 +66,6 @@ import {
   updateUserSuccess,
   userErrorReset,
   fetchAnonymousUserToken,
-  refreshUserToken,
 } from './user.actions';
 import { getLoggedInCustomer, getLoggedInUser, getUserError } from './user.selectors';
 
@@ -77,8 +78,12 @@ export class UserEffects {
     private paymentService: PaymentService,
     private router: Router,
     private apiTokenService: ApiTokenService,
+    private oAuthService: OAuthService,
+    oAuthConfigurationService: OAuthConfigurationService,
     @Inject(PLATFORM_ID) private platformId: string
-  ) {}
+  ) {
+    oAuthConfigurationService.config$.subscribe(config => this.oAuthService.configure(config));
+  }
 
   loginUser$ = createEffect(() =>
     this.actions$.pipe(
@@ -86,12 +91,6 @@ export class UserEffects {
       mapToPayloadProperty('credentials'),
       exhaustMap(credentials =>
         this.userService.fetchToken('password', { username: credentials.login, password: credentials.password }).pipe(
-          delayUntil(
-            interval(50).pipe(
-              map(() => this.apiTokenService.hasUserApiTokenCookie()),
-              whenTruthy()
-            )
-          ),
           switchMap(() =>
             this.userService.fetchCustomer().pipe(map(loginUserSuccess), mapErrorToAction(loginUserFail))
           ),
@@ -112,10 +111,13 @@ export class UserEffects {
 
   refreshUserToken$ = createEffect(
     () =>
-      this.actions$.pipe(
-        ofType(refreshUserToken),
-        mapToPayloadProperty('refreshToken'),
-        switchMap(refreshToken => this.userService.fetchToken('refresh_token', { refresh_token: refreshToken }))
+      this.oAuthService.events.pipe(
+        filter(
+          event => event instanceof OAuthInfoEvent && event.type === 'token_expires' && event.info === 'access_token'
+        ),
+        switchMap(() =>
+          this.userService.fetchToken('refresh_token', { refresh_token: this.oAuthService.getRefreshToken() })
+        )
       ),
     { dispatch: false }
   );
