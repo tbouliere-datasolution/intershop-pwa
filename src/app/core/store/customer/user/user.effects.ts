@@ -115,9 +115,7 @@ export class UserEffects {
         filter(
           event => event instanceof OAuthInfoEvent && event.type === 'token_expires' && event.info === 'access_token'
         ),
-        switchMap(() =>
-          this.userService.fetchToken('refresh_token', { refresh_token: this.oAuthService.getRefreshToken() })
-        )
+        switchMap(() => from(this.oAuthService.refreshToken()))
       ),
     { dispatch: false }
   );

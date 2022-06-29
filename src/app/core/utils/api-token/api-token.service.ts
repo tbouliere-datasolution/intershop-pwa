@@ -281,7 +281,6 @@ export class ApiTokenService {
             if (event instanceof HttpResponse && event.url.endsWith('-/token') && request.body instanceof HttpParams) {
               // eslint-disable-next-line @typescript-eslint/naming-convention
               const { id_token, ...body } = event.body;
-              body.expires_in = 30;
               return event.clone({
                 body,
               });

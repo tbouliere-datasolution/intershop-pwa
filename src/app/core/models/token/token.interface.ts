@@ -1,8 +1,6 @@
 export type FetchTokenOptions<T extends GrantType> = T extends 'password'
   ? FetchTokenPasswordOptions
-  : T extends 'clientCredentials'
-  ? FetchTokenClientCredentialsOptions
-  : FetchTokenRefreshOptions;
+  : FetchTokenClientCredentialsOptions;
 
 interface FetchTokenPasswordOptions {
   username: string;
@@ -16,11 +14,7 @@ interface FetchTokenClientCredentialsOptions {
   organization?: string;
 }
 
-interface FetchTokenRefreshOptions {
-  refresh_token: string;
-}
-
-export type GrantType = 'anonymous' | 'password' | 'client_credentials' | 'refresh_token';
+export type GrantType = 'anonymous' | 'password' | 'client_credentials';
 
 export interface TokenData {
   id_token: string;
