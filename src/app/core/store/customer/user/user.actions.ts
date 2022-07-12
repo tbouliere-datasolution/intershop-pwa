@@ -130,4 +130,3 @@ export const updateUserPasswordByPasswordReminderFail = createAction(
 );
 
 export const fetchAnonymousUserToken = createAction('[Token API] Fetch Token');
-export const refreshUserToken = createAction('[Token API] Refresh User Token', payload<{ refreshToken: string }>());

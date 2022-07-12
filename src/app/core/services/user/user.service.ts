@@ -1,6 +1,5 @@
-import { isPlatformBrowser } from '@angular/common';
 import { HttpHeaders } from '@angular/common/http';
-import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { OAuthService, TokenResponse } from 'angular-oauth2-oidc';
 import { pick } from 'lodash-es';
@@ -60,8 +59,7 @@ export class UserService {
     private store: Store,
     private apiTokenService: ApiTokenService,
     private oauthService: OAuthService,
-    oauthConfigurationService: OAuthConfigurationService,
-    @Inject(PLATFORM_ID) private platformId: string
+    oauthConfigurationService: OAuthConfigurationService
   ) {
     oauthConfigurationService.config$.subscribe(config => this.oauthService.configure(config));
   }
@@ -105,10 +103,6 @@ export class UserService {
     grantType: T,
     options?: R
   ): Observable<TokenResponse> {
-    if (isPlatformBrowser(this.platformId)) {
-      sessionStorage.setItem('grantType', grantType);
-    }
-
     return from(
       this.oauthService.fetchTokenUsingGrant(
         grantType,

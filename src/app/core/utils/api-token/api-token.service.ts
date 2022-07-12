@@ -102,7 +102,7 @@ export class ApiTokenService {
               });
             }
           } else {
-            this.removeApiToken();
+            cookiesService.remove('apiToken');
           }
         });
 
@@ -223,7 +223,7 @@ export class ApiTokenService {
     );
   }
 
-  parseCookie(): ApiTokenCookie {
+  private parseCookie(): ApiTokenCookie {
     const cookieContent = this.cookiesService.get('apiToken');
     if (cookieContent) {
       try {
