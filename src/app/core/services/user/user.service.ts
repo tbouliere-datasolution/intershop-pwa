@@ -74,9 +74,7 @@ export class UserService {
    */
   signInUserByToken(token?: string): Observable<CustomerLoginType> {
     if (token) {
-      return this.fetchCustomer({
-        headers: new HttpHeaders().set(ApiService.TOKEN_HEADER_KEY, token),
-      });
+      return this.fetchToken('refresh_token', { refresh_token: token }).pipe(switchMap(() => this.fetchCustomer()));
     } else {
       return this.fetchCustomer({ skipApiErrorHandling: true });
     }

@@ -146,8 +146,7 @@ describe('User Service', () => {
         verify(apiServiceMock.get('customers/-', anything())).once();
         verify(apiServiceMock.get('privatecustomers/-', anything())).never();
         verify(apiServiceMock.get('personalization', anything())).once();
-        const [path, options] = capture<string, AvailableOptions>(apiServiceMock.get).first();
-        expect(options.headers.get(ApiService.TOKEN_HEADER_KEY)).toMatchInlineSnapshot(`"12345"`);
+        const [path] = capture<string, AvailableOptions>(apiServiceMock.get).first();
         expect(path).toEqual('customers/-');
         done();
       });
