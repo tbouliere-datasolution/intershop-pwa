@@ -385,7 +385,7 @@ describe('Basket Items Effects', () => {
     it('should map to action of type DeleteBasketItemSuccess', () => {
       const itemId = 'BIID';
       const action = deleteBasketItem({ itemId });
-      const completion = deleteBasketItemSuccess({ info: undefined });
+      const completion = deleteBasketItemSuccess({ itemId, info: undefined });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -409,7 +409,7 @@ describe('Basket Items Effects', () => {
 
   describe('loadBasketAfterDeleteBasketItem$', () => {
     it('should map to action of type LoadBasket if DeleteBasketItemSuccess action triggered', () => {
-      const action = deleteBasketItemSuccess({ info: undefined });
+      const action = deleteBasketItemSuccess({ itemId: '123', info: undefined });
       const completion = loadBasket();
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
@@ -420,7 +420,7 @@ describe('Basket Items Effects', () => {
 
   describe('redirectToBasketIfBasketInteractionHasInfo$', () => {
     it('should navigate to basket if interaction has info', fakeAsync(() => {
-      actions$ = of(deleteBasketItemSuccess({ info: [{ message: 'INFO' } as BasketInfo] }));
+      actions$ = of(deleteBasketItemSuccess({ itemId: '123', info: [{ message: 'INFO' } as BasketInfo] }));
 
       effects.redirectToBasketIfBasketInteractionHasInfo$.subscribe({ next: noop, error: fail, complete: noop });
 
@@ -430,7 +430,7 @@ describe('Basket Items Effects', () => {
     }));
 
     it('should not navigate to basket if interaction had no info', fakeAsync(() => {
-      actions$ = of(deleteBasketItemSuccess({ info: undefined }));
+      actions$ = of(deleteBasketItemSuccess({ itemId: '123', info: undefined }));
 
       effects.redirectToBasketIfBasketInteractionHasInfo$.subscribe({ next: noop, error: fail, complete: noop });
 

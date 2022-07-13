@@ -193,8 +193,14 @@ export const basketReducer = createReducer(
       submittedBasket: undefined,
     };
   }),
-  on(updateBasketItemsSuccess, deleteBasketItemSuccess, (state, action) => ({
+  on(updateBasketItemsSuccess, (state, action) => ({
     ...state,
+    info: action.payload.info,
+    validationResults: initialValidationResults,
+  })),
+  on(deleteBasketItemSuccess, (state, action) => ({
+    ...state,
+    basket: { ...state.basket, lineItems: state.basket.lineItems.filter(item => item.id !== action.payload.itemId) },
     info: action.payload.info,
     validationResults: initialValidationResults,
   })),
