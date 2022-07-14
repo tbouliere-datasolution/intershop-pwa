@@ -57,7 +57,7 @@ export class ApiTokenService {
     @Inject(PLATFORM_ID) private platformId: string,
     private router: Router,
     private store: Store,
-    private oAuthService: OAuthService,
+    oAuthService: OAuthService,
     oAuthConfigurationService: OAuthConfigurationService,
     appRef: ApplicationRef
   ) {
@@ -104,26 +104,6 @@ export class ApiTokenService {
           } else {
             cookiesService.remove('apiToken');
           }
-        });
-
-      // access token should be set for apiToken
-      appRef.isStable
-        .pipe(
-          whenTruthy(),
-          first(),
-          mergeMap(() =>
-            interval(1000).pipe(
-              map(() => this.oAuthService.getAccessToken()),
-              pairwise(),
-              withLatestFrom(this.apiToken$),
-              filter(([[previous, current], apiToken]) => !!previous && !current && !!apiToken),
-              map(() => this.parseCookie()?.type)
-            )
-          )
-        )
-        .subscribe(type => {
-          this.apiToken$.next(undefined);
-          this.cookieVanishes$.next(type);
         });
 
       // access token vanishes routine
@@ -243,6 +223,7 @@ export class ApiTokenService {
   }
 
   setApiToken(apiToken: string) {
+    console.log('set api token');
     this.apiToken$.next(apiToken);
   }
 
