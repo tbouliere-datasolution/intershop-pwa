@@ -17,6 +17,9 @@ import { BasketValidation, BasketValidationScopeType } from 'ish-core/models/bas
 import { BasketBaseData, BasketData } from 'ish-core/models/basket/basket.interface';
 import { BasketMapper } from 'ish-core/models/basket/basket.mapper';
 import { Basket } from 'ish-core/models/basket/basket.model';
+import { LineItemData } from 'ish-core/models/line-item/line-item.interface';
+import { LineItemMapper } from 'ish-core/models/line-item/line-item.mapper';
+import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { SkuQuantityType } from 'ish-core/models/product/product.model';
 import { ShippingMethodData } from 'ish-core/models/shipping-method/shipping-method.interface';
 import { ShippingMethodMapper } from 'ish-core/models/shipping-method/shipping-method.mapper';
@@ -323,9 +326,10 @@ export class BasketService {
   /**
    * Adds a list of items with the given sku and quantity to the currently used basket.
    *
-   * @param items     The list of product SKU and quantity pairs to be added to the basket.
+   * @param   lineItems   The list of line items, that have been added to the basket
+   *          info        Info responded by the server
    */
-  addItemsToBasket(items: SkuQuantityType[]): Observable<BasketInfo[]> {
+  addItemsToBasket(items: SkuQuantityType[]): Observable<{ lineItems: LineItem[]; info: BasketInfo[] }> {
     if (!items) {
       return throwError(() => new Error('addItemsToBasket() called without items'));
     }
@@ -339,10 +343,15 @@ export class BasketService {
     }));
 
     return this.currentBasketEndpoint()
-      .post('items', body, {
+      .post<{ data: LineItemData[]; infos: BasketInfo[] }>('items', body, {
         headers: this.basketHeaders,
       })
-      .pipe(map(BasketInfoMapper.fromInfo));
+      .pipe(
+        map(payload => ({
+          lineItems: payload.data.map(item => LineItemMapper.fromData(item)),
+          info: BasketInfoMapper.fromInfo({ infos: payload.infos }),
+        }))
+      );
   }
 
   /**

@@ -1,4 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
+import { unionBy } from 'lodash-es';
 
 import { BasketInfo } from 'ish-core/models/basket-info/basket-info.model';
 import { BasketValidationResultType } from 'ish-core/models/basket-validation/basket-validation.model';
@@ -206,6 +207,7 @@ export const basketReducer = createReducer(
   })),
   on(addItemsToBasketSuccess, (state, action) => ({
     ...state,
+    basket: { ...state.basket, lineItems: unionBy(action.payload.lineItems, state.basket.lineItems || [], 'id') },
     info: action.payload.info,
     lastTimeProductAdded: new Date().getTime(),
     submittedBasket: undefined,

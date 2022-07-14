@@ -30,6 +30,8 @@ import {
   addItemsToBasketFail,
   addItemsToBasketSuccess,
   addProductToBasket,
+  createBasketFail,
+  createBasketSuccess,
   deleteBasketItem,
   deleteBasketItemFail,
   deleteBasketItemSuccess,
@@ -76,17 +78,18 @@ export class BasketItemsEffects {
       concatMap(([{ items }, basketId]) => {
         if (basketId) {
           return this.basketService.addItemsToBasket(items).pipe(
-            map(info => addItemsToBasketSuccess({ info, items })),
+            map(payload => addItemsToBasketSuccess(payload)),
             mapErrorToAction(addItemsToBasketFail)
           );
         } else {
           return this.basketService.createBasket().pipe(
-            switchMap(() =>
+            switchMap(basket =>
               this.basketService.addItemsToBasket(items).pipe(
-                map(info => addItemsToBasketSuccess({ info, items })),
+                mergeMap(payload => [createBasketSuccess({ basket }), addItemsToBasketSuccess(payload)]),
                 mapErrorToAction(addItemsToBasketFail)
               )
-            )
+            ),
+            mapErrorToAction(createBasketFail)
           );
         }
       })

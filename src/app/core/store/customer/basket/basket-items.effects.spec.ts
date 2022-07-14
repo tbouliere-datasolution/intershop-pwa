@@ -87,7 +87,7 @@ describe('Basket Items Effects', () => {
 
   describe('addItemsToBasket$', () => {
     beforeEach(() => {
-      when(basketServiceMock.addItemsToBasket(anything())).thenReturn(of(undefined));
+      when(basketServiceMock.addItemsToBasket(anything())).thenReturn(of({ lineItems: [], info: undefined }));
     });
 
     it('should call the basketService for addItemsToBasket', done => {
@@ -136,7 +136,10 @@ describe('Basket Items Effects', () => {
 
       const items = [{ sku: 'SKU', quantity: 1, unit: 'pcs.' }];
       const action = addItemsToBasket({ items });
-      const completion = addItemsToBasketSuccess({ info: undefined, items });
+      const completion = addItemsToBasketSuccess({
+        info: undefined,
+        lineItems: [],
+      });
       actions$ = hot('-a-a-a', { a: action });
       const expected$ = cold('-c-c-c', { c: completion });
 
@@ -184,7 +187,7 @@ describe('Basket Items Effects', () => {
 
   describe('loadBasketAfterAddItemsToBasket$', () => {
     it('should map to action of type LoadBasket if AddItemsToBasketSuccess action triggered', () => {
-      const action = addItemsToBasketSuccess({ info: undefined, items: [] });
+      const action = addItemsToBasketSuccess({ info: undefined, lineItems: [] });
       const completion = loadBasket();
       actions$ = hot('-a', { a: action });
       const expected$ = cold('-c', { c: completion });
