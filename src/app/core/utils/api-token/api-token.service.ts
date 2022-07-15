@@ -223,7 +223,6 @@ export class ApiTokenService {
   }
 
   setApiToken(apiToken: string) {
-    console.log('set api token');
     this.apiToken$.next(apiToken);
   }
 
