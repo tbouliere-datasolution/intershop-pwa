@@ -84,7 +84,13 @@ export class ApiTokenService {
               return { apiToken, type: 'user', isAnonymous: true, creator: 'pwa' };
             } else if (orderId) {
               return { apiToken, type: 'order', orderId, creator: 'pwa' };
-            } else if (apiToken) {
+            }
+            const apiTokenCookieString = this.cookiesService.get('apiToken');
+            const apiTokenCookie: ApiTokenCookie = apiTokenCookieString ? JSON.parse(apiTokenCookieString) : undefined;
+            if (apiToken) {
+              if (apiTokenCookie) {
+                return { ...apiTokenCookie, apiToken };
+              }
               return { apiToken, type: 'anonymous', creator: 'pwa', isAnonymous: true };
             }
           }),
