@@ -9,6 +9,11 @@ kb_sync_latest_only
 
 ## 2.4 to 3.0
 
+With the 2.4.1 Hotfix we introduced a more fixed Node.js version handling.
+For the docker containers and as the projects engine we set `Node.js 16.16.0` and `npm 8.11.0` to more specifically refer to the versions used and tested.
+This is supposed to prevent unexpected build issues in the future but requires manual updating of Node.js to newer versions if tested successfully.
+Other Node.js versions might still work but you might get warnings regarding the projects recommended settings.
+
 Since the used deferred load library is no longer maintained it is removed and replaced with similar standard browser functionality [`loading="lazy"`](https://developer.mozilla.org/en-US/docs/Web/Performance/Lazy_loading#images_and_iframes).
 All uses of the `(deferLoad)` directive in custom code need to be replaced.
 
