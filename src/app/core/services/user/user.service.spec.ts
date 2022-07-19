@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { OAuthService, TokenResponse } from 'angular-oauth2-oidc';
 import { of, throwError } from 'rxjs';
 import { anyString, anything, capture, instance, mock, verify, when } from 'ts-mockito';
 
@@ -13,31 +14,49 @@ import { ApiService, AvailableOptions } from 'ish-core/services/api/api.service'
 import { getUserPermissions } from 'ish-core/store/customer/authorization';
 import { getLoggedInCustomer, getLoggedInUser } from 'ish-core/store/customer/user';
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
+import { OAuthConfigurationService } from 'ish-core/utils/oauth-configuration/oauth-configuration.service';
 
 import { UserService } from './user.service';
 
 describe('User Service', () => {
+  const token = {
+    access_token: 'DEMO@access-token',
+    token_type: 'user',
+    expires_in: 3600,
+    refresh_token: 'DEMO@refresh-token',
+    id_token: 'DEMO@id-token',
+  } as TokenResponse;
+
   let userService: UserService;
   let apiServiceMock: ApiService;
+  let oAuthServiceMock: OAuthService;
+  let oAuthConfigurationServiceMock: OAuthConfigurationService;
   let appFacade: AppFacade;
   let store$: MockStore;
 
   beforeEach(() => {
     apiServiceMock = mock(ApiService);
     appFacade = mock(AppFacade);
+    oAuthServiceMock = mock(OAuthService);
+    oAuthConfigurationServiceMock = mock(OAuthConfigurationService);
+
+    when(oAuthConfigurationServiceMock.config$).thenReturn(of());
+    when(oAuthServiceMock.fetchTokenUsingGrant(anyString(), anything(), anything())).thenResolve(token);
+    when(appFacade.isAppTypeREST$).thenReturn(of(true));
+    when(appFacade.currentLocale$).thenReturn(of('en_US'));
+    when(appFacade.customerRestResource$).thenReturn(of('customers'));
 
     TestBed.configureTestingModule({
       providers: [
         { provide: ApiService, useFactory: () => instance(apiServiceMock) },
         { provide: ApiTokenService, useFactory: () => instance(mock(ApiTokenService)) },
         { provide: AppFacade, useFactory: () => instance(appFacade) },
+        { provide: OAuthConfigurationService, useFactory: () => instance(oAuthConfigurationServiceMock) },
+        { provide: OAuthService, useFactory: () => instance(oAuthServiceMock) },
         provideMockStore({ selectors: [{ selector: getLoggedInCustomer, value: undefined }] }),
       ],
     });
     userService = TestBed.inject(UserService);
-    when(appFacade.isAppTypeREST$).thenReturn(of(true));
-    when(appFacade.currentLocale$).thenReturn(of('en_US'));
-    when(appFacade.customerRestResource$).thenReturn(of('customers'));
     store$ = TestBed.inject(MockStore);
   });
 
@@ -168,7 +187,7 @@ describe('User Service', () => {
 
       userService.createUser(payload).subscribe(() => {
         verify(apiServiceMock.post('privatecustomers', anything(), anything())).once();
-        verify(apiServiceMock.post('-/token', anything(), anything())).once();
+        verify(oAuthServiceMock.fetchTokenUsingGrant('password', anything(), anything())).once();
         verify(apiServiceMock.get('customers/-', anything())).once();
         verify(apiServiceMock.get('privatecustomers/-', anything())).once();
         done();

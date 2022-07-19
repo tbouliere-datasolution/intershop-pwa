@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
+import { OAuthService, TokenResponse } from 'angular-oauth2-oidc';
 import { cold, hot } from 'jasmine-marbles';
 import { EMPTY, Observable, noop, of, throwError } from 'rxjs';
 import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
@@ -11,7 +12,6 @@ import { anyString, anything, instance, mock, verify, when } from 'ts-mockito';
 import { Credentials } from 'ish-core/models/credentials/credentials.model';
 import { Customer, CustomerRegistrationType, CustomerUserType } from 'ish-core/models/customer/customer.model';
 import { PasswordReminder } from 'ish-core/models/password-reminder/password-reminder.model';
-import { Token } from 'ish-core/models/token/token.model';
 import { User } from 'ish-core/models/user/user.model';
 import { PaymentService } from 'ish-core/services/payment/payment.service';
 import { UserService } from 'ish-core/services/user/user.service';
@@ -21,6 +21,7 @@ import { CustomerStoreModule } from 'ish-core/store/customer/customer-store.modu
 import { ApiTokenService } from 'ish-core/utils/api-token/api-token.service';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { routerTestNavigatedAction } from 'ish-core/utils/dev/routing';
+import { OAuthConfigurationService } from 'ish-core/utils/oauth-configuration/oauth-configuration.service';
 
 import {
   createUser,
@@ -64,6 +65,8 @@ describe('User Effects', () => {
   let userServiceMock: UserService;
   let paymentServiceMock: PaymentService;
   let apiTokenServiceMock: ApiTokenService;
+  let oAuthServiceMock: OAuthService;
+  let oAuthConfigurationServiceMock: OAuthConfigurationService;
   let router: Router;
   let location: Location;
 
@@ -81,18 +84,19 @@ describe('User Effects', () => {
   } as Customer;
 
   const token = {
-    accessToken: 'DEMO@access-token',
-    type: 'user',
-    expiresIn: 3600,
-    refreshToken: 'DEMO@refresh-token',
-    refreshExpiresIn: 3500,
-    idToken: 'DEMO@id-token',
-  } as Token;
+    access_token: 'DEMO@access-token',
+    token_type: 'user',
+    expires_in: 3600,
+    refresh_token: 'DEMO@refresh-token',
+    id_token: 'DEMO@id-token',
+  } as TokenResponse;
 
   beforeEach(() => {
     userServiceMock = mock(UserService);
     paymentServiceMock = mock(PaymentService);
     apiTokenServiceMock = mock(ApiTokenService);
+    oAuthServiceMock = mock(OAuthService);
+    oAuthConfigurationServiceMock = mock(OAuthConfigurationService);
 
     when(userServiceMock.fetchCustomer()).thenReturn(of(loginResponseData));
     when(userServiceMock.fetchToken(anyString(), anything())).thenReturn(of(token));
@@ -107,6 +111,8 @@ describe('User Effects', () => {
     when(paymentServiceMock.getUserPaymentMethods(anything())).thenReturn(of([]));
     when(paymentServiceMock.deleteUserPaymentInstrument(anyString(), anyString())).thenReturn(of(undefined));
     when(apiTokenServiceMock.hasUserApiTokenCookie()).thenReturn(false);
+    when(oAuthServiceMock.events).thenReturn(of());
+    when(oAuthConfigurationServiceMock.config$).thenReturn(of());
 
     TestBed.configureTestingModule({
       imports: [
@@ -116,6 +122,8 @@ describe('User Effects', () => {
       ],
       providers: [
         { provide: ApiTokenService, useFactory: () => instance(apiTokenServiceMock) },
+        { provide: OAuthConfigurationService, useFactory: () => instance(oAuthConfigurationServiceMock) },
+        { provide: OAuthService, useFactory: () => instance(oAuthServiceMock) },
         { provide: PaymentService, useFactory: () => instance(paymentServiceMock) },
         { provide: UserService, useFactory: () => instance(userServiceMock) },
         provideMockActions(() => actions$),

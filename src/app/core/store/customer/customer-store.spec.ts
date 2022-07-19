@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
+import { OAuthService, TokenResponse } from 'angular-oauth2-oidc';
 import { EMPTY, of } from 'rxjs';
 import { anyNumber, anyString, anything, instance, mock, when } from 'ts-mockito';
 
@@ -10,7 +11,6 @@ import { Customer } from 'ish-core/models/customer/customer.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
 import { Product, ProductCompletenessLevel } from 'ish-core/models/product/product.model';
 import { Promotion } from 'ish-core/models/promotion/promotion.model';
-import { Token } from 'ish-core/models/token/token.model';
 import { User } from 'ish-core/models/user/user.model';
 import { AddressService } from 'ish-core/services/address/address.service';
 import { AuthorizationService } from 'ish-core/services/authorization/authorization.service';
@@ -33,6 +33,7 @@ import { ShoppingStoreModule } from 'ish-core/store/shopping/shopping-store.modu
 import { CookiesService } from 'ish-core/utils/cookies/cookies.service';
 import { StoreWithSnapshots, provideStoreSnapshots } from 'ish-core/utils/dev/ngrx-testing';
 import { categoryTree } from 'ish-core/utils/dev/test-data-utils';
+import { OAuthConfigurationService } from 'ish-core/utils/oauth-configuration/oauth-configuration.service';
 
 import { addProductToBasket, loadBasketSuccess, startCheckout } from './basket';
 import { loginUser, personalizationStatusDetermined } from './user';
@@ -105,13 +106,12 @@ describe('Customer Store', () => {
   } as Promotion;
 
   const token = {
-    accessToken: 'DEMO@access-token',
-    type: 'user',
-    expiresIn: 3600,
-    refreshToken: 'DEMO@refresh-token',
-    refreshExpiresIn: 3500,
-    idToken: 'DEMO@id-token',
-  } as Token;
+    access_token: 'DEMO@access-token',
+    token_type: 'user',
+    expires_in: 3600,
+    refresh_token: 'DEMO@refresh-token',
+    id_token: 'DEMO@id-token',
+  } as TokenResponse;
 
   beforeEach(() => {
     const categoriesServiceMock = mock(CategoriesService);
@@ -156,6 +156,12 @@ describe('Customer Store', () => {
     const productPriceServiceMock = mock(PricesService);
     when(productPriceServiceMock.getProductPrices(anything())).thenReturn(of([]));
 
+    const oAuthService = mock(OAuthService);
+    when(oAuthService.events).thenReturn(of());
+
+    const oAuthConfigurationService = mock(OAuthConfigurationService);
+    when(oAuthConfigurationService.config$).thenReturn(of());
+
     TestBed.configureTestingModule({
       imports: [
         CoreStoreModule.forTesting(['configuration', 'serverConfig'], true),
@@ -180,6 +186,8 @@ describe('Customer Store', () => {
         { provide: CategoriesService, useFactory: () => instance(categoriesServiceMock) },
         { provide: CookiesService, useFactory: () => instance(mock(CookiesService)) },
         { provide: FilterService, useFactory: () => instance(filterServiceMock) },
+        { provide: OAuthConfigurationService, useFactory: () => instance(oAuthConfigurationService) },
+        { provide: OAuthService, useFactory: () => instance(oAuthService) },
         { provide: OrderService, useFactory: () => instance(orderServiceMock) },
         { provide: PaymentService, useFactory: () => instance(mock(PaymentService)) },
         { provide: PricesService, useFactory: () => instance(productPriceServiceMock) },
