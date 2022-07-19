@@ -136,7 +136,7 @@
     "@typescript-eslint/eslint-plugin": "^5.30.5",
     "@typescript-eslint/parser": "^5.30.5",
     "comment-json": "^4.2.2",
-    "commitizen": "^4.2.4",
+    "commitizen": "^4.2.5",
     "commitlint-config-cz": "^0.13.3",
     "conventional-changelog-cli": "2.2.2",
     "cspell": "^6.1.2",
@@ -185,6 +185,7 @@
     "xliff": "^6.0.3"
   },
   "overrides": {
+    "glob-parent": "6.0.2",
     "@ng-bootstrap/ng-bootstrap": {
       "@angular/common": "^13.0.0 || ^14.0.0",
       "@angular/core": "^13.0.0 || ^14.0.0",
