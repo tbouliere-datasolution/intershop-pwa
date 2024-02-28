@@ -3,7 +3,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
-import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
+import { ErrorMessageComponent } from 'ish-shared/utils/error-message/error-message.component';
 
 import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
 import { OrderTemplatePreferencesDialogComponent } from '../../shared/order-template-preferences-dialog/order-template-preferences-dialog.component';

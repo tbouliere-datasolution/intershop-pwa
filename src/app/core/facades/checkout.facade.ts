@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Store, createSelector, select } from '@ngrx/store';
-import { formatISO } from 'date-fns';
 import { Subject, combineLatest, merge } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, sample, switchMap, take, tap } from 'rxjs/operators';
 
@@ -184,10 +183,8 @@ export class CheckoutFacade {
     select(getServerConfigParameter<number>('shipping.desiredDeliveryDaysMin'))
   );
 
-  setDesiredDeliveryDate(date: Date) {
-    this.store.dispatch(
-      setBasketDesiredDeliveryDate({ desiredDeliveryDate: date ? formatISO(date, { representation: 'date' }) : '' })
-    );
+  setDesiredDeliveryDate(date: string) {
+    this.store.dispatch(setBasketDesiredDeliveryDate({ desiredDeliveryDate: date ?? '' }));
   }
 
   eligibleShippingMethods$() {

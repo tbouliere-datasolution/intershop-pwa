@@ -1,3 +1,4 @@
+import { CdkTableModule } from '@angular/cdk/table';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
@@ -10,7 +11,7 @@ import { CostCentersPageComponent } from './cost-centers-page.component';
 const costCentersPageRoutes: Routes = [{ path: '', component: CostCentersPageComponent }];
 
 @NgModule({
-  imports: [OrganizationManagementModule, RouterModule.forChild(costCentersPageRoutes), SharedModule],
+  imports: [CdkTableModule, RouterModule.forChild(costCentersPageRoutes), OrganizationManagementModule, SharedModule],
   declarations: [CostCentersPageComponent],
 })
 export class CostCentersPageModule {}

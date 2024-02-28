@@ -1,3 +1,4 @@
+import { CdkTableModule } from '@angular/cdk/table';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
@@ -16,6 +17,6 @@ const quoteListPageRoutes: Routes = [
 
 @NgModule({
   declarations: [QuoteListComponent, QuoteListPageComponent],
-  imports: [QuotingModule, RouterModule.forChild(quoteListPageRoutes)],
+  imports: [CdkTableModule, QuotingModule, RouterModule.forChild(quoteListPageRoutes)],
 })
 export class QuoteListPageModule {}

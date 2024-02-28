@@ -3,7 +3,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
-import { BreadcrumbComponent } from 'ish-shared/components/common/breadcrumb/breadcrumb.component';
+import { BreadcrumbComponent } from 'ish-shared/utils/breadcrumb/breadcrumb.component';
 
 import { ContactUsFacade } from '../../facades/contact-us.facade';
 

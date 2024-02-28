@@ -8,6 +8,7 @@ import { QuickorderRepeatFieldComponent } from './shared/formly/quickorder-repea
 import { QuickorderAddProductsFormComponent } from './shared/quickorder-add-products-form/quickorder-add-products-form.component';
 import { QuickorderCsvFormComponent } from './shared/quickorder-csv-form/quickorder-csv-form.component';
 import { QuickorderLinkComponent } from './shared/quickorder-link/quickorder-link.component';
+import { ProductModule } from 'ish-shared/product/product.module';
 
 const quickOrderFormlyConfig: ConfigOption = {
   types: [
@@ -19,7 +20,7 @@ const quickOrderFormlyConfig: ConfigOption = {
 };
 
 @NgModule({
-  imports: [FormlyModule.forChild(quickOrderFormlyConfig), SharedModule],
+  imports: [FormlyModule.forChild(quickOrderFormlyConfig), ProductModule, SharedModule],
   declarations: [
     DirectOrderComponent,
     QuickorderAddProductsFormComponent,

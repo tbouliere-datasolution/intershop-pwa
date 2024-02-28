@@ -7,6 +7,7 @@ import { OrderTemplatesModule } from '../../order-templates.module';
 
 import { AccountOrderTemplateDetailLineItemComponent } from './account-order-template-detail-line-item/account-order-template-detail-line-item.component';
 import { AccountOrderTemplateDetailPageComponent } from './account-order-template-detail-page.component';
+import { ProductModule } from 'ish-shared/product/product.module';
 
 const accountOrderTemplateDetailPageRoutes: Routes = [
   {
@@ -16,7 +17,12 @@ const accountOrderTemplateDetailPageRoutes: Routes = [
 ];
 
 @NgModule({
-  imports: [OrderTemplatesModule, RouterModule.forChild(accountOrderTemplateDetailPageRoutes), SharedModule],
+  imports: [
+    OrderTemplatesModule,
+    ProductModule,
+    RouterModule.forChild(accountOrderTemplateDetailPageRoutes),
+    SharedModule,
+  ],
   declarations: [AccountOrderTemplateDetailLineItemComponent, AccountOrderTemplateDetailPageComponent],
 })
 export class AccountOrderTemplateDetailPageModule {}

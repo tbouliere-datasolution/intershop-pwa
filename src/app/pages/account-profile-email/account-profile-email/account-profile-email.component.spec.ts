@@ -5,8 +5,8 @@ import { MockComponent } from 'ng-mocks';
 import { anything, spy, verify } from 'ts-mockito';
 
 import { User } from 'ish-core/models/user/user.model';
-import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
+import { ErrorMessageComponent } from 'ish-shared/utils/error-message/error-message.component';
 
 import { AccountProfileEmailComponent } from './account-profile-email.component';
 

@@ -8,8 +8,8 @@ import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
-import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
+import { ErrorMessageComponent } from 'ish-shared/utils/error-message/error-message.component';
 
 import { LazyAddressDoctorComponent } from '../../extensions/address-doctor/exports/lazy-address-doctor/lazy-address-doctor.component';
 

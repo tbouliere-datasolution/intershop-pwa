@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { identityProviderPasswordGuard } from 'ish-core/guards/identity-provider-password.guard';
+import { FormlyModule } from 'ish-shared/formly/formly.module';
 import { SharedModule } from 'ish-shared/shared.module';
 
 import { RequestReminderFormComponent } from './request-reminder-form/request-reminder-form.component';
@@ -22,7 +23,7 @@ const forgotPasswordPageRoutes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(forgotPasswordPageRoutes), SharedModule],
+  imports: [RouterModule.forChild(forgotPasswordPageRoutes), FormlyModule, SharedModule],
   declarations: [
     RequestReminderComponent,
     RequestReminderFormComponent,

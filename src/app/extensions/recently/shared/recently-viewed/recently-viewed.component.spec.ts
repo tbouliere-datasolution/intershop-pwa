@@ -7,7 +7,7 @@ import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { findAllDataTestingIDs } from 'ish-core/utils/dev/html-query-utils';
-import { ProductsListComponent } from 'ish-shared/components/product/products-list/products-list.component';
+import { ProductsListComponent } from 'ish-shared/product/products-list/products-list.component';
 
 import { RecentlyFacade } from '../../facades/recently.facade';
 

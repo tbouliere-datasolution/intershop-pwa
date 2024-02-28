@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 
 import { CostCenter, CostCenterBuyer } from 'ish-core/models/cost-center/cost-center.model';
-import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
+import { ModalDialogComponent } from 'ish-shared/utils/modal-dialog/modal-dialog.component';
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 import { CostCenterBuyerEditDialogComponent } from '../cost-center-buyer-edit-dialog/cost-center-buyer-edit-dialog.component';

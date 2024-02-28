@@ -6,7 +6,7 @@ import { instance, mock, when } from 'ts-mockito';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { ProductQuantityComponent } from 'ish-shared/components/product/product-quantity/product-quantity.component';
+import { ProductQuantityComponent } from 'ish-shared/product-core/product-quantity/product-quantity.component';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
 import { DirectOrderComponent } from './direct-order.component';

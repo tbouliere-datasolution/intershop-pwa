@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
 import { Observable } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
+import { ModalDialogComponent } from 'ish-shared/utils/modal-dialog/modal-dialog.component';
 
 import { ProductNotificationsFacade } from '../../facades/product-notifications.facade';
 import { ProductNotification } from '../../models/product-notification/product-notification.model';

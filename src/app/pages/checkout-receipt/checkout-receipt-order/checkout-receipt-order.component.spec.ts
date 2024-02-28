@@ -4,7 +4,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
-import { ModalDialogLinkComponent } from 'ish-shared/components/common/modal-dialog-link/modal-dialog-link.component';
+import { ModalDialogLinkComponent } from 'ish-shared/utils/modal-dialog-link/modal-dialog-link.component';
 
 import { CheckoutReceiptOrderComponent } from './checkout-receipt-order.component';
 

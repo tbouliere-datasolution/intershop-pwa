@@ -7,7 +7,7 @@ import { instance, mock, when } from 'ts-mockito';
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
-import { ProductAddToBasketComponent } from 'ish-shared/components/product/product-add-to-basket/product-add-to-basket.component';
+import { ProductAddToBasketComponent } from 'ish-shared/product/product-add-to-basket/product-add-to-basket.component';
 
 import { RetailSetPartsComponent } from './retail-set-parts.component';
 

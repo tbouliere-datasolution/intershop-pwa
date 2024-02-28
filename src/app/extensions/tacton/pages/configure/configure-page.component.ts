@@ -7,7 +7,7 @@ import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { SelectedProductContextFacade } from 'ish-core/facades/selected-product-context.facade';
 import { ProductView } from 'ish-core/models/product-view/product-view.model';
 import { whenTruthy } from 'ish-core/utils/operators';
-import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
+import { ModalDialogComponent } from 'ish-shared/utils/modal-dialog/modal-dialog.component';
 
 import { TactonFacade } from '../../facades/tacton.facade';
 import {

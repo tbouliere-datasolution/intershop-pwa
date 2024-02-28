@@ -1,6 +1,11 @@
 import { NgModule } from '@angular/core';
-import { ConfigOption, FormlyModule } from '@ngx-formly/core';
+import { ConfigOption, FormlyModule as CoreFormly } from '@ngx-formly/core';
 
+import { AddressModule } from 'ish-shared/address/address.module';
+import { BasketModule } from 'ish-shared/basket/basket.module';
+import { CheckoutModule } from 'ish-shared/checkout/checkout.module';
+import { CmsModule } from 'ish-shared/cms/cms.module';
+import { FormlyModule } from 'ish-shared/formly/formly.module';
 import { SharedModule } from 'ish-shared/shared.module';
 
 import { CheckoutReviewPageComponent } from './checkout-review-page.component';
@@ -17,7 +22,15 @@ const checkoutReviewFormlyConfig: ConfigOption = {
 };
 
 @NgModule({
-  imports: [FormlyModule.forChild(checkoutReviewFormlyConfig), SharedModule],
+  imports: [
+    CoreFormly.forChild(checkoutReviewFormlyConfig),
+    AddressModule,
+    BasketModule,
+    CheckoutModule,
+    CmsModule,
+    FormlyModule,
+    SharedModule,
+  ],
   declarations: [CheckoutReviewComponent, CheckoutReviewPageComponent, CheckoutReviewTacFieldComponent],
 })
 export class CheckoutReviewPageModule {

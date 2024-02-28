@@ -6,7 +6,7 @@ import { instance, mock, when } from 'ts-mockito';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { FilterNavigationComponent } from 'ish-shared/components/filter/filter-navigation/filter-navigation.component';
-import { ProductListingComponent } from 'ish-shared/components/product/product-listing/product-listing.component';
+import { ProductListingComponent } from 'ish-shared/product/product-listing/product-listing.component';
 
 import { ProductMasterVariationsComponent } from './product-master-variations.component';
 

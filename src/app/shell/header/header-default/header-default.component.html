@@ -14,7 +14,7 @@
 <div class="header container" [ngClass]="deviceType">
   <ul *ngIf="!isSticky" class="user-links">
     <li *ngIf="!isSticky && deviceType !== 'mobile'">
-      <ish-login-status data-testing-id="user-status-desktop" />
+      <ish-lazy-login-status data-testing-id="user-status-desktop" />
     </li>
     <li *ishFeature="'compare'" class="d-none d-md-block">
       <ish-lazy-product-compare-status data-testing-id="compare-status-desktop" />
@@ -27,19 +27,12 @@
   <div class="header-utility">
     <a class="search-toggler" [ngClass]="{ 'active-search': showSearch }">
       <fa-icon *ngIf="isSticky" class="header-icon" [icon]="['fas', 'search']" (click)="toggle('search')" />
-      <div
-        *ngIf="isSticky || showSearch"
-        class="search-container header-search-container"
-        [ngbCollapse]="!showSearch"
-        [ngClass]="{ show: !isSticky }"
-      >
-        <ng-container *ngTemplateOutlet="searchBoxTemplate; context: { icon: 'angle-right' }" />
-      </div>
+      <ish-lazy-collapsible-search-box [isSticky]="isSticky" [showSearch]="showSearch" />
     </a>
     <div class="language-switch-container d-none d-md-block">
-      <ish-language-switch *ngIf="!isSticky" data-testing-id="language-switch-desktop" />
+      <ish-lazy-language-switch *ngIf="!isSticky" data-testing-id="language-switch-desktop" />
     </div>
-    <ish-login-status *ngIf="isSticky || deviceType === 'mobile'" view="small" />
+    <ish-lazy-login-status *ngIf="isSticky || deviceType === 'mobile'" view="small" />
 
     <ish-mini-basket
       data-testing-id="mini-basket-desktop"
@@ -94,16 +87,5 @@
     </div>
   </button>
 
-  <div class="global-nav-container">
-    <nav
-      class="global-nav navbar-expand-md"
-      [ngbCollapse]="!showNavBar"
-      [attr.aria-label]="'navigation.main.aria_label' | translate"
-    >
-      <div class="main-navigation">
-        <ish-header-navigation />
-        <ish-user-information-mobile />
-      </div>
-    </nav>
-  </div>
+  <ish-lazy-global-navigation [showNavBar]="showNavBar" />
 </div>

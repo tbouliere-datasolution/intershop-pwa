@@ -6,8 +6,8 @@ import { instance, mock, when } from 'ts-mockito';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
-import { ProductVariationDisplayComponent } from 'ish-shared/components/product/product-variation-display/product-variation-display.component';
-import { ProductVariationSelectComponent } from 'ish-shared/components/product/product-variation-select/product-variation-select.component';
+import { ProductVariationDisplayComponent } from 'ish-shared/product-core/product-variation-display/product-variation-display.component';
+import { ProductVariationSelectComponent } from 'ish-shared/product-core/product-variation-select/product-variation-select.component';
 
 import { ProductMasterLinkComponent } from '../product-master-link/product-master-link.component';
 

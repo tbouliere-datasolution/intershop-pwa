@@ -1,6 +1,8 @@
+import { CdkTableModule } from '@angular/cdk/table';
 import { NgModule } from '@angular/core';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 
+import { BasketModule } from 'ish-shared/basket/basket.module';
 import { SharedModule } from 'ish-shared/shared.module';
 
 import { ApprovalWidgetComponent } from './components/approval-widget/approval-widget.component';
@@ -21,6 +23,6 @@ const importExportModules = [NgbNavModule];
     RequisitionWidgetComponent,
   ],
   exports: [...exportedComponents, ...importExportModules],
-  imports: [...importExportModules, RequisitionManagementStoreModule, SharedModule],
+  imports: [...importExportModules, BasketModule, CdkTableModule, RequisitionManagementStoreModule, SharedModule],
 })
 export class RequisitionManagementModule {}

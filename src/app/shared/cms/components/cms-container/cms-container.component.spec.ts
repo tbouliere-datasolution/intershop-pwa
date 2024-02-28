@@ -2,8 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
 
 import { createContentPageletView } from 'ish-core/models/content-view/content-view.model';
-import { ContentPageletComponent } from 'ish-shared/cms/components/content-pagelet/content-pagelet.component';
-import { ContentSlotComponent } from 'ish-shared/cms/components/content-slot/content-slot.component';
+import { ContentPageletComponent } from 'ish-shared/cms-bootstrap/components/content-pagelet/content-pagelet.component';
+import { ContentSlotComponent } from 'ish-shared/cms-bootstrap/components/content-slot/content-slot.component';
 
 import { CMSContainerComponent } from './cms-container.component';
 

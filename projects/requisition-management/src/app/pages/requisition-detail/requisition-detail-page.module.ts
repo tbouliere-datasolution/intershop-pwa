@@ -1,6 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { AddressModule } from 'ish-shared/address/address.module';
+import { BasketModule } from 'ish-shared/basket/basket.module';
+import { FormlyModule } from 'ish-shared/formly/formly.module';
 import { SharedModule } from 'ish-shared/shared.module';
 
 import { RequisitionManagementModule } from '../../requisition-management.module';
@@ -15,7 +18,14 @@ import { RequisitionSummaryComponent } from './requisition-summary/requisition-s
 const requisitionDetailPageRoutes: Routes = [{ path: '', component: RequisitionDetailPageComponent }];
 
 @NgModule({
-  imports: [RequisitionManagementModule, RouterModule.forChild(requisitionDetailPageRoutes), SharedModule],
+  imports: [
+    AddressModule,
+    RouterModule.forChild(requisitionDetailPageRoutes),
+    BasketModule,
+    FormlyModule,
+    RequisitionManagementModule,
+    SharedModule,
+  ],
   declarations: [
     BudgetBarComponent,
     RequisitionBuyerApprovalComponent,

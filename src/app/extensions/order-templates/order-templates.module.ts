@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 
+import { FormlyModule } from 'ish-shared/formly/formly.module';
 import { SharedModule } from 'ish-shared/shared.module';
 
 import { BasketCreateOrderTemplateComponent } from './shared/basket-create-order-template/basket-create-order-template.component';
@@ -10,7 +11,7 @@ import { SelectOrderTemplateFormComponent } from './shared/select-order-template
 import { SelectOrderTemplateModalComponent } from './shared/select-order-template-modal/select-order-template-modal.component';
 
 @NgModule({
-  imports: [SharedModule],
+  imports: [FormlyModule, SharedModule],
   declarations: [
     BasketCreateOrderTemplateComponent,
     OrderTemplatePreferencesDialogComponent,

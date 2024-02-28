@@ -7,7 +7,7 @@ import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.model';
 import { createContentPageletView } from 'ish-core/models/content-view/content-view.model';
-import { ContentSlotComponent } from 'ish-shared/cms/components/content-slot/content-slot.component';
+import { ContentSlotComponent } from 'ish-shared/cms-bootstrap/components/content-slot/content-slot.component';
 
 import { CMSDialogComponent } from './cms-dialog.component';
 

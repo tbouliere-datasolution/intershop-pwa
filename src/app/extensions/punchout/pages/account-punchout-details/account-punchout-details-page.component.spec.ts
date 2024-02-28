@@ -4,7 +4,7 @@ import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
-import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
+import { ErrorMessageComponent } from 'ish-shared/utils/error-message/error-message.component';
 
 import { PunchoutFacade } from '../../facades/punchout.facade';
 import { PunchoutUser } from '../../models/punchout-user/punchout-user.model';

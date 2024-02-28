@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 
+import { FormlyModule } from 'ish-shared/formly/formly.module';
+import { ProductModule } from 'ish-shared/product/product.module';
 import { SharedModule } from 'ish-shared/shared.module';
 
 import { ProductNotificationDeleteComponent } from './shared/product-notification-delete/product-notification-delete.component';
@@ -8,7 +10,7 @@ import { ProductNotificationEditFormComponent } from './shared/product-notificat
 import { ProductNotificationEditComponent } from './shared/product-notification-edit/product-notification-edit.component';
 
 @NgModule({
-  imports: [SharedModule],
+  imports: [FormlyModule, ProductModule, SharedModule],
   declarations: [
     ProductNotificationDeleteComponent,
     ProductNotificationEditComponent,

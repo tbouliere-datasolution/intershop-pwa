@@ -5,8 +5,8 @@ import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
-import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box.component';
-import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
+import { InfoBoxComponent } from 'ish-shared/utils/info-box/info-box.component';
+import { LoadingComponent } from 'ish-shared/utils/loading/loading.component';
 
 import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
 import { OrderTemplate } from '../../models/order-template/order-template.model';

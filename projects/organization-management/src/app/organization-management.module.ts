@@ -1,5 +1,7 @@
+import { CdkTableModule } from '@angular/cdk/table';
 import { NgModule } from '@angular/core';
 
+import { FormlyModule } from 'ish-shared/formly/formly.module';
 import { SharedModule } from 'ish-shared/shared.module';
 
 import { BudgetWidgetComponent } from './components/budget-widget/budget-widget.component';
@@ -28,6 +30,6 @@ const exportedComponents = [
 @NgModule({
   declarations: [...exportedComponents, BudgetWidgetComponent, CostCenterWidgetComponent],
   exports: [...exportedComponents],
-  imports: [OrganizationManagementStoreModule, SharedModule],
+  imports: [CdkTableModule, FormlyModule, OrganizationManagementStoreModule, SharedModule],
 })
 export class OrganizationManagementModule {}

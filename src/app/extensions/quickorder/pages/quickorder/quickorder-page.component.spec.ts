@@ -4,7 +4,7 @@ import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
-import { BreadcrumbComponent } from 'ish-shared/components/common/breadcrumb/breadcrumb.component';
+import { BreadcrumbComponent } from 'ish-shared/utils/breadcrumb/breadcrumb.component';
 
 import { QuickorderAddProductsFormComponent } from '../../shared/quickorder-add-products-form/quickorder-add-products-form.component';
 import { QuickorderCsvFormComponent } from '../../shared/quickorder-csv-form/quickorder-csv-form.component';

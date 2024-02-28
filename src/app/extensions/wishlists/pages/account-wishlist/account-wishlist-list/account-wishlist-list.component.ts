@@ -12,7 +12,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TranslateService } from '@ngx-translate/core';
 import { take } from 'rxjs/operators';
 
-import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
+import { ModalDialogComponent } from 'ish-shared/utils/modal-dialog/modal-dialog.component';
 
 import { Wishlist } from '../../../models/wishlist/wishlist.model';
 

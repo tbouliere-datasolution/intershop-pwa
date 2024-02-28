@@ -4,8 +4,8 @@ import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { instance, mock, verify, when } from 'ts-mockito';
 
-import { BreadcrumbComponent } from 'ish-shared/components/common/breadcrumb/breadcrumb.component';
-import { ProductsListComponent } from 'ish-shared/components/product/products-list/products-list.component';
+import { ProductsListComponent } from 'ish-shared/product/products-list/products-list.component';
+import { BreadcrumbComponent } from 'ish-shared/utils/breadcrumb/breadcrumb.component';
 
 import { RecentlyFacade } from '../../facades/recently.facade';
 

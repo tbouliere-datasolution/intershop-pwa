@@ -6,8 +6,8 @@ import { instance, mock, when } from 'ts-mockito';
 
 import { Price } from 'ish-core/models/price/price.model';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
-import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box.component';
-import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
+import { InfoBoxComponent } from 'ish-shared/utils/info-box/info-box.component';
+import { LoadingComponent } from 'ish-shared/utils/loading/loading.component';
 
 import { RequisitionManagementFacade } from '../../facades/requisition-management.facade';
 import { Requisition } from '../../models/requisition/requisition.model';

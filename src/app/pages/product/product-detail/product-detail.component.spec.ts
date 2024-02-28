@@ -5,16 +5,16 @@ import { instance, mock, when } from 'ts-mockito';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
-import { ContentViewcontextComponent } from 'ish-shared/cms/components/content-viewcontext/content-viewcontext.component';
-import { ProductAddToBasketComponent } from 'ish-shared/components/product/product-add-to-basket/product-add-to-basket.component';
-import { ProductIdComponent } from 'ish-shared/components/product/product-id/product-id.component';
-import { ProductInventoryComponent } from 'ish-shared/components/product/product-inventory/product-inventory.component';
-import { ProductNameComponent } from 'ish-shared/components/product/product-name/product-name.component';
-import { ProductPriceComponent } from 'ish-shared/components/product/product-price/product-price.component';
-import { ProductPromotionComponent } from 'ish-shared/components/product/product-promotion/product-promotion.component';
-import { ProductQuantityLabelComponent } from 'ish-shared/components/product/product-quantity-label/product-quantity-label.component';
-import { ProductQuantityComponent } from 'ish-shared/components/product/product-quantity/product-quantity.component';
-import { ProductShipmentComponent } from 'ish-shared/components/product/product-shipment/product-shipment.component';
+import { ContentViewcontextComponent } from 'ish-shared/cms-bootstrap/components/content-viewcontext/content-viewcontext.component';
+import { ProductAddToBasketComponent } from 'ish-shared/product/product-add-to-basket/product-add-to-basket.component';
+import { ProductIdComponent } from 'ish-shared/product-core/product-id/product-id.component';
+import { ProductInventoryComponent } from 'ish-shared/product-core/product-inventory/product-inventory.component';
+import { ProductNameComponent } from 'ish-shared/product-core/product-name/product-name.component';
+import { ProductPriceComponent } from 'ish-shared/product-core/product-price/product-price.component';
+import { ProductPromotionComponent } from 'ish-shared/product-core/product-promotion/product-promotion.component';
+import { ProductQuantityLabelComponent } from 'ish-shared/product-core/product-quantity-label/product-quantity-label.component';
+import { ProductQuantityComponent } from 'ish-shared/product-core/product-quantity/product-quantity.component';
+import { ProductShipmentComponent } from 'ish-shared/product-core/product-shipment/product-shipment.component';
 
 import { LazyProductAddToOrderTemplateComponent } from '../../../extensions/order-templates/exports/lazy-product-add-to-order-template/lazy-product-add-to-order-template.component';
 import { LazyProductNotificationEditComponent } from '../../../extensions/product-notifications/exports/lazy-product-notification-edit/lazy-product-notification-edit.component';

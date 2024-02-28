@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 
+import { FormlyModule } from 'ish-shared/formly/formly.module';
+import { ProductModule } from 'ish-shared/product/product.module';
 import { SharedModule } from 'ish-shared/shared.module';
 
 import { ProductAddToWishlistComponent } from './shared/product-add-to-wishlist/product-add-to-wishlist.component';
@@ -10,7 +12,7 @@ import { WishlistWidgetComponent } from './shared/wishlist-widget/wishlist-widge
 import { WishlistsLinkComponent } from './shared/wishlists-link/wishlists-link.component';
 
 @NgModule({
-  imports: [SharedModule],
+  imports: [FormlyModule, ProductModule, SharedModule],
   declarations: [
     ProductAddToWishlistComponent,
     SelectWishlistFormComponent,

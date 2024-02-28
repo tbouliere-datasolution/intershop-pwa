@@ -12,10 +12,10 @@ import { ShoppingFacade } from 'ish-core/facades/shopping.facade';
 import { AttributeToStringPipe } from 'ish-core/models/attribute/attribute.pipe';
 import { ProductView, createProductView } from 'ish-core/models/product-view/product-view.model';
 import { Product } from 'ish-core/models/product/product.model';
-import { ProductAttributesComponent } from 'ish-shared/components/product/product-attributes/product-attributes.component';
-import { ProductImageComponent } from 'ish-shared/components/product/product-image/product-image.component';
-import { ProductNameComponent } from 'ish-shared/components/product/product-name/product-name.component';
-import { ProductPriceComponent } from 'ish-shared/components/product/product-price/product-price.component';
+import { ProductAttributesComponent } from 'ish-shared/product-core/product-attributes/product-attributes.component';
+import { ProductImageComponent } from 'ish-shared/product-core/product-image/product-image.component';
+import { ProductNameComponent } from 'ish-shared/product-core/product-name/product-name.component';
+import { ProductPriceComponent } from 'ish-shared/product-core/product-price/product-price.component';
 
 import { CompareFacade } from '../../../facades/compare.facade';
 import { ProductComparePagingComponent } from '../product-compare-paging/product-compare-paging.component';

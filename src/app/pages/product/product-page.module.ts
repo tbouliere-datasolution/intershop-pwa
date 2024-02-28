@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 
+import { CmsModule } from 'ish-shared/cms/cms.module';
 import { SharedModule } from 'ish-shared/shared.module';
 
 import { ProductBrandComponent } from './product-brand/product-brand.component';
@@ -18,6 +19,9 @@ import { ProductMasterLinkComponent } from './product-master-link/product-master
 import { ProductMasterVariationsComponent } from './product-master-variations/product-master-variations.component';
 import { ProductPageComponent } from './product-page.component';
 import { RetailSetPartsComponent } from './retail-set-parts/retail-set-parts.component';
+import { SwiperModule } from 'swiper/angular';
+import { ProductModule } from 'ish-shared/product/product.module';
+import { FilterModule } from 'ish-shared/filter/filter.module';
 
 const productPageRoutes: Routes = [
   {
@@ -34,7 +38,15 @@ const productPageRoutes: Routes = [
 ];
 
 @NgModule({
-  imports: [NgbNavModule, RouterModule.forChild(productPageRoutes), SharedModule],
+  imports: [
+    CmsModule,
+    SwiperModule,
+    ProductModule,
+    FilterModule,
+    RouterModule.forChild(productPageRoutes),
+    NgbNavModule,
+    SharedModule,
+  ],
   declarations: [
     ProductBrandComponent,
     ProductBundlePartsComponent,

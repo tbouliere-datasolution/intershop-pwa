@@ -10,7 +10,7 @@ import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { CostCenter, CostCenterBuyer } from 'ish-core/models/cost-center/cost-center.model';
 import { Price } from 'ish-core/models/price/price.model';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
-import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
+import { ModalDialogComponent } from 'ish-shared/utils/modal-dialog/modal-dialog.component';
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 import { CostCenterBuyerEditDialogComponent } from '../cost-center-buyer-edit-dialog/cost-center-buyer-edit-dialog.component';

@@ -6,7 +6,9 @@
     "intershop-pwa": {
       "projectType": "application",
       "cli": {
-        "schematicCollections": ["intershop-schematics"]
+        "schematicCollections": [
+          "intershop-schematics"
+        ]
       },
       "schematics": {
         "@schematics/angular:component": {
@@ -39,12 +41,18 @@
               }
             ],
             "scripts": [],
-            "styles": ["src/styles/themes/theme_placeholder/style.scss"],
+            "styles": [
+              "src/styles/themes/theme_placeholder/style.scss"
+            ],
             "stylePreprocessorOptions": {
-              "includePaths": ["src/styles/themes/theme_placeholder"]
+              "includePaths": [
+                "src/styles/themes/theme_placeholder"
+              ]
             },
             "sourceMap": true,
-            "allowedCommonJsDependencies": ["fast-sha256"]
+            "allowedCommonJsDependencies": [
+              "fast-sha256"
+            ]
           },
           "defaultConfiguration": "b2b,production",
           "configurations": {
@@ -65,7 +73,7 @@
                 {
                   "type": "bundle",
                   "name": "vendor",
-                  "baseline": "800kb",
+                  "baseline": "650kb",
                   "warning": "100kb",
                   "error": "300kb"
                 },
@@ -134,7 +142,11 @@
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": ["**/*.ts", "**/*.html", "**/*.js"]
+            "lintFilePatterns": [
+              "**/*.ts",
+              "**/*.html",
+              "**/*.js"
+            ]
           }
         },
         "server": {
@@ -149,7 +161,9 @@
             "optimization": true,
             "tsConfig": "tsconfig.server.json",
             "stylePreprocessorOptions": {
-              "includePaths": ["src/styles/themes/theme_placeholder"]
+              "includePaths": [
+                "src/styles/themes/theme_placeholder"
+              ]
             },
             "sourceMap": true
           },
@@ -184,7 +198,9 @@
     "organization-management": {
       "projectType": "application",
       "cli": {
-        "schematicCollections": ["intershop-schematics"]
+        "schematicCollections": [
+          "intershop-schematics"
+        ]
       },
       "root": "projects/organization-management",
       "sourceRoot": "projects/organization-management/src",
@@ -203,7 +219,9 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "projects/organization-management/tsconfig.app.json",
             "aot": false,
-            "styles": ["src/styles/themes/theme_placeholder/style.scss"],
+            "styles": [
+              "src/styles/themes/theme_placeholder/style.scss"
+            ],
             "assets": [
               {
                 "glob": "**/*",
@@ -231,7 +249,9 @@
     "requisition-management": {
       "projectType": "application",
       "cli": {
-        "schematicCollections": ["intershop-schematics"]
+        "schematicCollections": [
+          "intershop-schematics"
+        ]
       },
       "root": "projects/requisition-management",
       "sourceRoot": "projects/requisition-management/src",
@@ -250,7 +270,9 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "projects/requisition-management/tsconfig.app.json",
             "aot": false,
-            "styles": ["src/styles/themes/theme_placeholder/style.scss"],
+            "styles": [
+              "src/styles/themes/theme_placeholder/style.scss"
+            ],
             "assets": [
               {
                 "glob": "**/*",

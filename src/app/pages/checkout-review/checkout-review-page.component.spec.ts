@@ -5,7 +5,7 @@ import { instance, mock, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
-import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
+import { LoadingComponent } from 'ish-shared/utils/loading/loading.component';
 
 import { CheckoutReviewPageComponent } from './checkout-review-page.component';
 import { CheckoutReviewComponent } from './checkout-review/checkout-review.component';

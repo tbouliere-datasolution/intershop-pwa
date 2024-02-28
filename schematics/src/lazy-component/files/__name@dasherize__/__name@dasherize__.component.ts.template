@@ -60,7 +60,7 @@ export class <%= classify(name) %>Component implements OnInit <% if (inputNames.
   }
 
   private async renderComponent() {
-    const module = await import(`../..<% if(isShared) { %>/../shared<% } %>/<%= dasherize(declaringModule) %>.module`).then(m => m.<%= classify(declaringModule) %>Module);
+    const module = await import(`../..<% if(isCMS){ %>/../<%= sharedModuleName %><% } else if (isShared) { %>/../shared/<%= sharedModuleName %><% } %>/<%= dasherize(declaringModule) %>.module`).then(m => m.<%= classify(declaringModule) %>Module);
 
     const { <%= classify(originalName) %>Component: originalComponent } = await import('<%= componentImportPath %>/<%= dasherize(originalName) %>/<%= dasherize(originalName) %>.component');
 

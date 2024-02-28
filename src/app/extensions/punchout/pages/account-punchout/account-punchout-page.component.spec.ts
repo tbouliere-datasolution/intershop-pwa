@@ -9,8 +9,8 @@ import { anyString, instance, mock, verify, when } from 'ts-mockito';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { AppFacade } from 'ish-core/facades/app.facade';
 import { Customer } from 'ish-core/models/customer/customer.model';
-import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
-import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
+import { LoadingComponent } from 'ish-shared/utils/loading/loading.component';
+import { ModalDialogComponent } from 'ish-shared/utils/modal-dialog/modal-dialog.component';
 
 import { PunchoutFacade } from '../../facades/punchout.facade';
 import { PunchoutUser } from '../../models/punchout-user/punchout-user.model';

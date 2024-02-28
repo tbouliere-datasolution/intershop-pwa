@@ -8,12 +8,12 @@ import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
-import { BasketCostSummaryComponent } from 'ish-shared/components/basket/basket-cost-summary/basket-cost-summary.component';
-import { BasketItemsSummaryComponent } from 'ish-shared/components/basket/basket-items-summary/basket-items-summary.component';
-import { BasketValidationResultsComponent } from 'ish-shared/components/basket/basket-validation-results/basket-validation-results.component';
-import { BasketInvoiceAddressWidgetComponent } from 'ish-shared/components/checkout/basket-invoice-address-widget/basket-invoice-address-widget.component';
-import { BasketShippingAddressWidgetComponent } from 'ish-shared/components/checkout/basket-shipping-address-widget/basket-shipping-address-widget.component';
-import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
+import { BasketCostSummaryComponent } from 'ish-shared/basket/basket-cost-summary/basket-cost-summary.component';
+import { BasketItemsSummaryComponent } from 'ish-shared/basket/basket-items-summary/basket-items-summary.component';
+import { BasketValidationResultsComponent } from 'ish-shared/basket/basket-validation-results/basket-validation-results.component';
+import { BasketInvoiceAddressWidgetComponent } from 'ish-shared/checkout/basket-invoice-address-widget/basket-invoice-address-widget.component';
+import { BasketShippingAddressWidgetComponent } from 'ish-shared/checkout/basket-shipping-address-widget/basket-shipping-address-widget.component';
+import { ErrorMessageComponent } from 'ish-shared/utils/error-message/error-message.component';
 
 import { CheckoutAddressComponent } from './checkout-address.component';
 

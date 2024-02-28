@@ -8,8 +8,8 @@ import { of } from 'rxjs';
 import { anything, instance, mock, when } from 'ts-mockito';
 
 import { CostCenter } from 'ish-core/models/cost-center/cost-center.model';
-import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
-import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
+import { LoadingComponent } from 'ish-shared/utils/loading/loading.component';
+import { ModalDialogComponent } from 'ish-shared/utils/modal-dialog/modal-dialog.component';
 
 import { CostCenterBudgetComponent } from '../../components/cost-center-budget/cost-center-budget.component';
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';

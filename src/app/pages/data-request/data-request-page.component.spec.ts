@@ -7,8 +7,8 @@ import { instance, mock, when } from 'ts-mockito';
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
-import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
-import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
+import { ErrorMessageComponent } from 'ish-shared/utils/error-message/error-message.component';
+import { LoadingComponent } from 'ish-shared/utils/loading/loading.component';
 
 import { DataRequestPageComponent } from './data-request-page.component';
 

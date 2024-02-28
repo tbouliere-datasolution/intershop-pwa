@@ -7,12 +7,12 @@ import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
-import { AddressComponent } from 'ish-shared/components/address/address/address.component';
-import { BasketCostSummaryComponent } from 'ish-shared/components/basket/basket-cost-summary/basket-cost-summary.component';
-import { BasketMerchantMessageViewComponent } from 'ish-shared/components/basket/basket-merchant-message-view/basket-merchant-message-view.component';
-import { BasketShippingMethodComponent } from 'ish-shared/components/basket/basket-shipping-method/basket-shipping-method.component';
-import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box.component';
-import { LineItemListComponent } from 'ish-shared/components/line-item/line-item-list/line-item-list.component';
+import { AddressComponent } from 'ish-shared/address/address/address.component';
+import { BasketCostSummaryComponent } from 'ish-shared/basket/basket-cost-summary/basket-cost-summary.component';
+import { BasketMerchantMessageViewComponent } from 'ish-shared/basket/basket-merchant-message-view/basket-merchant-message-view.component';
+import { BasketShippingMethodComponent } from 'ish-shared/basket/basket-shipping-method/basket-shipping-method.component';
+import { LineItemListComponent } from 'ish-shared/basket/line-item-list/line-item-list.component';
+import { InfoBoxComponent } from 'ish-shared/utils/info-box/info-box.component';
 
 import { CheckoutReceiptComponent } from './checkout-receipt.component';
 

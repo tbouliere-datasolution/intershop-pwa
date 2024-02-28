@@ -7,7 +7,7 @@ import { filter, first } from 'rxjs/operators';
 import { getDeviceType } from 'ish-core/store/core/configuration';
 import { getUserAuthorized } from 'ish-core/store/customer/user';
 import { whenTruthy } from 'ish-core/utils/operators';
-import { LoginModalComponent } from 'ish-shared/components/login/login-modal/login-modal.component';
+import { LoginModalComponent } from 'ish-shared/login/login-modal/login-modal.component';
 
 /**
  * The guard decides whether to show the login dialog, used as alternative for the login page
@@ -38,12 +38,11 @@ export async function loginGuard(route: ActivatedRouteSnapshot, _: RouterStateSn
 
   const currentDialog = modalService.open(LoginModalComponent, { centered: true, size: 'sm' });
 
-  const loginModalComponent = currentDialog.componentInstance as LoginModalComponent;
-  loginModalComponent.loginMessageKey = route.queryParamMap.get('messageKey');
-  loginModalComponent.detectChanges();
+  currentDialog.componentInstance.loginMessageKey = route.queryParamMap.get('messageKey');
+  currentDialog.componentInstance.detectChanges();
 
   // dialog closed
-  loginModalComponent.closeModal.pipe(first()).subscribe(() => {
+  currentDialog.componentInstance.closeModal.pipe(first()).subscribe(() => {
     currentDialog.dismiss();
   });
 

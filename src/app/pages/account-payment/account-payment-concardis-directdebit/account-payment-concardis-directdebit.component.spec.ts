@@ -3,7 +3,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent, MockPipe } from 'ng-mocks';
 
 import { DatePipe } from 'ish-core/pipes/date.pipe';
-import { ModalDialogLinkComponent } from 'ish-shared/components/common/modal-dialog-link/modal-dialog-link.component';
+import { ModalDialogLinkComponent } from 'ish-shared/utils/modal-dialog-link/modal-dialog-link.component';
 
 import { AccountPaymentConcardisDirectdebitComponent } from './account-payment-concardis-directdebit.component';
 

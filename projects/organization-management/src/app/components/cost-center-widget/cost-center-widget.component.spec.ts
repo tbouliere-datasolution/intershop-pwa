@@ -6,8 +6,8 @@ import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { CostCenter } from 'ish-core/models/cost-center/cost-center.model';
-import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box.component';
-import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
+import { InfoBoxComponent } from 'ish-shared/utils/info-box/info-box.component';
+import { LoadingComponent } from 'ish-shared/utils/loading/loading.component';
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 import { CostCenterBudgetComponent } from '../cost-center-budget/cost-center-budget.component';

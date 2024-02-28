@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { FormlyModule } from 'ish-shared/formly/formly.module';
+
 import { ContactUsModule } from '../../contact-us.module';
 
 import { ContactConfirmationComponent } from './contact-confirmation/contact-confirmation.component';
@@ -22,7 +24,7 @@ const contactPageRoutes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(contactPageRoutes), ContactUsModule],
+  imports: [RouterModule.forChild(contactPageRoutes), ContactUsModule, FormlyModule],
   declarations: [ContactConfirmationComponent, ContactFormComponent, ContactPageComponent],
 })
 export class ContactPageModule {}

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { OrderModule } from 'ish-shared/order/order.module';
 import { SharedModule } from 'ish-shared/shared.module';
 
 import { OrganizationManagementModule } from '../../organization-management.module';
@@ -10,7 +11,7 @@ import { CostCenterDetailPageComponent } from './cost-center-detail-page.compone
 const costCenterDetailPageRoutes: Routes = [{ path: '', component: CostCenterDetailPageComponent }];
 
 @NgModule({
-  imports: [OrganizationManagementModule, RouterModule.forChild(costCenterDetailPageRoutes), SharedModule],
+  imports: [OrderModule, RouterModule.forChild(costCenterDetailPageRoutes), OrganizationManagementModule, SharedModule],
   declarations: [CostCenterDetailPageComponent],
 })
 export class CostCenterDetailPageModule {}

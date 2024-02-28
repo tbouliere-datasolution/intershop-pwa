@@ -6,8 +6,8 @@ import { instance, mock, when } from 'ts-mockito';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { BasketView } from 'ish-core/models/basket/basket.model';
 import { LineItem } from 'ish-core/models/line-item/line-item.model';
-import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
-import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
+import { ContentIncludeComponent } from 'ish-shared/cms-bootstrap/components/content-include/content-include.component';
+import { LoadingComponent } from 'ish-shared/utils/loading/loading.component';
 
 import { LazyRecentlyViewedComponent } from '../../extensions/recently/exports/lazy-recently-viewed/lazy-recently-viewed.component';
 

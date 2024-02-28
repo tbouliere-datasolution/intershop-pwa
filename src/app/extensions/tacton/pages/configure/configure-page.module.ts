@@ -17,6 +17,7 @@ import { TactonSelectedImageComponent } from './tacton-selected-image/tacton-sel
 import { TactonStepButtonsComponent } from './tacton-step-buttons/tacton-step-buttons.component';
 import { TactonTextButtonsComponent } from './tacton-text-buttons/tacton-text-buttons.component';
 import { TactonTextInputComponent } from './tacton-text-input/tacton-text-input.component';
+import { ProductModule } from 'ish-shared/product/product.module';
 
 const configurePageRoutes: Routes = [
   { path: ':sku/:mainStep', component: ConfigurePageComponent },
@@ -24,7 +25,7 @@ const configurePageRoutes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(configurePageRoutes), TactonModule],
+  imports: [RouterModule.forChild(configurePageRoutes), TactonModule, ProductModule],
   declarations: [
     ConfigurePageComponent,
     TactonBomComponent,

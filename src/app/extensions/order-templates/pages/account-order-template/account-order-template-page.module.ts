@@ -1,3 +1,4 @@
+import { CdkTableModule } from '@angular/cdk/table';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
@@ -16,7 +17,7 @@ const accountOrderTemplatePageRoutes: Routes = [
 ];
 
 @NgModule({
-  imports: [OrderTemplatesModule, RouterModule.forChild(accountOrderTemplatePageRoutes), SharedModule],
+  imports: [CdkTableModule, RouterModule.forChild(accountOrderTemplatePageRoutes), OrderTemplatesModule, SharedModule],
   declarations: [AccountOrderTemplateListComponent, AccountOrderTemplatePageComponent],
 })
 export class AccountOrderTemplatePageModule {}

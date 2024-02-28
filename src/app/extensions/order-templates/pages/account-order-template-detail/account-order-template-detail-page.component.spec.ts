@@ -6,8 +6,8 @@ import { instance, mock, when } from 'ts-mockito';
 
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
-import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
-import { ProductAddToBasketComponent } from 'ish-shared/components/product/product-add-to-basket/product-add-to-basket.component';
+import { ProductAddToBasketComponent } from 'ish-shared/product/product-add-to-basket/product-add-to-basket.component';
+import { ErrorMessageComponent } from 'ish-shared/utils/error-message/error-message.component';
 
 import { OrderTemplatesFacade } from '../../facades/order-templates.facade';
 import { OrderTemplate } from '../../models/order-template/order-template.model';

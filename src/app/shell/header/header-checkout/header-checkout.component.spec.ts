@@ -3,7 +3,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
-import { LoginStatusComponent } from 'ish-shell/header/login-status/login-status.component';
+import { LoginStatusComponent } from 'ish-shared/navigation/login-status/login-status.component';
 
 import { HeaderCheckoutComponent } from './header-checkout.component';
 

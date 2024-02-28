@@ -4,9 +4,9 @@ import { MockComponent } from 'ng-mocks';
 import { anything, instance, mock, spy, verify, when } from 'ts-mockito';
 
 import { Customer } from 'ish-core/models/customer/customer.model';
-import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 import { FieldLibrary } from 'ish-shared/formly/field-library/field-library';
+import { ErrorMessageComponent } from 'ish-shared/utils/error-message/error-message.component';
 
 import { AccountProfileCompanyComponent } from './account-profile-company.component';
 

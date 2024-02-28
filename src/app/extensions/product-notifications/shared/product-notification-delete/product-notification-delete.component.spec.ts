@@ -6,7 +6,7 @@ import { instance, mock } from 'ts-mockito';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
+import { ModalDialogComponent } from 'ish-shared/utils/modal-dialog/modal-dialog.component';
 
 import { ProductNotificationsFacade } from '../../facades/product-notifications.facade';
 

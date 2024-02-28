@@ -14,9 +14,10 @@ import { Credentials } from 'ish-core/models/credentials/credentials.model';
 import { Customer, CustomerRegistrationType } from 'ish-core/models/customer/customer.model';
 import { User } from 'ish-core/models/user/user.model';
 import { FeatureToggleService } from 'ish-core/utils/feature-toggle/feature-toggle.service';
-import { ConfirmLeaveModalComponent } from 'ish-shared/components/registration/confirm-leave-modal/confirm-leave-modal.component';
 import { FieldLibrary } from 'ish-shared/formly/field-library/field-library';
 import { SpecialValidators } from 'ish-shared/forms/validators/special-validators';
+
+import { ConfirmLeaveModalComponent } from '../../confirm-leave-modal/confirm-leave-modal.component';
 
 export interface RegistrationConfigType {
   businessCustomer?: boolean;

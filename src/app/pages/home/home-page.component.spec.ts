@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
 
-import { ContentIncludeComponent } from 'ish-shared/cms/components/content-include/content-include.component';
+import { ContentIncludeComponent } from 'ish-shared/cms-bootstrap/components/content-include/content-include.component';
 
 import { HomePageComponent } from './home-page.component';
 

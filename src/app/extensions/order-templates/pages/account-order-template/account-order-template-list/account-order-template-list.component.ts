@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
 import { SkuQuantityType } from 'ish-core/models/product/product.model';
-import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
+import { ModalDialogComponent } from 'ish-shared/utils/modal-dialog/modal-dialog.component';
 
 import { OrderTemplatesFacade } from '../../../facades/order-templates.facade';
 import { OrderTemplate } from '../../../models/order-template/order-template.model';

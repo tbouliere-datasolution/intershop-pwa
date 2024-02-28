@@ -5,7 +5,7 @@ import { instance, mock } from 'ts-mockito';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { AccountFacade } from 'ish-core/facades/account.facade';
-import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
+import { ErrorMessageComponent } from 'ish-shared/utils/error-message/error-message.component';
 
 import { RequestReminderFormComponent } from '../request-reminder-form/request-reminder-form.component';
 

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 
 import { FEATURE_EVENT_RESULT_LISTENER } from 'ish-core/utils/feature-event/feature-event.service';
+import { FormlyModule } from 'ish-shared/formly/formly.module';
 import { SharedModule } from 'ish-shared/shared.module';
 
 import { AddressDoctorEventsService } from './services/address-doctor-events/address-doctor-events.service';
@@ -8,7 +9,7 @@ import { AddressDoctorModalComponent } from './shared/address-doctor-modal/addre
 import { AddressDoctorComponent } from './shared/address-doctor/address-doctor.component';
 
 @NgModule({
-  imports: [SharedModule],
+  imports: [FormlyModule, SharedModule],
   declarations: [AddressDoctorComponent, AddressDoctorModalComponent],
   exports: [SharedModule],
   providers: [

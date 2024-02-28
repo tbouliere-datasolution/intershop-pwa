@@ -4,7 +4,7 @@ import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
-import { BreadcrumbComponent } from 'ish-shared/components/common/breadcrumb/breadcrumb.component';
+import { BreadcrumbComponent } from 'ish-shared/utils/breadcrumb/breadcrumb.component';
 
 import { AccountNavigationComponent } from './account-navigation/account-navigation.component';
 import { AccountPageComponent } from './account-page.component';

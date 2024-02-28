@@ -6,11 +6,11 @@ import { MockComponent, MockDirective } from 'ng-mocks';
 
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
-import { HeaderNavigationComponent } from 'ish-shell/header/header-navigation/header-navigation.component';
-import { LanguageSwitchComponent } from 'ish-shell/header/language-switch/language-switch.component';
-import { LoginStatusComponent } from 'ish-shell/header/login-status/login-status.component';
+import { HeaderNavigationComponent } from 'ish-shared/navigation/header-navigation/header-navigation.component';
+import { LanguageSwitchComponent } from 'ish-shared/language/language-switch/language-switch.component';
+import { LoginStatusComponent } from 'ish-shared/navigation/login-status/login-status.component';
 import { MiniBasketComponent } from 'ish-shell/header/mini-basket/mini-basket.component';
-import { UserInformationMobileComponent } from 'ish-shell/header/user-information-mobile/user-information-mobile.component';
+import { UserInformationMobileComponent } from 'ish-shared/navigation/user-information-mobile/user-information-mobile.component';
 import { LazySearchBoxComponent } from 'ish-shell/shared/lazy-search-box/lazy-search-box.component';
 
 import { LazyProductCompareStatusComponent } from '../../../extensions/compare/exports/lazy-product-compare-status/lazy-product-compare-status.component';

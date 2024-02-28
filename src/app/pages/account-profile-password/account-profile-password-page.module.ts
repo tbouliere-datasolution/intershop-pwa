@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { FormlyModule } from 'ish-shared/formly/formly.module';
 import { SharedModule } from 'ish-shared/shared.module';
 
 import { AccountProfilePasswordPageComponent } from './account-profile-password-page.component';
@@ -14,7 +15,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes), SharedModule],
+  imports: [RouterModule.forChild(routes), FormlyModule, SharedModule],
   declarations: [AccountProfilePasswordComponent, AccountProfilePasswordPageComponent],
 })
 export class AccountProfilePasswordPageModule {}

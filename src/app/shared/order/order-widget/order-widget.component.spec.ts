@@ -1,0 +1,36 @@
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TranslateModule } from '@ngx-translate/core';
+import { MockComponent } from 'ng-mocks';
+import { instance, mock } from 'ts-mockito';
+
+import { AccountFacade } from 'ish-core/facades/account.facade';
+import { OrderListComponent } from 'ish-shared/order/order-list/order-list.component';
+import { InfoBoxComponent } from 'ish-shared/utils/info-box/info-box.component';
+
+import { OrderWidgetComponent } from './order-widget.component';
+
+describe('Order Widget Component', () => {
+  let component: OrderWidgetComponent;
+  let fixture: ComponentFixture<OrderWidgetComponent>;
+  let element: HTMLElement;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [TranslateModule.forRoot()],
+      declarations: [MockComponent(InfoBoxComponent), MockComponent(OrderListComponent), OrderWidgetComponent],
+      providers: [{ provide: AccountFacade, useFactory: () => instance(mock(AccountFacade)) }],
+    }).compileComponents();
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(OrderWidgetComponent);
+    component = fixture.componentInstance;
+    element = fixture.nativeElement;
+  });
+
+  it('should be created', () => {
+    expect(component).toBeTruthy();
+    expect(element).toBeTruthy();
+    expect(() => fixture.detectChanges()).not.toThrow();
+  });
+});

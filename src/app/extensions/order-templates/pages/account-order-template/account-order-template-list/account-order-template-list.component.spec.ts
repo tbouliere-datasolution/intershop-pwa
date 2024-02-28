@@ -8,7 +8,7 @@ import { anything, instance, mock, verify, when } from 'ts-mockito';
 
 import { ProductContextDirective } from 'ish-core/directives/product-context.directive';
 import { DatePipe } from 'ish-core/pipes/date.pipe';
-import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
+import { ModalDialogComponent } from 'ish-shared/utils/modal-dialog/modal-dialog.component';
 
 import { OrderTemplatesFacade } from '../../../facades/order-templates.facade';
 

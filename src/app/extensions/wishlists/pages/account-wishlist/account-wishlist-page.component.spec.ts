@@ -5,7 +5,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 import { instance, mock } from 'ts-mockito';
 
-import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
+import { ErrorMessageComponent } from 'ish-shared/utils/error-message/error-message.component';
 
 import { WishlistsFacade } from '../../facades/wishlists.facade';
 import { WishlistPreferencesDialogComponent } from '../../shared/wishlist-preferences-dialog/wishlist-preferences-dialog.component';

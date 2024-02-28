@@ -16,7 +16,7 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 import { TranslateService } from '@ngx-translate/core';
 
 import { Address } from 'ish-core/models/address/address.model';
-import { ModalOptions } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
+import { ModalOptions } from 'ish-shared/utils/modal-dialog/modal-dialog.component';
 
 @Component({
   selector: 'ish-address-doctor-modal',

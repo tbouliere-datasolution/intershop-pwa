@@ -6,7 +6,7 @@ import { EMPTY } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
-import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
+import { ErrorMessageComponent } from 'ish-shared/utils/error-message/error-message.component';
 
 import { UpdatePasswordFormComponent } from '../update-password-form/update-password-form.component';
 

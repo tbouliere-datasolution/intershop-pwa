@@ -3,8 +3,8 @@ import { FormGroup } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
-import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
+import { ErrorMessageComponent } from 'ish-shared/utils/error-message/error-message.component';
 
 import { B2bUser } from '../../models/b2b-user/b2b-user.model';
 

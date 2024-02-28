@@ -36,9 +36,12 @@ export function createLazyComponent(options: Options): Rule {
     const workspace = await getWorkspace(host);
     const isProject = options.path.startsWith('projects/');
     const isShared = options.path.startsWith('src/app/shared/');
+    const sharedModuleName = isShared ? options.path.split('/')[3] : '';
+
+    const isCMS = options.path.split('/').slice(-1)[0].startsWith('cms-');
     const originalPath = options.path.replace(/.*src\/app\//, '');
     const extension = originalPath.split('/')[1];
-    const declaringModule = isShared ? 'shared' : isProject ? options.path.split('/')[1] : extension;
+    const declaringModule = isShared ? sharedModuleName : isProject ? options.path.split('/')[1] : extension;
     const project = workspace.projects.get(isProject ? options.path.split('/')[1] : options.project);
 
     const componentPath = `/${project.sourceRoot}/app/${originalPath}`;
@@ -58,7 +61,11 @@ export function createLazyComponent(options: Options): Rule {
     if (isProject) {
       options.path = `${project.sourceRoot}/app/exports`;
     } else if (isShared) {
-      options.path = `${project.sourceRoot}/app/shell/shared`;
+      if (isCMS) {
+        options.path = `${project.sourceRoot}/app/shared/cms/shared`;
+      } else {
+        options.path = `${project.sourceRoot}/app/shell/shared`;
+      }
     } else {
       options.path = `${project.sourceRoot}/app/extensions/${extension}/exports`;
     }
@@ -110,10 +117,14 @@ export function createLazyComponent(options: Options): Rule {
     if (isProject) {
       componentImportPath = '../../components';
     } else if (isShared) {
-      const pathFragments = originalPath.split('/');
-      pathFragments.pop();
-      pathFragments.pop();
-      componentImportPath = `../../../${pathFragments.join('/')}`;
+      if (isCMS) {
+        componentImportPath = `../../../${sharedModuleName}`;
+      } else {
+        const pathFragments = originalPath.split('/');
+        pathFragments.pop();
+        pathFragments.pop();
+        componentImportPath = `../../../${pathFragments.join('/')}`;
+      }
     } else {
       componentImportPath = '../../shared';
     }
@@ -172,6 +183,8 @@ export function createLazyComponent(options: Options): Rule {
             originalName,
             onChanges,
             isShared,
+            isCMS,
+            sharedModuleName,
             guardDisplay,
             componentImportPath,
             declaringModule,

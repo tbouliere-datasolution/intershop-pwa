@@ -5,7 +5,7 @@ import { EMPTY } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
-import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
+import { ModalDialogComponent } from 'ish-shared/utils/modal-dialog/modal-dialog.component';
 
 import { TactonFacade } from '../../facades/tacton.facade';
 

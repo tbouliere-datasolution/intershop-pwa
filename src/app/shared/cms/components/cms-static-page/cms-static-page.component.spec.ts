@@ -9,9 +9,9 @@ import { ContentPageTreeView } from 'ish-core/models/content-page-tree-view/cont
 import { ContentPagelet } from 'ish-core/models/content-pagelet/content-pagelet.model';
 import { ContentPageletView, createContentPageletView } from 'ish-core/models/content-view/content-view.model';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
-import { ContentNavigationComponent } from 'ish-shared/cms/components/content-navigation/content-navigation.component';
-import { ContentSlotComponent } from 'ish-shared/cms/components/content-slot/content-slot.component';
-import { BreadcrumbComponent } from 'ish-shared/components/common/breadcrumb/breadcrumb.component';
+import { ContentNavigationComponent } from 'ish-shared/cms-bootstrap/components/content-navigation/content-navigation.component';
+import { ContentSlotComponent } from 'ish-shared/cms-bootstrap/components/content-slot/content-slot.component';
+import { BreadcrumbComponent } from 'ish-shared/utils/breadcrumb/breadcrumb.component';
 
 import { CMSStaticPageComponent } from './cms-static-page.component';
 

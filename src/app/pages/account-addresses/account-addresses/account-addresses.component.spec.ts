@@ -11,9 +11,9 @@ import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { Address } from 'ish-core/models/address/address.model';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { FeatureEventResult, FeatureEventService } from 'ish-core/utils/feature-event/feature-event.service';
-import { AddressComponent } from 'ish-shared/components/address/address/address.component';
-import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
-import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
+import { AddressComponent } from 'ish-shared/address/address/address.component';
+import { ErrorMessageComponent } from 'ish-shared/utils/error-message/error-message.component';
+import { ModalDialogComponent } from 'ish-shared/utils/modal-dialog/modal-dialog.component';
 import { FormlyCustomerAddressFormComponent } from 'ish-shared/formly-address-forms/components/formly-customer-address-form/formly-customer-address-form.component';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 

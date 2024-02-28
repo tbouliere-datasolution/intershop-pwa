@@ -6,7 +6,7 @@ import { instance, mock, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { DatePipe } from 'ish-core/pipes/date.pipe';
-import { InfoMessageComponent } from 'ish-shared/components/common/info-message/info-message.component';
+import { InfoMessageComponent } from 'ish-shared/utils/info-message/info-message.component';
 
 import { QuoteContextFacade, isQuoteStarted } from '../../facades/quote-context.facade';
 import { QuoteRequest } from '../../models/quoting/quoting.model';

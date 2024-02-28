@@ -5,9 +5,9 @@ import { instance, mock, when } from 'ts-mockito';
 
 import { AuthorizationToggleDirective } from 'ish-core/directives/authorization-toggle.directive';
 import { Price } from 'ish-core/models/price/price.model';
-import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
-import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box.component';
-import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
+import { ErrorMessageComponent } from 'ish-shared/utils/error-message/error-message.component';
+import { InfoBoxComponent } from 'ish-shared/utils/info-box/info-box.component';
+import { LoadingComponent } from 'ish-shared/utils/loading/loading.component';
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 import { UserBudgetComponent } from '../user-budget/user-budget.component';

@@ -8,9 +8,9 @@ import { instance, mock, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
-import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
-import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
-import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
+import { ErrorMessageComponent } from 'ish-shared/utils/error-message/error-message.component';
+import { LoadingComponent } from 'ish-shared/utils/loading/loading.component';
+import { ModalDialogComponent } from 'ish-shared/utils/modal-dialog/modal-dialog.component';
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 import { B2bUser } from '../../models/b2b-user/b2b-user.model';

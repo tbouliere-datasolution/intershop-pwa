@@ -4,8 +4,8 @@ import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
-import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
-import { InfoMessageComponent } from 'ish-shared/components/common/info-message/info-message.component';
+import { ErrorMessageComponent } from 'ish-shared/utils/error-message/error-message.component';
+import { InfoMessageComponent } from 'ish-shared/utils/info-message/info-message.component';
 
 import { AccountPunchoutHeaderComponent } from './account-punchout-header.component';
 

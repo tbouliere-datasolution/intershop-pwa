@@ -1,3 +1,4 @@
+import { CdkTableModule } from '@angular/cdk/table';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
@@ -8,6 +9,7 @@ import { ProductNotificationsModule } from '../../product-notifications.module';
 
 import { AccountProductNotificationsListComponent } from './account-product-notifications-list/account-product-notifications-list.component';
 import { AccountProductNotificationsPageComponent } from './account-product-notifications-page.component';
+import { ProductModule } from 'ish-shared/product/product.module';
 
 const accountProductNotificationsPageRoutes: Routes = [
   {
@@ -19,7 +21,9 @@ const accountProductNotificationsPageRoutes: Routes = [
 @NgModule({
   imports: [
     RouterModule.forChild(accountProductNotificationsPageRoutes),
+    CdkTableModule,
     NgbNavModule,
+    ProductModule,
     ProductNotificationsModule,
     SharedModule,
   ],

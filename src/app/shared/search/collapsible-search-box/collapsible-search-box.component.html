@@ -1,0 +1,17 @@
+<div
+  *ngIf="isSticky || showSearch"
+  class="search-container header-search-container"
+  [ngbCollapse]="!showSearch"
+  [ngClass]="{ show: !isSticky }"
+>
+  <ish-search-box
+    data-testing-id="search-box-desktop"
+    [configuration]="{
+      placeholder: 'search.searchbox.instructional_text' | translate,
+      autoSuggest: true,
+      maxAutoSuggests: 10,
+      icon: 'angle-right',
+      showLastSearchTerm: true
+    }"
+  />
+</div>

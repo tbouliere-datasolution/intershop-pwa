@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { CmsModule } from 'ish-shared/cms/cms.module';
 import { SharedModule } from 'ish-shared/shared.module';
 
 import { CategoryCategoriesComponent } from './category-categories/category-categories.component';
@@ -10,6 +11,8 @@ import { CategoryNavigationComponent } from './category-navigation/category-navi
 import { CategoryPageComponent } from './category-page.component';
 import { CategoryProductsComponent } from './category-products/category-products.component';
 import { CategoryTileComponent } from './category-tile/category-tile.component';
+import { ProductModule } from 'ish-shared/product/product.module';
+import { FilterModule } from 'ish-shared/filter/filter.module';
 
 const categoryPageRoutes: Routes = [
   {
@@ -26,7 +29,7 @@ const categoryPageRoutes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(categoryPageRoutes), SharedModule],
+  imports: [RouterModule.forChild(categoryPageRoutes), CmsModule, SharedModule, ProductModule, FilterModule],
   declarations: [
     CategoryCategoriesComponent,
     CategoryImageComponent,

@@ -3,7 +3,7 @@ import { MockComponent } from 'ng-mocks';
 import { EMPTY, of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
-import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
+import { LoadingComponent } from 'ish-shared/utils/loading/loading.component';
 
 import { PunchoutFacade } from '../../facades/punchout.facade';
 

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
-import { FormlyModule } from '@ngx-formly/core';
+import { FormlyModule, FormlyModule as CoreFormly } from '@ngx-formly/core';
 
+import { BasketModule } from 'ish-shared/basket/basket.module';
 import { SharedModule } from 'ish-shared/shared.module';
 
 import { CheckoutShippingPageComponent } from './checkout-shipping-page.component';
@@ -10,7 +11,7 @@ import { ShippingRadioWrapperComponent } from './formly/shipping-radio-wrapper/s
 
 @NgModule({
   imports: [
-    FormlyModule.forChild({
+    CoreFormly.forChild({
       wrappers: [
         {
           name: 'shipping-radio-wrapper',
@@ -18,6 +19,8 @@ import { ShippingRadioWrapperComponent } from './formly/shipping-radio-wrapper/s
         },
       ],
     }),
+    BasketModule,
+    FormlyModule,
     SharedModule,
   ],
   declarations: [

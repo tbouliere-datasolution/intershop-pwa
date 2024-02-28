@@ -10,8 +10,8 @@ import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
 import { DatePipe } from 'ish-core/pipes/date.pipe';
 import { RoleToggleModule } from 'ish-core/role-toggle.module';
-import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
-import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
+import { ErrorMessageComponent } from 'ish-shared/utils/error-message/error-message.component';
+import { ModalDialogComponent } from 'ish-shared/utils/modal-dialog/modal-dialog.component';
 
 import { ProductReviewsFacade } from '../../facades/product-reviews.facade';
 import { ProductReview } from '../../models/product-reviews/product-review.model';

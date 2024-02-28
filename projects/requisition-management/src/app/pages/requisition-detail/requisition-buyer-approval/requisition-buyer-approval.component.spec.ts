@@ -7,7 +7,7 @@ import { instance, mock, when } from 'ts-mockito';
 import { AccountFacade } from 'ish-core/facades/account.facade';
 import { BasketTotal } from 'ish-core/models/basket-total/basket-total.model';
 import { PricePipe } from 'ish-core/models/price/price.pipe';
-import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box.component';
+import { InfoBoxComponent } from 'ish-shared/utils/info-box/info-box.component';
 
 import { Requisition } from '../../../models/requisition/requisition.model';
 import { BudgetBarComponent } from '../budget-bar/budget-bar.component';

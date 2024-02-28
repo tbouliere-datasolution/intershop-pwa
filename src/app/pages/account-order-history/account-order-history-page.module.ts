@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { OrderModule } from 'ish-shared/order/order.module';
 import { SharedModule } from 'ish-shared/shared.module';
 
 import { AccountOrderHistoryPageComponent } from './account-order-history-page.component';
@@ -17,7 +18,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes), SharedModule],
+  imports: [RouterModule.forChild(routes), OrderModule, SharedModule],
   exports: [RouterModule],
   declarations: [AccountOrderHistoryPageComponent],
 })

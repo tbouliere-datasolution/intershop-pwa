@@ -5,8 +5,8 @@ import { instance, mock } from 'ts-mockito';
 
 import { ServerHtmlDirective } from 'ish-core/directives/server-html.directive';
 import { AccountFacade } from 'ish-core/facades/account.facade';
-import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
-import { OrderListComponent } from 'ish-shared/components/order/order-list/order-list.component';
+import { OrderListComponent } from 'ish-shared/order/order-list/order-list.component';
+import { ErrorMessageComponent } from 'ish-shared/utils/error-message/error-message.component';
 
 import { AccountOrderHistoryPageComponent } from './account-order-history-page.component';
 

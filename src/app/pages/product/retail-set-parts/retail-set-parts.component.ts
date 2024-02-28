@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 
 import { ProductContextFacade } from 'ish-core/facades/product-context.facade';
 import { SkuQuantityType } from 'ish-core/models/product/product.model';
-import { ProductItemDisplayType } from 'ish-shared/components/product/product-item/product-item.component';
+import { ProductItemDisplayType } from 'ish-shared/product-core/product-item/product-item.component';
 
 @Component({
   selector: 'ish-retail-set-parts',

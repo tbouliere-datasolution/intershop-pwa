@@ -7,7 +7,7 @@ import { Address } from 'ish-core/models/address/address.model';
 import { FeatureEventService } from 'ish-core/utils/feature-event/feature-event.service';
 import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 import { whenPropertyHasValue } from 'ish-core/utils/operators';
-import { ModalOptions } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
+import { ModalOptions } from 'ish-shared/utils/modal-dialog/modal-dialog.component';
 
 import { AddressDoctorFacade } from '../../facades/address-doctor.facade';
 import { AddressDoctorEvents } from '../../models/address-doctor/address-doctor-event.model';

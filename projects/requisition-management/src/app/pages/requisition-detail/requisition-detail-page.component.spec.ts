@@ -9,12 +9,12 @@ import { instance, mock, when } from 'ts-mockito';
 import { AuthorizationToggleDirective } from 'ish-core/directives/authorization-toggle.directive';
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { findAllCustomElements } from 'ish-core/utils/dev/html-query-utils';
-import { AddressComponent } from 'ish-shared/components/address/address/address.component';
-import { BasketCostSummaryComponent } from 'ish-shared/components/basket/basket-cost-summary/basket-cost-summary.component';
-import { BasketMerchantMessageViewComponent } from 'ish-shared/components/basket/basket-merchant-message-view/basket-merchant-message-view.component';
-import { BasketShippingMethodComponent } from 'ish-shared/components/basket/basket-shipping-method/basket-shipping-method.component';
-import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
-import { InfoBoxComponent } from 'ish-shared/components/common/info-box/info-box.component';
+import { AddressComponent } from 'ish-shared/address/address/address.component';
+import { BasketCostSummaryComponent } from 'ish-shared/basket/basket-cost-summary/basket-cost-summary.component';
+import { BasketMerchantMessageViewComponent } from 'ish-shared/basket/basket-merchant-message-view/basket-merchant-message-view.component';
+import { BasketShippingMethodComponent } from 'ish-shared/basket/basket-shipping-method/basket-shipping-method.component';
+import { ErrorMessageComponent } from 'ish-shared/utils/error-message/error-message.component';
+import { InfoBoxComponent } from 'ish-shared/utils/info-box/info-box.component';
 
 import { RequisitionContextFacade } from '../../facades/requisition-context.facade';
 import { Requisition } from '../../models/requisition/requisition.model';

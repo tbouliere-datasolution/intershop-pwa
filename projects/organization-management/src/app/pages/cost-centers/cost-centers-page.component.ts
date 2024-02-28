@@ -3,7 +3,7 @@ import { Observable, of } from 'rxjs';
 
 import { CostCenter } from 'ish-core/models/cost-center/cost-center.model';
 import { HttpError } from 'ish-core/models/http-error/http-error.model';
-import { ModalDialogComponent } from 'ish-shared/components/common/modal-dialog/modal-dialog.component';
+import { ModalDialogComponent } from 'ish-shared/utils/modal-dialog/modal-dialog.component';
 
 import { OrganizationManagementFacade } from '../../facades/organization-management.facade';
 

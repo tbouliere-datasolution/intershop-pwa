@@ -7,6 +7,7 @@ import { WishlistsModule } from '../../wishlists.module';
 
 import { AccountWishlistDetailLineItemComponent } from './account-wishlist-detail-line-item/account-wishlist-detail-line-item.component';
 import { AccountWishlistDetailPageComponent } from './account-wishlist-detail-page.component';
+import { ProductModule } from 'ish-shared/product/product.module';
 
 const accountWishlistDetailPageRoutes: Routes = [
   {
@@ -16,7 +17,7 @@ const accountWishlistDetailPageRoutes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(accountWishlistDetailPageRoutes), SharedModule, WishlistsModule],
+  imports: [RouterModule.forChild(accountWishlistDetailPageRoutes), ProductModule, SharedModule, WishlistsModule],
   declarations: [AccountWishlistDetailLineItemComponent, AccountWishlistDetailPageComponent],
 })
 export class AccountWishlistDetailPageModule {}

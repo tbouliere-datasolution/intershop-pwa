@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ConfigOption, FormlyModule } from '@ngx-formly/core';
 
+import { FormlyModule as IshFormlyModule } from 'ish-shared/formly/formly.module';
+
 import { PunchoutModule } from '../../punchout.module';
 
 import { AccountPunchoutConfigurationPageComponent } from './account-punchout-configuration-page.component';
@@ -45,6 +47,7 @@ const ociConfigurationFormlyConfig: ConfigOption = {
 @NgModule({
   imports: [
     FormlyModule.forChild(ociConfigurationFormlyConfig),
+    IshFormlyModule,
     RouterModule.forChild(accountPunchoutConfigurationPageRoutes),
     PunchoutModule,
   ],

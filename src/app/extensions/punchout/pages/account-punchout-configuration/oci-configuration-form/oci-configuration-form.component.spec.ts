@@ -8,8 +8,8 @@ import { MockComponent } from 'ng-mocks';
 import { of } from 'rxjs';
 import { anything, instance, mock, verify, when } from 'ts-mockito';
 
-import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
-import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
+import { ErrorMessageComponent } from 'ish-shared/utils/error-message/error-message.component';
+import { LoadingComponent } from 'ish-shared/utils/loading/loading.component';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
 
 import { PunchoutFacade } from '../../../facades/punchout.facade';

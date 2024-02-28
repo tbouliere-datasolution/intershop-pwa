@@ -1,3 +1,4 @@
+import { CdkTableModule } from '@angular/cdk/table';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -17,6 +18,7 @@ import { LoginComponent } from './login.component';
   exports: [SharedModule],
   imports: [
     BrowserModule,
+    CdkTableModule,
     CoreModule,
     NoopAnimationsModule,
     OrganizationManagementModule,

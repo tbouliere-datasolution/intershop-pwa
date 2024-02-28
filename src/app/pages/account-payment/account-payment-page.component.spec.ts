@@ -5,7 +5,7 @@ import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { AccountFacade } from 'ish-core/facades/account.facade';
-import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
+import { ErrorMessageComponent } from 'ish-shared/utils/error-message/error-message.component';
 
 import { AccountPaymentPageComponent } from './account-payment-page.component';
 import { AccountPaymentComponent } from './account-payment/account-payment.component';

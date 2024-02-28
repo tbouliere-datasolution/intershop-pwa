@@ -6,8 +6,8 @@ import { MockComponent } from 'ng-mocks';
 import { EMPTY, of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
-import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
-import { LoadingComponent } from 'ish-shared/components/common/loading/loading.component';
+import { ErrorMessageComponent } from 'ish-shared/utils/error-message/error-message.component';
+import { LoadingComponent } from 'ish-shared/utils/loading/loading.component';
 
 import { RequisitionsListComponent } from '../../components/requisitions-list/requisitions-list.component';
 import { RequisitionManagementFacade } from '../../facades/requisition-management.facade';

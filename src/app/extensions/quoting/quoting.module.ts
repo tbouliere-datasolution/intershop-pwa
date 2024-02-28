@@ -14,9 +14,11 @@ import { QuoteStateComponent } from './shared/quote-state/quote-state.component'
 import { QuoteViewComponent } from './shared/quote-view/quote-view.component';
 import { QuoteWidgetComponent } from './shared/quote-widget/quote-widget.component';
 import { QuotingBasketLineItemsComponent } from './shared/quoting-basket-line-items/quoting-basket-line-items.component';
+import { BasketModule } from 'ish-shared/basket/basket.module';
+import { ProductModule } from 'ish-shared/product/product.module';
 
 @NgModule({
-  imports: [SharedModule],
+  imports: [BasketModule, ProductModule, SharedModule],
   declarations: [
     BasketAddToQuoteComponent,
     ProductAddToQuoteComponent,

@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { RecentlyModule } from '../../recently.module';
 
 import { RecentlyPageComponent } from './recently-page.component';
+import { ProductModule } from 'ish-shared/product/product.module';
 
 const recentlyPageRoutes: Routes = [
   {
@@ -20,7 +21,7 @@ const recentlyPageRoutes: Routes = [
 ];
 
 @NgModule({
-  imports: [RecentlyModule, RouterModule.forChild(recentlyPageRoutes)],
+  imports: [RecentlyModule, ProductModule, RouterModule.forChild(recentlyPageRoutes)],
   declarations: [RecentlyPageComponent],
 })
 export class RecentlyPageModule {}

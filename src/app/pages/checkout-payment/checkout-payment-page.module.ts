@@ -1,6 +1,9 @@
 import { NgModule } from '@angular/core';
-import { FormlyModule } from '@ngx-formly/core';
+import { FormlyModule as CoreFormly } from '@ngx-formly/core';
 
+import { BasketModule } from 'ish-shared/basket/basket.module';
+import { FormlyModule } from 'ish-shared/formly/formly.module';
+import { FormsSharedModule } from 'ish-shared/forms/forms.module';
 import { SharedModule } from 'ish-shared/shared.module';
 
 import { CheckoutPaymentPageComponent } from './checkout-payment-page.component';
@@ -17,9 +20,12 @@ import { PaymentPayoneCreditcardComponent } from './payment-payone-creditcard/pa
 
 @NgModule({
   imports: [
-    FormlyModule.forChild({
+    CoreFormly.forChild({
       extensions: [{ name: 'server-validation', extension: serverValidationExtension }],
     }),
+    BasketModule,
+    FormlyModule,
+    FormsSharedModule,
     SharedModule,
   ],
   declarations: [

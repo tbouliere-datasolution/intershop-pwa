@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { CMSFacade } from 'ish-core/facades/cms.facade';
 import { ContentPageTreeView } from 'ish-core/models/content-page-tree-view/content-page-tree-view.model';
 import { ContentPageletView } from 'ish-core/models/content-view/content-view.model';
-import { CMSComponent } from 'ish-shared/cms/models/cms-component/cms-component.model';
+import { CMSComponent } from 'ish-shared/cms-bootstrap/models/cms-component/cms-component.model';
 
 /**
  * The CMS Static Page Component to render CMS managed static content pages.

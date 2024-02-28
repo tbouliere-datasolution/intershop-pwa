@@ -4,9 +4,9 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MockComponent } from 'ng-mocks';
 
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
-import { BasketInfoComponent } from 'ish-shared/components/basket/basket-info/basket-info.component';
-import { BasketValidationResultsComponent } from 'ish-shared/components/basket/basket-validation-results/basket-validation-results.component';
-import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
+import { BasketInfoComponent } from 'ish-shared/basket/basket-info/basket-info.component';
+import { BasketValidationResultsComponent } from 'ish-shared/basket/basket-validation-results/basket-validation-results.component';
+import { ErrorMessageComponent } from 'ish-shared/utils/error-message/error-message.component';
 
 import { ShoppingBasketEmptyComponent } from './shopping-basket-empty.component';
 

@@ -1,0 +1,12 @@
+<div class="global-nav-container">
+  <nav
+    class="global-nav navbar-expand-md"
+    [ngbCollapse]="!showNavBar"
+    [attr.aria-label]="'navigation.main.aria_label' | translate"
+  >
+    <div class="main-navigation">
+      <ish-header-navigation />
+      <ish-user-information-mobile />
+    </div>
+  </nav>
+</div>

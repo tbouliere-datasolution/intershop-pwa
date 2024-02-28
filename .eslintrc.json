@@ -261,8 +261,8 @@
             {
               "importNamePattern": "^SharedModule$",
               "name": "\\..*",
-              "filePattern": "^(?!.+(page|extensions/[a-z][a-z0-9-]+/[a-z][a-z0-9-]+\\.module|projects/[a-z][a-z0-9-]+/src/app(/[a-z][a-z0-9-]+)?\\.module)).+\\.module\\.ts$",
-              "message": "SharedModule must only be imported in page, extension or project modules."
+              "filePattern": "^(?!.+(page|shared|extensions/[a-z][a-z0-9-]+/[a-z][a-z0-9-]+\\.module|projects/[a-z][a-z0-9-]+/src/app(/[a-z][a-z0-9-]+)?\\.module)).+\\.module\\.ts$",
+              "message": "SharedModule must only be imported in page, extension, shared directory or project modules."
             },
             {
               "importNamePattern": ".*",

@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Injector, NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { NgbCollapseModule, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { AuthorizationToggleModule } from 'ish-core/authorization-toggle.module';
@@ -27,17 +26,16 @@ import { BackToTopComponent } from './header/back-to-top/back-to-top.component';
 import { HeaderCheckoutComponent } from './header/header-checkout/header-checkout.component';
 import { HeaderDefaultComponent } from './header/header-default/header-default.component';
 import { HeaderErrorComponent } from './header/header-error/header-error.component';
-import { HeaderNavigationComponent } from './header/header-navigation/header-navigation.component';
 import { HeaderSimpleComponent } from './header/header-simple/header-simple.component';
 import { HeaderComponent } from './header/header/header.component';
-import { LanguageSwitchComponent } from './header/language-switch/language-switch.component';
-import { LoginStatusComponent } from './header/login-status/login-status.component';
 import { MiniBasketComponent } from './header/mini-basket/mini-basket.component';
-import { SubCategoryNavigationComponent } from './header/sub-category-navigation/sub-category-navigation.component';
-import { UserInformationMobileComponent } from './header/user-information-mobile/user-information-mobile.component';
+import { LazyCollapsibleSearchBoxComponent } from './shared/lazy-collapsible-search-box/lazy-collapsible-search-box.component';
 import { LazyContentIncludeComponent } from './shared/lazy-content-include/lazy-content-include.component';
+import { LazyLanguageSwitchComponent } from './shared/lazy-language-switch/lazy-language-switch.component';
 import { LazyMiniBasketContentComponent } from './shared/lazy-mini-basket-content/lazy-mini-basket-content.component';
 import { LazySearchBoxComponent } from './shared/lazy-search-box/lazy-search-box.component';
+import { LazyGlobalNavigationComponent } from './shared/lazy-global-navigation/lazy-global-navigation.component';
+import { LazyLoginStatusComponent } from './shared/lazy-login-status/lazy-login-status.component';
 
 const exportedComponents = [CookiesBannerComponent, FooterComponent, HeaderComponent];
 
@@ -49,8 +47,6 @@ const exportedComponents = [CookiesBannerComponent, FooterComponent, HeaderCompo
     DirectivesModule,
     FeatureToggleModule,
     IconModule,
-    NgbCollapseModule,
-    NgbDropdownModule,
     PipesModule,
     QuickorderExportsModule,
     RoleToggleModule,
@@ -69,16 +65,15 @@ const exportedComponents = [CookiesBannerComponent, FooterComponent, HeaderCompo
     HeaderCheckoutComponent,
     HeaderDefaultComponent,
     HeaderErrorComponent,
-    HeaderNavigationComponent,
     HeaderSimpleComponent,
-    LanguageSwitchComponent,
+    LazyCollapsibleSearchBoxComponent,
     LazyContentIncludeComponent,
     LazyMiniBasketContentComponent,
     LazySearchBoxComponent,
-    LoginStatusComponent,
+    LazyLanguageSwitchComponent,
     MiniBasketComponent,
-    SubCategoryNavigationComponent,
-    UserInformationMobileComponent,
+    LazyGlobalNavigationComponent,
+    LazyLoginStatusComponent,
   ],
   exports: [...exportedComponents],
 })

@@ -10,12 +10,12 @@ import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { ServerSettingPipe } from 'ish-core/pipes/server-setting.pipe';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
 import { BasketMockData } from 'ish-core/utils/dev/basket-mock-data';
-import { BasketAddressSummaryComponent } from 'ish-shared/components/basket/basket-address-summary/basket-address-summary.component';
-import { BasketCostSummaryComponent } from 'ish-shared/components/basket/basket-cost-summary/basket-cost-summary.component';
-import { BasketItemsSummaryComponent } from 'ish-shared/components/basket/basket-items-summary/basket-items-summary.component';
-import { BasketMerchantMessageComponent } from 'ish-shared/components/basket/basket-merchant-message/basket-merchant-message.component';
-import { BasketValidationResultsComponent } from 'ish-shared/components/basket/basket-validation-results/basket-validation-results.component';
-import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
+import { BasketAddressSummaryComponent } from 'ish-shared/basket/basket-address-summary/basket-address-summary.component';
+import { BasketCostSummaryComponent } from 'ish-shared/basket/basket-cost-summary/basket-cost-summary.component';
+import { BasketItemsSummaryComponent } from 'ish-shared/basket/basket-items-summary/basket-items-summary.component';
+import { BasketMerchantMessageComponent } from 'ish-shared/basket/basket-merchant-message/basket-merchant-message.component';
+import { BasketValidationResultsComponent } from 'ish-shared/basket/basket-validation-results/basket-validation-results.component';
+import { ErrorMessageComponent } from 'ish-shared/utils/error-message/error-message.component';
 
 import { CheckoutShippingPageComponent } from './checkout-shipping-page.component';
 import { CheckoutShippingComponent } from './checkout-shipping/checkout-shipping.component';

@@ -9,8 +9,8 @@ import { anything, instance, mock, verify } from 'ts-mockito';
 import { CheckoutFacade } from 'ish-core/facades/checkout.facade';
 import { FeatureToggleModule } from 'ish-core/feature-toggle.module';
 import { makeHttpError } from 'ish-core/utils/dev/api-service-utils';
-import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { IdentityProviderLoginComponent } from 'ish-shared/components/login/identity-provider-login/identity-provider-login.component';
+import { ErrorMessageComponent } from 'ish-shared/utils/error-message/error-message.component';
 
 import { CheckoutAddressAnonymousFormComponent } from '../formly/components/checkout-address-anonymous-form/checkout-address-anonymous-form.component';
 

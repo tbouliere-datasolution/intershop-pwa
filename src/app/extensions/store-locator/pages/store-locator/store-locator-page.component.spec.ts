@@ -5,8 +5,8 @@ import { of } from 'rxjs';
 import { instance, mock, when } from 'ts-mockito';
 
 import { AppFacade } from 'ish-core/facades/app.facade';
-import { ErrorMessageComponent } from 'ish-shared/components/common/error-message/error-message.component';
 import { FormlyTestingModule } from 'ish-shared/formly/dev/testing/formly-testing.module';
+import { ErrorMessageComponent } from 'ish-shared/utils/error-message/error-message.component';
 
 import { StoreLocatorFacade } from '../../facades/store-locator.facade';
 

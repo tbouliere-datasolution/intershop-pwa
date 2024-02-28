@@ -1,9 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ConfigOption, FormlyModule } from '@ngx-formly/core';
+import { ConfigOption, FormlyModule as CoreFormly } from '@ngx-formly/core';
 
+import { FormlyAddressFormsModule } from 'ish-shared/formly-address-forms/formly-address-forms.module';
+import { FormlyModule } from 'ish-shared/formly/formly.module';
 import { SharedModule } from 'ish-shared/shared.module';
 
+import { ConfirmLeaveModalComponent } from './confirm-leave-modal/confirm-leave-modal.component';
 import { disablePrefilledExtension } from './formly/disable-prefilled.extension';
 import { RegistrationAddressFieldComponent } from './formly/registration-address-field/registration-address-field.component';
 import { RegistrationHeadingFieldComponent } from './formly/registration-heading-field/registration-heading-field.component';
@@ -47,11 +50,14 @@ const registrationFormlyConfig: ConfigOption = {
 
 @NgModule({
   imports: [
-    FormlyModule.forChild(registrationFormlyConfig),
+    CoreFormly.forChild(registrationFormlyConfig),
+    FormlyAddressFormsModule,
+    FormlyModule,
     RouterModule.forChild(registrationPageRoutes),
     SharedModule,
   ],
   declarations: [
+    ConfirmLeaveModalComponent,
     RegistrationAddressFieldComponent,
     RegistrationApprovalComponent,
     RegistrationHeadingFieldComponent,

@@ -14,10 +14,10 @@ services:
     # command: ['node', 'dist/b2c/run-standalone']
     # command: ['node', 'dist/b2b/run-standalone']
     environment:
-      # ICM_BASE_URL:
+      ICM_BASE_URL: 'https://demo.icm.intershop.de'
       LOGGING: 'true'
       # LOG_ALL: 'false'
-      SOURCE_MAPS: 'true'
+      SOURCE_MAPS: 'false'
       TRUST_ICM: 'true'
       # PROXY_ICM: 'true'
       # PROMETHEUS: 'true'
@@ -73,19 +73,19 @@ services:
       - pwa
     ports:
       - '4200:80'
-      # - '4200:443'
+      #- '4201:443'
       # - '9113:9113'
     environment:
       UPSTREAM_PWA: 'http://pwa:4200'
       NGINX_ENTRYPOINT_QUIET_LOGS: ANYVALUE
-      CACHE: 0
+      CACHE: 1
       # REDIS_URI: redis://redis:6379
       # LOG_ALL: off
       # SSL: 1
       # SSR: 0
       # DEBUG: 1
       # PROMETHEUS: 1
-      # COMPRESSION: 0
+      # COMPRESSION: 1
       # DEVICE_DETECTION: 0
       # CACHING_IGNORE_PARAMS: |
       #   params:
