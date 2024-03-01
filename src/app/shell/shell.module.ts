@@ -30,12 +30,12 @@ import { HeaderSimpleComponent } from './header/header-simple/header-simple.comp
 import { HeaderComponent } from './header/header/header.component';
 import { MiniBasketComponent } from './header/mini-basket/mini-basket.component';
 import { LazyCollapsibleSearchBoxComponent } from './shared/lazy-collapsible-search-box/lazy-collapsible-search-box.component';
-import { LazyContentIncludeComponent } from './shared/lazy-content-include/lazy-content-include.component';
+import { LazyGlobalNavigationComponent } from './shared/lazy-global-navigation/lazy-global-navigation.component';
 import { LazyLanguageSwitchComponent } from './shared/lazy-language-switch/lazy-language-switch.component';
+import { LazyLoginStatusComponent } from './shared/lazy-login-status/lazy-login-status.component';
 import { LazyMiniBasketContentComponent } from './shared/lazy-mini-basket-content/lazy-mini-basket-content.component';
 import { LazySearchBoxComponent } from './shared/lazy-search-box/lazy-search-box.component';
-import { LazyGlobalNavigationComponent } from './shared/lazy-global-navigation/lazy-global-navigation.component';
-import { LazyLoginStatusComponent } from './shared/lazy-login-status/lazy-login-status.component';
+import { LazyShellContentIncludeComponent } from './shared/lazy-shell-content-include/lazy-shell-content-include.component';
 
 const exportedComponents = [CookiesBannerComponent, FooterComponent, HeaderComponent];
 
@@ -67,13 +67,13 @@ const exportedComponents = [CookiesBannerComponent, FooterComponent, HeaderCompo
     HeaderErrorComponent,
     HeaderSimpleComponent,
     LazyCollapsibleSearchBoxComponent,
-    LazyContentIncludeComponent,
+    LazyGlobalNavigationComponent,
+    LazyLanguageSwitchComponent,
+    LazyLoginStatusComponent,
     LazyMiniBasketContentComponent,
     LazySearchBoxComponent,
-    LazyLanguageSwitchComponent,
+    LazyShellContentIncludeComponent,
     MiniBasketComponent,
-    LazyGlobalNavigationComponent,
-    LazyLoginStatusComponent,
   ],
   exports: [...exportedComponents],
 })

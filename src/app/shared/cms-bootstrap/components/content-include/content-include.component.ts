@@ -3,7 +3,6 @@ import { Observable, ReplaySubject } from 'rxjs';
 
 import { CMSFacade } from 'ish-core/facades/cms.facade';
 import { ContentPageletEntryPointView } from 'ish-core/models/content-view/content-view.model';
-import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-lazy-component.decorator';
 
 /**
  * The Content Include Component renders the content of the include with the given 'includeId'.
@@ -19,7 +18,6 @@ import { GenerateLazyComponent } from 'ish-core/utils/module-loader/generate-laz
   templateUrl: './content-include.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-@GenerateLazyComponent()
 export class ContentIncludeComponent implements OnInit, OnChanges {
   @Input({ required: true }) includeId: string;
 

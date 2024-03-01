@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 
+import { CmsBootstrapModule } from 'ish-shared/cms-bootstrap/cms-bootstrap.module';
+import { CMS_COMPONENT } from 'ish-shared/cms-bootstrap/configurations/injection-keys';
 import { SharedModule } from 'ish-shared/shared.module';
 
 import { CMSContainerComponent } from './components/cms-container/cms-container.component';
@@ -11,18 +13,15 @@ import { CMSStandardPageComponent } from './components/cms-standard-page/cms-sta
 import { CMSStaticPageComponent } from './components/cms-static-page/cms-static-page.component';
 import { CMSTextComponent } from './components/cms-text/cms-text.component';
 import { CMSVideoComponent } from './components/cms-video/cms-video.component';
-
-import { CMS_COMPONENT } from '../cms-bootstrap/configurations/injection-keys';
+import { ShellContentIncludeComponent } from './components/shell-content-include/shell-content-include.component';
 import { LazyCmsCarouselComponent } from './shared/lazy-cms-carousel/lazy-cms-carousel.component';
-
-import { LazyCmsProductListManualComponent } from './shared/lazy-cms-product-list-manual/lazy-cms-product-list-manual.component';
-import { LazyCmsProductListFilterComponent } from './shared/lazy-cms-product-list-filter/lazy-cms-product-list-filter.component';
 import { LazyCmsProductListCategoryComponent } from './shared/lazy-cms-product-list-category/lazy-cms-product-list-category.component';
+import { LazyCmsProductListFilterComponent } from './shared/lazy-cms-product-list-filter/lazy-cms-product-list-filter.component';
+import { LazyCmsProductListManualComponent } from './shared/lazy-cms-product-list-manual/lazy-cms-product-list-manual.component';
 import { LazyCmsProductListRestComponent } from './shared/lazy-cms-product-list-rest/lazy-cms-product-list-rest.component';
-import { CmsBootstrapModule } from 'ish-shared/cms-bootstrap/cms-bootstrap.module';
 
 @NgModule({
-  imports: [SharedModule, CmsBootstrapModule],
+  imports: [CmsBootstrapModule, SharedModule],
   declarations: [
     CMSContainerComponent,
     CMSDialogComponent,
@@ -33,13 +32,14 @@ import { CmsBootstrapModule } from 'ish-shared/cms-bootstrap/cms-bootstrap.modul
     CMSStaticPageComponent,
     CMSTextComponent,
     CMSVideoComponent,
-    LazyCmsProductListCategoryComponent,
     LazyCmsCarouselComponent,
+    LazyCmsProductListCategoryComponent,
     LazyCmsProductListFilterComponent,
     LazyCmsProductListManualComponent,
     LazyCmsProductListRestComponent,
+    ShellContentIncludeComponent,
   ],
-  exports: [CmsBootstrapModule],
+  exports: [CmsBootstrapModule, ShellContentIncludeComponent],
   providers: [
     {
       provide: CMS_COMPONENT,
